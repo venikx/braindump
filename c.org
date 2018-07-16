@@ -1,0 +1,49 @@
+#+TITLE: The C Programming Language
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :c:
+#+STARTUP: hideblocks
+
+* Entry point ~main()~
+  is a mandatory function in C programs as it defines the entry point of the program.
+
+  #+BEGIN_SRC C
+     // program runs without responding to command line arguments
+     int main(void){}
+
+     // argc :: arguments count, argv[] :: argument vector Trying to access arguments outside
+     // the memory boundary (argc) results in a 'segmentation fault'
+     int main(int argc, string argv[]){}
+  #+END_SRC
+
+* Compiling
+  1. *Pre-processing*: Copy-paste the included code from libraries.
+  2. *Compiling*: Transforms source code to assembly code.
+  3. *Assembling*: Assembles the code into machine code.
+  4. *Linking*: Links the different assembled code from you and the included libraries into
+     a program.
+
+* Debugging
+** [[https://www.gnu.org/software/gdb/][GDB - GNU Debugger]]
+
+* Data types
+** Integers
+   An /integer/ (32 bits) can be either negative/positive or only positive when using an
+   ~unsigned int~ vs an ~int~. There is also ~float~ and ~double~ to represent decimal
+   numbers.
+
+** Characters (8 bits)
+   can only be represented with single quotes.
+
+** Strings, Arrays
+   - *string* :: an /array of characters/, terminated by the /null* char/ ~\0~
+   - *array* :: a contiguous chunk of memory elements of the same type
+
+   Strings can be looped over to return each individual character representation in the
+   memory of the computer.
+
+* Special Functions
+** ~crypt~
+    is a C [[https://en.wikipedia.org/wiki/Data_Encryption_Standard][DES (Data Encryption Standard)]]-based (symmetric-key algorithm) function which
+    can encrypt a certain password, by giving it a password and some salt. That
+    means the function returns the same hashed value for a certain password. The salt we
+    need to apply are the first two characters of the hashed password.

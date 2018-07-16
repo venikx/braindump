@@ -1,0 +1,50 @@
+#+TITLE: Handmade hero
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :c:handmade:
+#+STARTUP: hideblocks
+
+* Day 1
+** Additonal resources
+   - [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]
+   - [[https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362(v=vs.85).aspx][MSDN - OutputDebugString]]
+
+** Entry point
+   In order to make windows understand the entry point of our executable the linker has to
+   properly link our entry point. The ~WinMain~ is standard function which is called by
+   Windows to be able to execute our application. Note that we also have to include
+   ~windows.h~, which is a file to make the program able to interact with Windows itself.
+   Our entry point needs the include and that info can be found in the MSDN documentation
+   requirements section of ~WinMain~.
+
+   #+BEGIN_SRC c
+     #include <windows.h>
+
+     int CALLBACK WinMain(
+       HINSTANCE hInstance,
+       HINSTANCE hPrevInstance,
+       LPSTR     lpCmdLine,
+       int       nCmdShow)
+     {
+       OutputDebugStringA("Some function\n");
+     };
+   #+END_SRC
+
+** Functions
+   A *forward function declaration* notifies the compiler that function can be called.
+   Nevertheless the build will fail due to a linking error, because it might not have a
+   found the implementation. The *function definition* is the actual implementation of the
+   declared function.
+
+   Compilation phase marks unresolved function definitions and asks the linker =Hey,
+   whenever you find the function declaration patch it in here=. The linker phase tries to
+   find the correct function definition and might fail if it couldn't find it.
+
+** Q&A
+   Microsoft had to support Unicode at some point, while most of the functions handling
+   strings were handling ASCI, which can't handle foreign languages too well. The fix for
+   support Unicode without breaking support was to write a macro, which at compile time
+   decides which function it will use.
+
+   ~OutputDebugString~ during a standard compilation will use the Unicode version of the
+   implementation, while Casey just wanted the ASCI version and bypasses the Macro by
+   immediately using ~OutputDebugStringA~.

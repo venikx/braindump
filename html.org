@@ -1,0 +1,35 @@
+#+TITLE: DOM, Html and CSS
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :dom:html:css:
+#+STARTUP: hideblocks
+
+* Event Delegation
+  avoids adding event listeners to specific nodes. A parent node can listen for events
+  happening in it's children, by hooking up an event listener on the node. The parent can
+  delegate the event back to the correct child.
+
+* Event Propagation
+  is the fact that an event (for example: ~click~) on an element. The browser first ripples
+  the event down, until it found the source. The browser bubbles up the event when the
+  location was found.
+
+* Stripe links
+  #+BEGIN_SRC javascript
+  function handleEnter(){
+    this.classList.add('trigger-enter');
+    setTimeout(() => this.classList.contains('trigger-enter')
+     && this.classList.add('trigger-enter-active'), 150);
+
+    background.classList.add('open');
+
+    const dropdown = this.querySelector('.dropdown');
+    const dropdownCoords = dropdown.getBoundingClientRect();
+    const navCoords = nav.getBoundingClientRect();
+    const coords = {
+      height: dropdownCoords.height,
+      width: dropdownCoords.width,
+      // adjust top and left coords when other elements come before or inside the nav
+      top: dropdownCoords.top - navCoords.top,
+      left: dropdownCoords.left - navCoords.left
+    };
+  #+END_SRC
