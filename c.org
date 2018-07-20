@@ -3,6 +3,8 @@
 #+FILETAGS: :c:
 #+STARTUP: hideblocks
 
+Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki:Cryptography]]
+
 * Entry point ~main()~
   is a mandatory function in C programs as it defines the entry point of the program.
 

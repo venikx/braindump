@@ -3,6 +3,8 @@
 #+FILETAGS: :algorithm:
 #+STARTUP: hideblocks
 
+Related: [[file:cryptography.org][wiki:Cryptography]], [[file:c.org][wiki:C]]
+
 * Computational Complexity
   - Big O Notation $O$ :: worst-case scenario (upper bound)
   - Big \Omega (Omega) Notation  :: best-case scenario (lower bound)

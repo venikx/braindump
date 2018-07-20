@@ -3,6 +3,8 @@
 #+FILETAGS: :dom:html:css:
 #+STARTUP: hideblocks
 
+Related: [[file:javascript.org][wiki:Javascript]]
+
 * Event Delegation
   avoids adding event listeners to specific nodes. A parent node can listen for events
   happening in it's children, by hooking up an event listener on the node. The parent can

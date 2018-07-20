@@ -3,6 +3,8 @@
 #+FILETAGS: :c:handmade:
 #+STARTUP: hideblocks
 
+Related: [[file:c.org][wiki:C]]
+
 * Day 1
 ** Additonal resources
    - [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]

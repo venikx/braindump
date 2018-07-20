@@ -3,6 +3,8 @@
 #+FILETAGS: :cryptography:
 #+STARTUP: hideblocks
 
+Related: [[file:algorithms.org][wiki:Algorithms]]
+
 Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key is
 used to scramble the data, but the same key is used to unscramble it.
 
