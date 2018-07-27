@@ -5,6 +5,11 @@
 
 Related: [[file:javascript.org][wiki:Javascript]]
 
+* Resources
+** Design
+*** [[http://www.dailyui.co/][Dailly UI Challenge]]
+*** [[http://collectui.com/][Collect UI]]
+
 * Event Delegation
   avoids adding event listeners to specific nodes. A parent node can listen for events
   happening in it's children, by hooking up an event listener on the node. The parent can

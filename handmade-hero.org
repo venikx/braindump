@@ -5,6 +5,14 @@
 
 Related: [[file:c.org][wiki:C]]
 
+* Resources
+** [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]                   :math:
+** [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
+** [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
+** [[https://www.amazon.com/Game-Programming-Patterns-Robert-Nystrom/dp/0990582906/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=0990582906&pd_rd_r=4ACE7CH5N5S6J9NP64EF&pd_rd_w=XD1Tt&pd_rd_wg=yc1pf&psc=1&refRID=4ACE7CH5N5S6J9NP64EF][Game programming patterns]]
+** [[https://www.amazon.com/Engine-Architecture-Second-Jason-Gregory/dp/1466560010/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1466560010&pd_rd_r=A4QT90WTQQXG68RFWVQR&pd_rd_w=svOI8&pd_rd_wg=oFRLJ&psc=1&refRID=A4QT90WTQQXG68RFWVQR][Game Engine Architecture, Second Edition]]
+** [[https://www.amazon.com/Game-Coding-Complete-Fourth-McShaffry/dp/1133776574/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1133776574&pd_rd_r=9TQGA57P3Q0F85MAZXTP&pd_rd_w=i5EIx&pd_rd_wg=8Nb8o&psc=1&refRID=9TQGA57P3Q0F85MAZXTP][Game Coding Complete]]
+
 * Day 1
 ** Additonal resources
    - [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]

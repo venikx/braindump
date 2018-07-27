@@ -5,6 +5,12 @@
 
 Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Linux]]
 
+* Functional Programming
+*** [[https://drboolean.gitbooks.io/mostly-adequate-guide/content/][Professor Frisby's Mostly Adequate Guide to Functional Programming]]
+
+* Testing
+** [[https://github.com/substack/tape][Testing with Tape]]
+
 * Nodejs
 ** Background
 *** History
@@ -48,6 +54,7 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
 ** Resources
   - [[https://github.com/btroncone/learn-rxjs/tree/master/operators][RxJS Operators by Example]]
   - [[http://reactivex.io/rxjs/manual/overview.html#operators][RxJS Docs]]
+  - [[http://reactivex.io/rxjs/manual/overview.html][Introduction to RxJS]]
 
 ** Asynchronous Programming: The End of The Loop
 *** Reduce
