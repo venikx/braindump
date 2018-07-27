@@ -30,3 +30,4 @@ small tasks in a memory palace.
 ** [[file:javascript.org][wiki:Javascript]]
 ** [[file:linux.org][wiki:Linux]]
 ** [[file:pixel-art.org][wiki:Pixel Art]]
+** [[file:software-development][wiki:Software Development]]
