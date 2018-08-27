@@ -28,20 +28,156 @@ Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki
 ** [[https://www.gnu.org/software/gdb/][GDB - GNU Debugger]]
 
 * Data types
-** Integers
+** ~int~'s
    An /integer/ (32 bits) can be either negative/positive or only positive when using an
    ~unsigned int~ vs an ~int~. There is also ~float~ and ~double~ to represent decimal
    numbers.
 
-** Characters (8 bits)
+** ~char~'s (8 bits)
    can only be represented with single quotes.
 
-** Strings, Arrays
-   - *string* :: an /array of characters/, terminated by the /null* char/ ~\0~
+** ~array~'s, strings
    - *array* :: a contiguous chunk of memory elements of the same type
+   - *string* :: an /array of characters/, terminated by the /null* char/ ~\0~
 
-   Strings can be looped over to return each individual character representation in the
-   memory of the computer.
+   The string keyword is syntactic sugar for a bit more complex representation of ~char *s~,
+   a pointer to the memory location of the first character of the string.
+
+** ~struct~'s
+   is a composite data type (record) to multiple variables under a name in a block of
+   memory, allowing the variables to be accessed via a single pointer. For example:
+   hard-drive entries, patient information, ...
+
+   #+BEGIN_SRC c
+   typedef struct {
+     string name;
+     string age;
+   }
+   person;
+   #+END_SRC
+
+** ~FILE*~'s
+   is a ~struct~ data type which has been defined in the standard library ~stdio.h~ and is
+   used to store *persistent data*, data that doesn't disappear when the program exits.
+
+*** Opening/closing
+    - ~fopen(fileName, operation)~ :: opens a file and returns a file pointer (always check
+         for ~NULL~)
+    - ~fclose(filePointer)~ :: closes the file pointed to by the given pointer
+
+*** Reading/writing (inefficient)
+    - ~fgetc(filePointer)~ :: reads and returns the next character from the file pointed to.
+         The last character of the file is ~EOL~.
+    - ~fputc(character, filePointer)~ :: writes are appends the character to the pointed-to
+         file.
+
+    #+NAME: An equivalent of the cp-command in Linux
+    #+BEGIN_SRC c
+    char c;
+    while((c = fgetc(ptr)) != EOF) fputc(c, ptr2);
+    #+END_SRC
+
+*** Reading/writing (a bit more efficient)
+    - ~fread(buffer, size, qty, filePointer)~ :: reads ~qty~ units of size ~size~ from the file
+         pointed to and stores it in a memory buffer (array) pointed to by ~buffer~.
+    #+BEGIN_SRC c
+    int arr[10];
+    fread(arr, sizeof(int), 10, ptr)
+    #+END_SRC
+
+    - ~fwrite(buffer, size, qty, filePointer)~ :: writes ~qty~ units of size ~size~ to the
+         file pointed to by reading them from a buffer (array) pointed to by ~buffer~.
+    #+BEGIN_SRC c
+    int arr[10]; // imagine the array being filled up with data
+    fwrite(arr, sizeof(int), 10, ptr)
+    #+END_SRC
+
+* Pointers & Memory
+** Pointers
+   are data items, where the /value/ is a memory address and the /type/ describes the data
+   located at the memory address. Therefore pointers allow data structures and/or
+   variables to be shared among functions.
+
+   The ~*~ has a different meaning when used in a declaration and an expression.
+   - ~char *t~ :: declares a variable t, pointing to another variable type ~char~
+   - ~char c = *s~ :: read the value from the address stored in s and store it in c
+
+   In order to pass in the address of a certain memory location into a pointer, we need
+   to extract the address from the variable.
+   #+BEGIN_SRC c
+   int k = 5;
+   int *pk; // equivalent to int *pk = &k
+   pk = &k; // passes the address of k into pk
+   #+END_SRC
+
+   Swapping two variables, via a swap-function, doesn't work without sending the address
+   of the integers, because all data types (except arrays) are sent in as a copy of the
+   value, NOT the actual variable.
+   #+BEGIN_SRC c
+   #include <stdio.h>
+
+   void swap(int *a, int *b);
+
+   int main(void)
+   {
+     int x = 1;
+     int y = 2;
+
+     swap(&x, &y);
+     // x = 2, y = 1
+   }
+
+   void swap(int *a, int *b)
+   {
+     int tmp = *a;
+     *a = *b;
+     *b = tmp;
+   }
+   #+END_SRC
+** Simplified representation of memory
+  is kinda like a huge array of elements, where each element is ~1 byte~. Memory addresses
+  are typically represented in *hexadecimal*
+
+  |-----------------------|
+  | text                  |
+  |-----------------------|
+  | initialized data      |
+  |-----------------------|
+  | unitialized data      |
+  |-----------------------|
+  | heap                  |
+  |                       |
+  |                       |
+  | stack                 |
+  |-----------------------|
+  | environment variables |
+  |-----------------------|
+** (Call) Stack
+   is primarily used to keep track of the point to which each active subroutine should
+   return control when it finishes executing.
+
+   Each stack frame usually includes the arguments passed into the function, the return
+   address back to the caller and space for local variables.
+   Once the function is returned, these local variables are destroyed.
+
+** Heap
+   region of the computer's memory that is not managed automatically, and is not as
+   tightly managed by the CPU. Ideal to store data that needs to be globally accessible.
+
+   The heap is where blocks of dynamically allocated memory are stored, which can be
+   accessed at runtime. ~malloc~ is a C standard library function that creates an amount of
+   memory and returns the address to the beginning of the reserved memory chunk.
+
+   Beware of garbage values, since it doesn't clear the memory. If ~malloc~ can't give
+   memory it returns a ~NULL~ pointer.
+
+   #+BEGIN_SRC c
+   // allocate memory
+   char *t = malloc(5); // allocates a char pointee of length 5 and point t to pointee
+
+   // later to free the memory
+   free(t)
+   #+END_SRC
 
 * Special Functions
 ** ~crypt~
