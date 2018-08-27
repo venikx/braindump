@@ -185,3 +185,9 @@ Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki
     can encrypt a certain password, by giving it a password and some salt. That
     means the function returns the same hashed value for a certain password. The salt we
     need to apply are the first two characters of the hashed password.
+** ~sprintf~
+   stores a formatted string along the lines of format inside a ptr.
+
+   Note how ~%03i~ tells the formatter to always show an integer with 3
+   numbers, formatted as XXX.jpg, by prepending zero's if they need it.
+   ~sprintf(fileName, "%03i.jpg", someInteger)~;
