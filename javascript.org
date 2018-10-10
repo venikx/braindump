@@ -6,7 +6,19 @@
 Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Linux]]
 
 * Functional Programming
-*** [[https://drboolean.gitbooks.io/mostly-adequate-guide/content/][Professor Frisby's Mostly Adequate Guide to Functional Programming]]
+  The soul of fp is the separation of concerns and recognition of common
+  patterns. Learning fp is daunting, but don't give up.
+
+*** Resources
+    - [[https://drboolean.gitbooks.io/mostly-adequate-guide/content/][Professor Frisby's Mostly Adequate Guide to Functional Programming]]
+
+*** Symptoms of code that fp could solve
+    - Custom names
+    - Looping patterns
+    - Glue Code
+    - Side effects
+
+****
 
 * Testing
 ** [[https://github.com/substack/tape][Testing with Tape]]
