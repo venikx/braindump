@@ -481,3 +481,81 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
          }
      }
    #+END_SRC
+
+* React
+** Advanced Patterns
+   Dispatching a change handler to the outside, when some component manages it's state
+   internally. That's possible via React's ~setState(updater, [callback])~.
+
+   #+BEGIN_SRC javascript
+   setState(currentState => ({ text: 'lol' }), () => this.props.onChange(this.state.text))
+   #+END_SRC
+
+*** Compound Components
+   *Compound components* have a similar philosophy as the ~<select>~ and ~<option>~ elements in
+   HTML. Worthless alone, powerfull together, since the children can modify the state of
+   the parent. Hiding away the abstraction.
+
+   The simplest implementation includes ~React.cloneElement()~ and ~React.Children.map()~.
+   However it's not flexible (the div breaks the cloning.
+
+   Context provides (pun) a way to provide the props to the compound components, without
+   cloning elements. A value change of the Provider triggers a render, so make sure the
+   value doesn't get recreated every time.
+
+   #+BEGIN_SRC javascript
+   const Yo = () => (
+     <Toggle onToggle={onToggle}>
+       <Toggle.On>The button is on</Toggle.On>
+       <Toggle.Off>The button is off</Toggle.Off>
+       <div>
+         <Toggle.Button />
+       </div>
+     </Toggle>
+   )
+   #+END_SRC
+
+*** FaCC (Function as Child Components)
+    By themselves not so powerfull. However, managing a component's state without
+    implementing the rendering logic is insane.
+
+    The Context API is good and simple example.
+    #+BEGIN_SRC javascript
+    <Consumer>
+      {value = /* render something */}
+    </Consumer>
+    #+END_SRC
+
+    Passing in custom event handler are tricky, because the internal state might respond
+    to the same handler. The *prop getters* is a function exposed via the children to merge
+    properties the user passes in with the internal ones.
+
+    #+BEGIN_SRC javascript
+    this.props.children({ getProps: ({ onClick, ..props}) => ({
+      'aria-expanded: true,
+      onClick: (...args) => {
+        this.someInternalFunction();
+        onClick(...args);
+      }
+    })})
+    #+END_SRC
+
+*** State management
+    The *state reducer* (not redux) allows the library user to manipulate the internal state
+    of the library component. A common case is preventing the internal state from
+    updating, due to state changes higher up in the component tree.
+
+    #+BEGIN_SRC javascript
+    // user.js
+    internalSetState(changes, callback) {
+      this.setState(state => {
+        const changesObject =
+          typeof changes === 'function' ? changes(state) : changes
+        const { type, ...reducedChanges } = // strip off type, because it's not state
+          this.props.stateReducer(state, changesObject) || {}
+        return Object.keys(reducedChanges).length
+        ? reducedChanges
+        : null // avoid unneeded rerenders
+    }, callback)
+  }
+    #+END_SRC
