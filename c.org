@@ -48,13 +48,29 @@ Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki
    memory, allowing the variables to be accessed via a single pointer. For example:
    hard-drive entries, patient information, ...
 
+   #+NAME: first structure
+   #+BEGIN_SRC c
+   struct person {
+     string name;
+     string age;
+   }
+
+   struct person ana;
+   #+END_SRC
+
+   #+NAME: defining a custom type
    #+BEGIN_SRC c
    typedef struct {
      string name;
      string age;
-   }
-   person;
+   } person;
+
+   person ana;
    #+END_SRC
+
+   Accessing members of a struct on a stack is done via ~person.name~, while on the heap you
+   need to dereference the struct first before accessing the member (~(*person).name~) or
+   ~person->name~. The arrow dereferences /person/ and then access /name/.
 
 ** ~FILE*~'s
    is a ~struct~ data type which has been defined in the standard library ~stdio.h~ and is
@@ -179,6 +195,32 @@ Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki
    free(t)
    #+END_SRC
 
+** Stack/Heap/Buffer Overflow
+*** Contrived example
+    It's possible to overwrite/access memory, which you arent't supposed to touch, when
+    allocating not enough memory for all possible cases of the program. The example below
+    makes it possible to overwrite memory outside of stack. A clever person could try
+    injecting a malicious program and overwriting the return address.
+    memory of the array
+    #+BEGIN_SRC c
+      #include <string.h>
+
+      void foo(char *bar)
+      {
+        char c[12];
+        memcpy(c, bar, strlen(bar));
+      }
+
+      int main(int argc, char *argv[])
+      {
+        foo(argv[1]);
+      }
+    #+END_SRC
+
+*** Prevention/Debugging
+    ~valgrind()~ helps catching possible memory bugs and makes sure all reserved memory via
+    ~malloc()~, was also ~free()~'d at some point.
+
 * Special Functions
 ** ~crypt~
     is a C [[https://en.wikipedia.org/wiki/Data_Encryption_Standard][DES (Data Encryption Standard)]]-based (symmetric-key algorithm) function which
@@ -191,3 +233,218 @@ Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki
    Note how ~%03i~ tells the formatter to always show an integer with 3
    numbers, formatted as XXX.jpg, by prepending zero's if they need it.
    ~sprintf(fileName, "%03i.jpg", someInteger)~;
+
+* Data structures
+** Summary
+*** Arrays
+   - modifying an array is bad
+   - sorting is easy
+   - lookup is constant time
+
+*** Linked List
+    - modifying is easy
+    - lookup is bad
+    - difficult to sort
+
+*** Hash tables
+    - insertion is two-step (hash + add)
+    - deletion is easy
+    - average lookup is better than linked list
+    - sucks at sorting
+
+*** Tries
+    - Insertion is complex - dyanmic memory allocation
+    - deletion is easy
+    - lookup is fast
+    - already sorted
+    - rapidly becomes huge, not great if space is premium
+
+** [[https://en.wikipedia.org/wiki/Linked_list][Linked list]]
+   is a collection of nodes, which together represent a sequence. Each node contains *data*
+   and a *reference* (link) to the next node in the sequence. Depending if the list needs to
+   stay sorted or not, the running time is $O(n)$ or $O(1) respectively.
+
+   Be careful when inserting an item as the first element in the list. Always let the new
+   item point to the firs item in the list, before moving the head (the pointer pointing
+   to the beginning of the linked list).
+
+   #+NAME: Unique list
+   #+BEGIN_SRC c
+     #include <cs50.h>
+     #include <stdio.h>
+
+     typedef struct ll
+     // the struct needs a name, before the typedef when referencing itself
+     {
+       int number;
+       struct ll *next;
+     } node;
+
+     int main(void)
+     {
+       // memory for numbers
+       node *numbers = NULL;
+
+       // Prompt for numbers (until EOF)
+       while (true)
+         {
+           // Prompt for number
+           int number = get_int("number: ");
+
+           // Check for EOF
+           if (number == INT_MAX)
+             {
+               break;
+             }
+
+           // Check whether number is already in list
+           bool found = false;
+           for (node *ptr = numbers; ptr != NULL; ptr = ptr->next)
+             {
+               if (ptr->number == number)
+                 {
+                   found = true;
+                   break;
+                 }
+             }
+
+           // If number not found in list, add to list
+           if (!found)
+             {
+               // Allocate space for number
+               node *n = malloc(sizeof(node));
+               if (!n)
+                 {
+                   return 1;
+                 }
+
+               // Add number to list
+               n->number = number;
+               n->next = NULL;
+               if (numbers)
+                 {
+                   for (node *ptr = numbers; ptr != NULL; ptr = ptr->next)
+                     {
+                       if (!ptr->next)
+                         {
+                           ptr->next = n;
+                           break;
+                         }
+                     }
+                 }
+               else
+                 {
+                   numbers = n;
+                 }
+             }
+         }
+
+       // Print numbers
+       printf("\n");
+       for (node *ptr = numbers; ptr != NULL; ptr = ptr->next)
+         {
+           printf("%i\n", ptr->number);
+         }
+
+       // Free memory
+       node *ptr = numbers;
+       while (ptr != NULL)
+         {
+           node *next = ptr->next;
+           free(ptr);
+           ptr = next;
+         }
+     }
+   #+END_SRC
+
+** [[https://en.wikipedia.org/wiki/Hash_table][Hash table]]
+   combines a *hash function*, which returns some code and an *array* capable of storing data
+   we want to place in the data structure. In other words: Run the data through the hash function and store the dat in the element
+   of the array represented by the return hash code.
+
+   Typically you'd want to use chaining via linked lists to avoid collision. So it's best
+   used for unsorted data.
+
+*** Hash functions best practices
+    - use all of the data
+    - pure function (given an input, give always the same output)
+    - uniformly distrubute data
+    - generate different hash for similar data (not sure why?)
+
+** [[https://en.wikipedia.org/wiki/Trie][Trie]] (pronounced try)
+   is short for /retrieval/, which essentially is a tree with an array as each of it's
+   children. Each of those children potentially can have arrays as their children, etc.
+
+   Not memory efficient, it's time constant $O(1)$, so given an insane amount of data,
+   it'll always perform the same amount of steps to look up a specific name. Very
+   performant even when looking up specefic data.
+
+   #+BEGIN_SRC c
+     typedef struct _trie
+     {
+       char planet[20];
+       struct _trie paths[10];
+     } trie;
+   #+END_SRC
+
+** Stack & Queues
+   The data structure could be implemented via a linked list. Be careful to not lose the
+   reference of the first element of the list, when performing adding or removing items.
+
+   - [[https://en.wikipedia.org/wiki/Stack_(abstract_data_type)][Stack]] :: has a mechanism to *push* elements in and *pop* elements out again in a *LIFO*
+   (Last-In-First-Out) manner.
+   #+BEGIN_SRC c
+     typedef struct
+     {
+       int *numbers;
+       int size;
+     } stack;
+   #+END_SRC
+
+   - [[https://en.wikipedia.org/wiki/Queue_(abstract_data_type)][Queue]] :: keeps the entities in the collection in order by using *FIFO*
+        (First-In-First-Out).
+   #+BEGIN_SRC c
+     typedef struct
+     {
+       int front;
+       int *numbers;
+       int size;
+     } queue;
+   #+END_SRC
+
+** [[https://en.wikipedia.org/wiki/Binary_search_tree][Binary search tree]]
+    is binary tree, which stores a key/value and each have two sub-tree (left and right).
+    Each key in the node mut be greater than or equal to any key stored in the left tree.
+    #+NAME: definition
+    #+BEGIN_SRC c
+      typedef struct node
+      {
+        int n;
+        struct node *left;
+        struct node *right;
+      }
+      node;
+    #+END_SRC
+
+    #+NAME: searching
+    #+BEGIN_SRC c
+      bool search(int n, node *tree)
+      {
+        if (tree == NULL)
+        {
+          return false;
+        }
+        else if (n < tree->n)
+        {
+          return search(n, tree->left);
+        }
+        else if (n > tree->n)
+        {
+          return search(n, tree->right);
+        }
+        else
+        {
+          return true;
+        }
+      }
+    #+END_SRC
