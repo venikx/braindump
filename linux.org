@@ -210,3 +210,24 @@ $ man 1 cd
      Redirecting output to ~/dev/null~ will dispose the output. That special file is a system device called a
      /bit bucket/, which accepts input and does nothing.
     =I'm sending your comments to /dev/null! :)=
+
+* Printing
+  https://void.webconverger.org/docs/config/print/
+
+** Installation
+   1. Install the CUPS daemon
+      ~xbps-install -S cups cups-filters~
+   2. Install the different printer drivers
+      ~xbps-install -S gutenprint hplip foomatic-db foomatic-db-nonfree~
+   3. Run the HP setup (default options are fine)
+      ~hp-setup -i~
+
+** Configuration
+   Note be sure to login to the CUPS web interface via root, not user.
+   Otherwise you'll need to add the user to the ~sys~ group, which is [[https://unix.stackexchange.com/questions/235477/cups-add-printer-page-returns-forbidden-on-web-interface/294675%0A][meh]].
+
+   1. Enable the service
+      ~ln -s /etc/sv/cupsd /var/service/~
+   2. Navigate to http://localhost:631 and go to Administration >
+      Printers > Add Printer.
+   3. Login with username "root" and use the root password.
