@@ -223,7 +223,7 @@ $ man 1 cd
       ~hp-setup -i~
 
 ** Configuration
-   Note be sure to login to the CUPS web interface via root, not user.
+   Note: be sure to login to the CUPS web interface via root, not user.
    Otherwise you'll need to add the user to the ~sys~ group, which is [[https://unix.stackexchange.com/questions/235477/cups-add-printer-page-returns-forbidden-on-web-interface/294675%0A][meh]].
 
    1. Enable the service
@@ -231,3 +231,4 @@ $ man 1 cd
    2. Navigate to http://localhost:631 and go to Administration >
       Printers > Add Printer.
    3. Login with username "root" and use the root password.
+   4. Find new printers
