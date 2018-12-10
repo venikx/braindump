@@ -559,3 +559,178 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
     }, callback)
   }
     #+END_SRC
+
+* Full-stack
+** Domains
+   are text-based labels for humans to remember the website rather than the IP addresses.
+   The *DNS (Domain Name System)* maps the IP addresses to the domain, similar to a
+   phonebook.
+
+   The DNS is built upon layers of caches. Each computer has their own local cache, while
+   your /LAN (Local Area Network)/ has their own cache and most of the popular domains are
+   resolved when it searches into the /ISP's (Internet Service Provider)/ cache.
+
+   These can caches can be poisened, when a DNS provider gets attacked and known websites
+   get redirected to other IP addresses without having an impact on the domain name.
+   That's why /HTTPS/ is so important, it requires a handshake.
+
+   Use the ~ping~ command to check if certain servers and/or DNS servers are down or not.
+   Typically most websites respond to ~ping~, but it's not a requirement.
+
+   Use the ~traceroute~ command to illustrate the path and time it takes to reach a certain
+   server by jumping from server to server. The information from ~traceroute~ is sent via
+   /ICMP Internet Control Message Packet/.
+
+** Servers
+   - Dedicated servers :: own server, where you own the hardware.
+   - VPS (Virtual Private Server) :: own a little chunk of a dedicated server own by
+        someone else (AWS, Rackspace, Digital Ocean).
+
+*** Login
+    ~$ ssh root@$SERVER_IP~
+
+    Don't confirm sending the identity to a server, when you've already made sure the
+    server knowns about your identity. The identity of the server might have been changed,
+    which might mean your server has been compromised. Sending yes, adds key to
+    ~known_hosts~.
+
+    Use ~htop~ to check out the process monitor and see which process might be hogging the
+    CPU.
+
+*** VPS Setup
+**** Update + upgrade the server
+**** Create a new user (you shouldn't be doing things with root)
+     ~$ adduser $USERNAME~
+
+**** Add the user to the sudoers group
+     ~$ usermod -aG sudo $USERNAME~
+     Enables the given user to perform actions temporarely as *sudo (superuser do)*, when
+     needed.
+
+     ~$ su $USERNAME~ to switch user.
+
+**** Login as $USERNAME
+    ~$ ssh ana@$SERVER_IP~
+
+    If the server responds with a ~permission denied (publickey)~ message, it's probably
+    because the user has no public key stored on the server for you to authenticate with.
+    Add it via:
+    ~$ ssh-add -L | ssh root@$SERVER_IP "mkdir -p /home/$USERNAME/.ssh && cat >>
+    ~/home/$USERNAME/.ssh/authorized_keys && chown $USERNAME:$USERNAME -R //home/$USERNAME//.ssh~
+
+**** Disable root access
+     People are always trying to break into servers and the easiest way to get in is when
+     it's possible to get into the server via a password. That's why disabling password
+     login for the server is a MUST.
+     ~$ sudo vi /etc/ssh/sshd_config~, put ~PasswordAuthentication no~ and ~PermitRootLogin no~,
+     then restart the daemon ~$ sudo service sshd restart~.
+
+*** Domain setup
+    via gandi, namecheap, whatever...
+
+    The *A record* maps a name to one or more IP addresses, when the IP are known and
+    stable. The *CNAME record* maps a name to another name. It should only be used when
+    there are no other records on that name. [[https://support.dnsimple.com/articles/differences-between-a-cname-alias-url/][Difference between A and CNAME records]]
+
+    Add two A-record DNS's of type ~www~ and type ~@~ to point to the IP of the VPS. It might
+    take a while, before the DNS records are settled.
+
+*** Server setup
+**** Resources
+     - [[http://www.fail2ban.org/wiki/index.php/Main_Page][fail2ban]]
+     - [[https://www.charlesproxy.com/][Charles proxy]]
+**** Install Nginx
+     /I have this joke about UDP, but you probably wouldn't get it./
+
+     *Nginx (engine x)* is a HTTP and reverse proxy server, a mail proxy server and a
+     generic TCP/UDP proxy server. A /proxy server/ takes a bunch of inputs and routes it to
+     the internet as single traffic. A /reverse proxy server/ accepts all requests and
+     inputs into something (for example Node).
+
+     ~$ sudo apt install nginx~
+     ~$ sudo service nginx start~
+
+**** Install Nodejs and npm
+     The version on Ubuntu servers might be running on older version of node that you
+     might expect, be mindful of that!
+     ~$ sudo apt install nodejs npm~
+     ~$ sudo ln -s /usr/bin/nodejs /usr/bin/node~
+
+**** Change permissions of the web directory
+     ~$ sudo chown -R $USER:$USER /var/www~
+
+**** Create a basic nodejs server
+     Create an ~index.html~ and serve it [[http://expressjs.com/en/4x/api.html#res.sendFile][via express]]. Run the server ~node index.js~ and it
+     should be available on the given port on your domain.
+
+     Change the routes in the Nginx config to serve the port your server is running on.
+     1. ~$ sudo vi /etc/nginx/sites-available/default~
+     2. Edit config
+     #+BEGIN_SRC
+     location /hello {
+       proxy_pass http://127.0.0.1:3000
+     }
+     #+END_SRC
+     3. ~$ sudo service nginx restart~
+
+**** [[https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally][Resolving EACCES permissions errors when installing packages globally]]
+     The easiest way is to install node and npm via the [[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-nodejs-and-npm][nvm (Node version manager)]], but
+     there are othher options too.
+
+**** Keep the application running
+     1. ~$ npm i forever~
+     2. Create log directory for forever
+        #+BEGIN_SRC sh
+        $ sudo mkdir -p /var/log/forever
+        $ sudo chown -R $USER /var/log/forever
+        #+END_SRC
+     3. Add two scripts to start and stop the server
+        #+BEGIN_SRC json
+        scripts: {
+          "start": "forever start index.js >> /var/log/forever/forever.log",
+          "stop": "forever stop index.js"
+        }
+        #+END_SRC
+
+**** Tailing the logs of the authentication requests for the sever
+     ~$ sudo tail -f /var/log/auth.log~
+
+*** Security
+**** Firewalls
+     monitors and controls incoming and outgoing network traffic. It acts as a barrier
+     between two systems by blocking of ports.
+
+     Use ~nmap~ to scan a server for available ports.
+
+**** iptables
+     is a list off rules to follow for any connection coming into the server.
+
+     #+BEGIN_SRC sh
+     # -A append rules
+     # -p protocol (tcp, icmp)
+     # --dport destinationport
+     # -j jump (DROP, REJECT, ACCEPT, LOG)
+     $ sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+     #+END_SRC
+
+     Using ~ufw~ - uncomplicated firewall: ~$ sudo ufw allow tcp~. Or via the website GUI of
+     the VPS you are using.
+
+**** Automatic upgrades
+     1. Install the package ~sudo apt install unattended-upgrades~.
+     2. Modify /etc/apt/apt.conf.d/20auto-upgrades
+        APT::Periodic::Update-Package-Lists "1";
+        APT::Periodic::Unattended-Upgrade "1";
+     3. Comment out anythins besides security upgrades in
+        /etc/apt/apt.conf.d/50unattended-upgrades
+
+**** fail2ban
+     scans the ~auth.log~ file and based on the rules is going to ban the IP's of the people
+     misusing the server.
+
+     1. Install
+        ~sudo apt install fail2ban~
+     2. Copy the conf to a local configuration file
+        ~sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local~
+     3. Monitor the logs for banned people
+        ~sudo tail -f /var/log/fail2ban.log~
