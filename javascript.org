@@ -639,6 +639,7 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
 **** Resources
      - [[http://www.fail2ban.org/wiki/index.php/Main_Page][fail2ban]]
      - [[https://www.charlesproxy.com/][Charles proxy]]
+
 **** Install Nginx
      /I have this joke about UDP, but you probably wouldn't get it./
 
@@ -671,7 +672,9 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
        proxy_pass http://127.0.0.1:3000
      }
      #+END_SRC
-     3. ~$ sudo service nginx restart~
+     3. Verify nginx
+        ~$ sudo nginx -t~
+     4. ~$ sudo service nginx restart~
 
 **** [[https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally][Resolving EACCES permissions errors when installing packages globally]]
      The easiest way is to install node and npm via the [[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-nodejs-and-npm][nvm (Node version manager)]], but
@@ -716,14 +719,6 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
      Using ~ufw~ - uncomplicated firewall: ~$ sudo ufw allow tcp~. Or via the website GUI of
      the VPS you are using.
 
-**** Automatic upgrades
-     1. Install the package ~sudo apt install unattended-upgrades~.
-     2. Modify /etc/apt/apt.conf.d/20auto-upgrades
-        APT::Periodic::Update-Package-Lists "1";
-        APT::Periodic::Unattended-Upgrade "1";
-     3. Comment out anythins besides security upgrades in
-        /etc/apt/apt.conf.d/50unattended-upgrades
-
 **** fail2ban
      scans the ~auth.log~ file and based on the rules is going to ban the IP's of the people
      misusing the server.
@@ -734,3 +729,149 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
         ~sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local~
      3. Monitor the logs for banned people
         ~sudo tail -f /var/log/fail2ban.log~
+**** HTTPS
+     is a way to ensure the data being send it protected from a man in
+     the middle attack by encrypting. Smart people have created [[https://certbot.eff.org/][certbot]]
+     in order to abstract away [[https://github.com/diafygi/acme-tiny][the cubersome way]] of adding HTTPS.
+
+     The new goodies in the web like bluetooth and service workers are
+     behind HTTPS. The certificates are free via [[https://letsencrypt.org/][Let's Encrypt]], so there
+     is no reason not to have HTTPS.
+
+     1. Edit NGINX config
+        ~server_name domain-name www.domain-name~
+     2. ~$ sudo ufw allow 443~
+     3. ~$ sudo ufw enable~
+     4. Verify
+        ~$ sudo ufw status~
+
+     [[https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx][Configuring certbot]]
+     1. Install
+        #+BEGIN_SRC sh
+        $ sudo apt-get update
+        $ sudo apt-get install software-properties-common
+        $ sudo add-apt-repository universe
+        $ sudo add-apt-repository ppa:certbot/certbot
+        $ sudo apt-get update
+        $ sudo apt-get install python-certbot-nginx
+        #+END_SRC
+     2. Configure
+        ~sudo certbot --nginx~
+     3. Updating certificates
+        ~sudo certbot --renew --dry-run~
+
+**** Automatic upgrades
+     1. Install the package ~sudo apt install unattended-upgrades~.
+     2. Modify /etc/apt/apt.conf.d/20auto-upgrades
+        APT::Periodic::Update-Package-Lists "1";
+        APT::Periodic::Unattended-Upgrade "1";
+     3. Comment out anythins besides security upgrades in
+        /etc/apt/apt.conf.d/50unattended-upgrades
+
+**** Periodic tasks
+     can be achieved via ~cron~ jobs. Check out [[https://crontab.guru/][crontab guru]].
+
+     1. Open the crontab file
+        ~sudo crontab -e~
+     2. Add an entry to update the certificate
+        ~00 12 * * 1 certbot renew~
+
+**** Audits
+     Multiple ways to audit the security of the website via [[https://www.ssllabs.com/ssltest/analyze.html?d=mdm.famoco.com&latest][SSL Labs]],
+     the chrome dev tools,
+
+*** Performance
+**** ~gzip~
+     is a widely adopted compression format. Compression findrepeated patterns and
+     shortens them by some arbitrary code.
+     Compression works especially well with images, not so much with JSON.
+
+     Add gzip compression to the global nginx configuration.
+     1. ~$ /etc/nginx/nginx.conf~
+     2. gzip on;
+
+**** Caching
+     Cache control is hard topic in CS, because you want the users to get the latest and
+     greatest of your website, but also don't want them to reload everything over and over
+     again.
+     A good middle ground is to expire the cache in a couple minutes. Edit the Nginx
+     configuration to add expire headers for certain requests. Add ~expires 5m~.
+
+     Nginx is also capable of using a server cache. Even if the client does a hard refresh
+     the request is still going to use the server cache. Very useful for big, giant
+     requests. Server cache can also be seen as warm cache. The concept of "warming up the
+     cache" is that it's possible that one user caches the request for another user.
+
+     1. Setup the cache config
+        #+BEGIN_SRC nginx
+        proxy_cache_path /tmp/nginx levels=1:2 keys_zone=slowfile_cache:10m inactive=60m;
+        proxy_cache_key "$request_uri";
+        #+END_SRC
+     2. Add location configuration for the server cached path
+        #+BEGIN_SRC nginx
+          location /slowfile {
+                proxy_cache_valid 1m;
+                proxy_ignore_headers Cache-Control;
+                add_header X-Proxy-Cache $upstream_cache_status;
+                proxy_cache slowfile_cache;
+                proxy_pass http://127.0.0.1:3001/slowfile;
+        }
+        #+END_SRC
+
+*** Web sockets
+    is a persistent, long running connection where the server and client can react to each
+    other in "real-time".
+
+    We have to tunnel the websocket through Nginx, so it can do cache control, set
+    headers, etc. In theory you could hit your nodejs server directly, but it's not a best
+    practice and it would be a lot more work.
+
+    #+BEGIN_SRC nginx
+    proxy_set_header Upgrade $http_upgrade
+    proxy_set_header Connection "upgrade"
+    #+END_SRC
+
+*** HTTP/2
+    The primary goals for HTTP/2 are to reduce latency by enabling full request and
+    response multiplexing, minimize protocol overhead via efficient compression of HTTP
+    header fields, and add support for request prioritization and server push.
+
+    As always easy to enable on Nginx.
+
+    Add ~http2~ to ~listen~ keyword for the server. There should be some configuration
+    already, due to certbot.
+    ~listen 443 http2 ssl; # managed by Certbot~
+
+** Databases
+   - relational :: data that related to something else, which needs ~SQL~
+   - non-relational :: document(key)-value store, which doesn't need ~SQL~
+
+   Relational database are faster, when you are running queries on your data. If you want
+   to do that with a non-relational database you'd need to get the data, parse it, then
+   send it. Really think about what kind of data you are storing, before chosing a
+   database.
+
+   Data-in, data-out probably favors a non-relational database. Writing and reading is
+   super fast, since you can just dump the whole dataset in there.
+
+*** Best-practices
+    - Back up database
+    - Use a strong root password
+    - Don't expose the database outside the network
+    - Sanitize your SQL
+
+** Containers
+   is about running an application on a VPS rather than running a complete operating
+   system. Nginx, node, mysql, ... are all applications on a server.
+   The benefit for running the application in it's own container is that is shares
+   resources (only the resources it needs to prevent the server from going haywire when
+   the application starts messing up), no need to install an OS, fast deployment, ...
+
+*** Tools
+    - Docker
+    - Kubernetes
+
+*** Automatic deployments
+    - Ansible
+    - Vagrant
+    - Puppet
