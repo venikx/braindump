@@ -3,6 +3,29 @@
 #+FILETAGS: :linux:cli:
 #+STARTUP: hideblocks
 
+Resources: [[https://www.amazon.com/Unix-Programming-Environment-Prentice-Hall-Software/dp/013937681X][The UNIX Programming Environment]]
+
+* History
+  Resource
+  *UNIX* was an OS developed at [[https://www.youtube.com/watch?v=tc4ROCJYbm0][AT&T Bell Labs (video)]] in the 1960s -> 1980s. GNU/Linux,
+  MacOSX and Android are based of the idea of UNIX. The idea was to separate the printed
+  commands from the actual mainframce (the real processing power). The same principle is
+  still applied to the terminal today (stdin & stdout).
+
+** Kernel (core)
+   The kernel controls access between programs and system resources like: CPU scheduling,
+   I/O to computer hardware, memory, ...
+
+** Shell
+   The shell is a program to run other computer programs (utilities).
+
+** Utilities
+   Any distro comes with a wide range of programs, which each perform a single-purpose
+   existence. The programs should adhere to the UNIX philosophy:
+   1. Do one thing well
+   2. Output of the program is the input of another
+   3. Everything is text <3
+
 * The bash life-cycle
   1. Login to Linux (+ verify identity)
   2. Bash executes initial commands for profile
@@ -210,7 +233,6 @@ $ man 1 cd
      Redirecting output to ~/dev/null~ will dispose the output. That special file is a system device called a
      /bit bucket/, which accepts input and does nothing.
     =I'm sending your comments to /dev/null! :)=
-
 * Printing
   https://void.webconverger.org/docs/config/print/
 
