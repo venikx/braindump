@@ -6,6 +6,44 @@
 Related: [[file:javascript.org][wiki:Javascript]]
 Resources: [[https://emmet.io/][Emmet]]
 
+* General guidelines
+** Discovery by example
+*** Who is the client and what interests them?
+    Me. I want to:
+    1. Promote the "Venikx" brand
+    2. Be able to write down ideas, learnings, experiences, ...
+    3. Let the people find me easily on the active platform: gitlab, github, twitter,
+       twitch, (later: codepen, dribble, behance)
+    4. +Showcase my work+
+
+*** Who is my audience and what interests them?
+    - /Colleagues/ might be interested in articles or find my social media
+    - /Other developers/ might be interested in other stuff I wrote, whenever they come from
+      medium or something else
+    - /Viewers/ might be interested in a streaming schedule, the social media I'm active at
+      and potentially the website could even be used to link to certain articles when
+      someone has questions / FAQ section.
+    - +Potential employers+
+
+*** Content
+    - Articles / stream schedule (most important)
+    - About me
+    - Social media
+    - veniks branding
+    - Contact
+    - Stream/article highlights or something
+
+** Wireframing
+   - Minimal
+   - Easy to throw away
+   - Quick
+
+*** How?
+    - Use pen & paper
+    - Write down what information goes on the page and how much there is
+    - Crazy 8's (fold paper into 8 pieces and start wireframing)
+    - Sleep
+
 * Layout
 ** Grids
    Resources: [[https://www.amazon.com/Making-Breaking-Second-Updated-Expanded/dp/163159284X/ref=sr_1_1?s=books&ie=UTF8&qid=1543935738&sr=1-1&keywords=making+and+breaking+the+grid][Making and breaking the grid]], [[https://gridbyexample.com/examples/][Grid by Example (CSS)]], [[https://labs.jensimmons.com/][Experimental Layout Lab]]
