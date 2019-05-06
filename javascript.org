@@ -875,3 +875,265 @@ Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Li
     - Ansible
     - Vagrant
     - Puppet
+* Performance
+#+BEGIN_QUOTE
+53% of user will leave a mobile site if it takes more than 3 secs to load.
+#+END_QUOTE
+
+** Resources
+- [[http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf][ECMAScript 2018 Language Specification]] (ignore the browser implementations parts)
+- [[https://frontendmasters.com/courses/progressive-web-apps/][Frontend Masters: Progressive Web Applications]]
+
+** Thinking about performance
+A content-centric website needs to think differently about perforance compared to an application
+you spend a lot of time in (ex: Fastmail).
+
+1. Javascript parsing/compilation
+2. Rendering the webpage
+3. Network load
+
+Two general rules when thinking about performance:
+1. Doing less stuff takes less time
+2. If you can do it later. Do it later.
+3. If someone else can do it, let them do it.
+
+** Parsing/compilation
+The majority of the time the browser is busy parsing/compiling Javascript.
+
+The code is stored in the "cloud", downloaded to the user's browser, parsed into an /AST/ (Abtract
+Syntax Tree), interpreter either spits out bytecode or sends it to optimzing compiler (turns into
+highly optimized machine code).
+
+*** Parsing
+A lazily parsed function, which is used immediately after declaration parses defeats the purpose of
+lazy parsing and has a potential performance impact.
+
+Some libraries worth looking at to reduce parsing times: ~optimize-js~, ~optimize-js-plugin~,...
+
+Try to avoid declaring a function inside another function.
+
+*** AST (Abstract Syntax Tree)
+A data structure which represents our code (which is in essence a giant string) so the interpreter
+can turn it into bytecode.
+
+*** Optimization compiler
+Javascript is dynamic, ard and able to do crazy things. The more consistent the code is, the more
+chances of the browser optimzing those parts of the code. Ex: Typescript, Flow, ...
+
+The engine helps you with a couple things:
+- speculative optimizations
+- hidden classes for dynamic lookups
+- function inlining
+
+*Speculative optimizations*
+- Monomorphic :: All I know, all I've seen => extremely fast
+- Polymorphic :: I've seen some, let me optimze for those cases
+- Megamorphic :: I've seen a lot of thing, can't optimze => slow
+
+*Dynmamic Lookup*
+V8 has to go through the spec to check how things are supposed to be created. So once, you've create
+a certain object with certain properties it "remembers" how to create them, when you create a new
+object following the same rules.
+V8 is able to do these checks by keeping a type system behind our backs so it can lookup again when
+it needs similar rules. Reading mememory addresses is dangerous, which is why the engine is
+conservative with the lookups.
+
+Different code paths receive different kind of these "secret types".
+
+*Function inlining*
+V8 sometimes rewrites your code to optimize it. Replacing functions with constants, with literal
+values, etc
+
+*** User Timing
+Figure out where the biggest amount of hurt is. React in development is already taking advantage of
+the API, but you can use it yourself as well.
+
+Example
+#+BEGIN_SRC javascript
+let iterations = 1e7
+
+const a = 1
+const b = 2
+
+const add = (x, y) => x + y
+
+performance.mark('start')
+while (iterations--) {
+  add(a, b)
+}
+performance.mark('end')
+performance.measure('My own user timing', 'start', 'end')
+
+#+END_SRC
+
+** Rendering
+*** How are pages build?
+The client receive an HTML page from the server, gets parsed and turns into the *DOM* (Document Object
+Modal), which is the entry point of the website. The document might request additional styling which
+in turn gets parsed into *CSSOM* (Cascading Style Sheet Object Model).
+
+The structure and the styling representation of the objects go into the *Render Tree* (the stuff that
+gets actually rendered). No hidden element, pseudo-elements are included.
+The browser needs to figure out which rules are supposed to be applied to a certain element, but
+figure out which of (potentially) conflicting rules is going to dominate.
+
+The simpler the css selectors (ex: classes), the better. Don't overcomplicate. Especially in a React
+world, where there is already logic in the UI to render things. You might as well add a class, since
+you might already be doing a calculation in Javascript.
+
+The more conflicting styles an element has, the more time the browser needs figuring out which one
+is going to be applied. Modern browsers are not as affected by recalcuating the styles all the time,
+but it's good to at least have it in the back of your head.
+
+The browser needs to figure out where to put the elements on the page (reflow) and draw the
+pixels on the screen (paint). Those "picture" of the elements are send to GPU, where it figures out
+how to layer them on top of each other and display them on the screen.
+
+*** Layout and Reflow
+are very expensive in terms of performance, since they could be equivalent as to creating a whole
+new page.
+
+- block operation (everything else stops, even Javascript)
+- consumes a lot of CPU
+- very noticeable if it happens often
+
+A reflow of an element causes the reflow of it's parents and children. That means in 90% of the time
+reflowing 1 element, causes a reflow of all elements.
+
+The fact reflowing is so expensive is that usually it's followed by a repaint, which is also an
+expensive operation.
+
+Avoiding reflows by:
+- changing classes in the lowest level of the DOM tree
+- avoid modifying/using inline styles
+- trade smoothness for speed when animating in Javascript
+- batch DOM manipulations (React, Angular, Vue, etc do it for you)
+
+*Layout thrashing* (Forced synchronous layout) occurs when Javascript writes, then reads, from the
+DOM, multiple times causing the document to reflow. One way to discover is to anayze the performance
+and seeing a lot of purple, which indicates recalcuating style and layout.
+
+The act of reading a style/layout forces the browser to find the most up-to-date answer, causing it
+to write, before it's able to give you an answer. Notice that it effectively stops the Javascript
+execution.
+
+Always seperate read from writing to prevent the layout thrashing. The easiest way to accomplish the
+separation is to perform the writing later, using ~requestAnimationFrame~. Or use an external library
+like ~fastdom~.
+
+The main solution is to not keep your state in the DOM, which is what most modern frontend
+frameworks are doing (React, Angular, Vue, etc). If you keep the state in the component, you only
+need to write to DOM thus eliminating chances of doing accidental layout thrashing.
+
+*** Painting
+A change other than opacity or a css transformation will trigger a repaint. Paint as much as you
+need and as little as you can get away with.
+
+The modern Browsers have multiple threads. The /UI thread/ is for Chrome's UI, the /Renderer thread/ is
+where all the fun things happen (Javascript, HTML, CSS,...), the /Compositor thread/ draws bitmaps to
+the screen via the GPU.
+
+*Compositor thread*
+Painting create bitmaps for the elements, puts them onto layers, and prepares shaders for
+animations. The bitmaps are shared (after paiting) with a thread on the GPU to do the actual
+compositing. The GPU process uses OpenGL magic to draw it to the screen.
+
+Anything which can be calculated by the compositor thread in stead of the main thread have potential
+for a performance increase. Such as:
+- drawing the same bitmaps over and over in different places
+- scaling and rotating bitmaps
+- making bitmaps transparent
+- applying filters
+
+Disclaimer: Compositing is kind of a hack, since there is no real spec. You make recommendations,
+but the browser still decides the actual result.
+
+What gets it's own layer?
+- root
+- objects with specific CSS positions
+- objects with css transforms
+- objects with overflow
+
+You can recommend the browser into moving something in it's own layer by adding ~will-change:
+transform~ in the CSS that's for sure going to change. If it's only going to change in rare cases, it
+might be better to add the css property with Javascript, right before you do the animation to move
+it to it's own layer and remove it again after.
+The recommendation only makes sense when it's not in it's own layer already.
+
+** Loading
+*** Bandwidth and Latency
+#+BEGIN_QUOTE
+Network, CPUs, and disks all hate you. On the client, you pay for what you send in ways you can't
+easily see. -- Alex Russel
+#+END_QUOTE
+
+- Bandwidth :: amount of data which fits through the tube per second
+- Latency :: the time it takes to get to the other side
+
+*TCP* is focuses on reliability, which is part of the reason why unreliable internet is much worse
+than slow/no internet.
+- correct order
+- without errors
+- unreliable connection are handled
+- prevents overloading the network
+
+The initial window size is 14kb. If the initial files you sent are under 14kb, you can get
+everything through the first window. Much cool, very wow.
+
+*** Caching
+- Missing cache :: No local copy
+- Stale :: Do a conditional GET, if the browser has a copy but it's old not valid, go get a new one
+- Valid :: Don't ask the server for a new version, use cached version
+
+A problem with caching is that we potentially could have shipped wrong assets, broken html, ... but
+the browser is not going to ask for new bundles, when the cache is still valid.
+One solution is /Content-Addressable Storage/ (effectively appending garbage to the files). The
+webpack javascript bundler does this for you.
+
+*** Service Workers
+sit in between the server and the browser and gives a lot control of what you can do with the
+network.
+
+*** Lazy-loading and pre-loading with React and webpack
+Webpack challenge: Use the ~webpack-bundle-analyzer~ to see the bundle size of your application. Try
+to ship bundles, which or not larger than 300kb (either lazily or not).
+
+- don't import full libraries
+- lazy load components with react-loadable
+- lazy load packages/files with dynamic import syntax
+
+*** HTTP/2
+Some of the best practices of HTTP/1.1 or considered anti-patterns when having HTTP2. In HTTP/2 you
+want to split in multiple file, send images themselves, ...
+Measure before moving everything to HTTP/2, since some users might not be able to use it.
+
+** Tools
+Automation is key. You probably would be able to do it yourself, but relying on a tool to optimize
+is often the better path to walk.
+
+Tooling, like Babel, greatly improve DX, but it has a performance impact on the application.
+Transpilation of cool features result in a big transformation, which needs to be shipped and parsed.
+The cost of transpilation is called the Babel Tax.
+
+Use ~babel-preset-env~ to finegrain control over what features are getting transpiled VS the ones that
+are used natively. If your application only supports browsers, which support a certain set of
+features, those features won't be transpiled anymore (good thing).
+
+Use ~transform-react-remove-prop-types~ to strip away the prop-types from the bundle, since they are
+not used by the production build anyways.
+
+Use ~transform-react-inline-elements~ to tranform static React elements to object, in stead of calling
+~React.createElement~ on them as they don't need to be dynamic.
+
+Use ~transform-react-constant-elements~ to hoist components out of the render tree and improve
+rendering performance for static elements.
+
+Try out ~prepack~ (not ready for production) and see how it optimizes the code for runtime. That
+doesn't necessarily mean the code is going to be smaller (sometimes, but sometimes it's a lot
+larger). It's an interesting idea, which makes you think about optimzing at build time.
+
+** Other topics to look at
+- Server-Side rendering
+- Image performance
+- Loading web fonts
+- Progressive web applications
