@@ -1,12 +1,12 @@
 #+TITLE: Handmade hero
 #+AUTHOR: AnaRobynn
 #+FILETAGS: :c:handmade:
-#+STARTUP: hideblocks
+#+STARTUP: hideblocks, indent
 
 Related: [[file:c.org][wiki:C]]
 
-* Resources
-** [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]                   :math:
+* Resources                                                            :math:
+** [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
 ** [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
 ** [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
 ** [[https://www.amazon.com/Game-Programming-Patterns-Robert-Nystrom/dp/0990582906/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=0990582906&pd_rd_r=4ACE7CH5N5S6J9NP64EF&pd_rd_w=XD1Tt&pd_rd_wg=yc1pf&psc=1&refRID=4ACE7CH5N5S6J9NP64EF][Game programming patterns]]
@@ -15,46 +15,119 @@ Related: [[file:c.org][wiki:C]]
 
 * Day 1
 ** Additonal resources
-   - [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]
-   - [[https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362(v=vs.85).aspx][MSDN - OutputDebugString]]
+- [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]
+- [[https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362(v=vs.85).aspx][MSDN - OutputDebugString]]
 
 ** Entry point
-   In order to make windows understand the entry point of our executable the linker has to
-   properly link our entry point. The ~WinMain~ is standard function which is called by
-   Windows to be able to execute our application. Note that we also have to include
-   ~windows.h~, which is a file to make the program able to interact with Windows itself.
-   Our entry point needs the include and that info can be found in the MSDN documentation
-   requirements section of ~WinMain~.
+The linker, by default, expects a certain function call, which indicates the start of the
+program. If the default function is not present in the program, the linker won be able to link
+the entry point of the program with Windows. It's not recommended to change the default entry
+point in the linker configuration, but it's possible.
 
-   #+BEGIN_SRC c
-     #include <windows.h>
+The ~WinMain~ is the default function, called by Windows as entry point to execute the program.
+The header ~windows.h~ needs to be included when using windows specific keywords like ~HINSTANCE~ and
+~OutputDebugStringA~.
 
-     int CALLBACK WinMain(
-       HINSTANCE hInstance,
-       HINSTANCE hPrevInstance,
-       LPSTR     lpCmdLine,
-       int       nCmdShow)
-     {
-       OutputDebugStringA("Some function\n");
-     };
-   #+END_SRC
+The requirements to properly call ~WinMain~ can be found in the official [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]] docs.
+
+#+NAME: winmain-example.cpp
+#+BEGIN_SRC c
+  #include <windows.h>
+
+  int CALLBACK WinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR     lpCmdLine,
+    int       nCmdShow)
+  {
+    OutputDebugStringA("Some function\n");
+  };
+  #+END_SRC
 
 ** Functions
-   A *forward function declaration* notifies the compiler that function can be called.
-   Nevertheless the build will fail due to a linking error, because it might not have a
-   found the implementation. The *function definition* is the actual implementation of the
-   declared function.
+A /forward function declaration/ notifies the compiler that it's legal to call a function *without* the
+function definition. Nevertheless the build might fail, when the implementation of the function
+could not be found during the linking process.
 
-   Compilation phase marks unresolved function definitions and asks the linker =Hey,
-   whenever you find the function declaration patch it in here=. The linker phase tries to
-   find the correct function definition and might fail if it couldn't find it.
+The /function definition/ is the implementation of the declared function.
 
-** Q&A
-   Microsoft had to support Unicode at some point, while most of the functions handling
-   strings were handling ASCI, which can't handle foreign languages too well. The fix for
-   support Unicode without breaking support was to write a macro, which at compile time
-   decides which function it will use.
+During the *compilation* phase the compilers marks the unresolved function definitions. During the
+*linking* phase, the linker will try to find the correct function defintions.
 
-   ~OutputDebugString~ during a standard compilation will use the Unicode version of the
-   implementation, while Casey just wanted the ASCI version and bypasses the Macro by
-   immediately using ~OutputDebugStringA~.
+* Day 2
+** Resources
+- [[https://wordsandbuttons.online/you_dont_have_to_learn_assembly_to_read_disassembly.html][Reading disassembly]]
+
+** ASCII vs Unicode
+Microsoft had to support Unicode at some point, since ASCII can handle foreign languages. They used
+macros to either use the unicode or ascii implementation, depending on the environment of the
+program.
+
+You can by bypass the compiler by using ~OutputDebugStringA~ instead of the more general
+~OutputDebugString~.
+
+** Disassembly
+/Does the compiler do what we expect it to do?/
+It's essential to rudimentary read assembly code. You learn to debug problems on a lower level and
+understand exactly what the processor is doing, when executing the code.
+
+1. Set a breakpoint
+2. Start in debug mode
+3. Right-click > Go To Disassembly
+
+#+BEGIN_SRC asm
+  ;Test = 255;
+00031718  mov         byte ptr [Test],0FFh
+	;Test = Test + 1;
+0003171C  movzx       eax,byte ptr [Test]
+00031720  add         eax,1
+00031723  mov         byte ptr [Test],al
+#+END_SRC
+
+Putting a value inside a location (variable) does *not* require the processor to do any calculations.
+Adding a certain number to an existing variable requires the processor to move it closer to the
+processor's /registers/ to operate on them.
+
+** Registers
+The ~EAX~ register happens to be 32-bit wide, which is far bigger than a byte (used for a ~char~). The
+lowest two bits of the ~EAX~ can be pulled out via ~al~. That value is ultimately the value, which is
+going to be sent back into the location of the variable (Test).
+
+* Day 3
+** Memory (hardware)
+The processor reading/writing from memory is a non-trivial problem. Accessing memory is slow,
+because of the laws of physics. Imagine a processor with a clock speed of 3,2 GHz, the speed of
+light is \pm 300 000 m/s. The distance a photon is able to travel per second is not far!
+\begin{equation}
+d = \dfrac{ \pm 300000 m/s}{3,2Ghz}
+d = \pm 9 cm
+\end{equation}
+
+Usually the memory is about 9-10 cm away from the CPU. That implies a photon is not able to go the
+memory and back within 1 CPU cycle. The only way to reduce the /latency/ is to shorten the distance
+between the CPU and memory. CPU's nowadays have an in-chip memory cache (very small), which makes
+access to memory insanely fast (if it was stored in those caches).
+
+/Bandwidth/ is a bit easier to improve, since it's bottlenecked by the components and their capability
+of sending as much stuff down the wires per second.
+
+** Pointers
+The ~*~ (star) in front of a variable notifies the compiler to free some memory to store the memory
+location of another variable. The size of that /address/ is the same size as an ~int~.
+The ~&~ (ampersand) in front of a variable is the /address operator/, which gives back the address of a
+variable stored in memory.
+
+The address location is the location of the variable in the virtual memory, *not* the actual physical
+memory (only for modern day systems). The /virtual memory/ is a way to stop different programs
+accessing and modifying the same piece of memory.
+
+The CPU has a table which secretly maps the virtual memory of a certain program to the actual place
+in physical memory.
+
+** Stack
+is a piece of memory which is managed by the compiler/OS. Everytime a function gets invoked a new
+stack is created with an own little environment with variables, etc.
+
+You can actually see a new stack being created closeby a local variable of the previous stack, via
+*Debug > Memory > Memory 1*. A variable created in the new function call, should be relatively close
+in memory to the local variable of the parent function.
