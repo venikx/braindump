@@ -44,7 +44,7 @@ The requirements to properly call ~WinMain~ can be found in the official [[https
     OutputDebugStringA("Some function\n");
     return 0;
   };
-  #+END_SRC
+#+END_SRC
 
 *** Functions
 A /forward function declaration/ notifies the compiler that it's legal to call a function *without* the
@@ -78,12 +78,12 @@ understand exactly what the processor is doing, when executing the code.
 3. Right-click > Go To Disassembly
 
 #+BEGIN_SRC asm
-  ;Test = 255;
-00031718  mov         byte ptr [Test],0FFh
-	;Test = Test + 1;
-0003171C  movzx       eax,byte ptr [Test]
-00031720  add         eax,1
-00031723  mov         byte ptr [Test],al
+    ;Test = 255;
+  00031718  mov         byte ptr [Test],0FFh
+  	;Test = Test + 1;
+  0003171C  movzx       eax,byte ptr [Test]
+  00031720  add         eax,1
+  00031723  mov         byte ptr [Test],al
 #+END_SRC
 
 Putting a value inside a location (variable) does *not* require the processor to do any calculations.
@@ -175,8 +175,8 @@ command which is exposed by default to the command prompt (sad).
 
 #+NAME: shell.bat
 #+BEGIN_SRC bat
-@echo off
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  @echo off
+  call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 #+END_SRC
 
 *** Building the project
@@ -188,12 +188,12 @@ to the original folder.
 
 #+NAME: build.bat
 #+BEGIN_SRC bat
-@echo off
+  @echo off
 
-mkdir build
-pushd build
-cl -Zi ..\code\win32_handmade.cpp user32.lib
-popd
+  mkdir build
+  pushd build
+  cl -Zi ..\code\win32_handmade.cpp user32.lib
+  popd
 #+END_SRC
 
 ** Debugging with Visual Studio

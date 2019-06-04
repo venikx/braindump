@@ -1,32 +1,31 @@
 #+TITLE: Algorithms
 #+AUTHOR: AnaRobynn
 #+FILETAGS: :cryptography:
-#+STARTUP: hideblocks
+#+STARTUP: hideblocks, indent
 
 Related: [[file:algorithms.org][wiki:Algorithms]]
 
-Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key is
-used to scramble the data, but the same key is used to unscramble it.
+Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key is used to
+scramble the data, but the same key is used to unscramble it.
 
 * Type of attacks
 ** Brute-force attack
-  is the easiest to implement and the password is always going to be cracked if there is
-  an infinite amount time and power to crack it.
+is the easiest to implement and the password is always going to be cracked if there is an infinite
+amount time and power to crack it.
 
 ** [[https://en.wikipedia.org/wiki/Dictionary_attack][Dictionary Attack]]
-  an attack which tries all passwords from certain list, which is fast when the password
-  is a commonly used one, but if the password isn't in the list it won't be able to crack
-  it.
+an attack which tries all passwords from certain list, which is fast when the password is a commonly
+used one, but if the password isn't in the list it won't be able to crack it.
 
 * Caesar Cipher
-  is one of the simplest most widely known encryption techniques. Each letter in the
-  plaintext is replaced by a letter with a fixed number of positions down the alphabat.
+is one of the simplest most widely known encryption techniques. Each letter in the plaintext is
+replaced by a letter with a fixed number of positions down the alphabat.
 
-  \begin{equation}
-    c_i = (p_i + \mathbb{N}) \mod 26
-  \end{equation}
+\begin{equation}
+  c_i = (p_i + \mathbb{N}) \mod 26
+\end{equation}
 
-  In order to complete the exercise we should think about two concepts:
-  1. lower case chars have an offset of 97 as their ASCII-value, while capital case chars
-     have an offset of 65
-  2. conversion of the individual characters: ASCII => alphabetical => ASCII
+In order to complete the exercise we should think about two concepts:
+1. lower case chars have an offset of 97 as their ASCII-value, while capital case chars have an
+   offset of 65
+2. conversion of the individual characters: ASCII => alphabetical => ASCII
