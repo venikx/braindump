@@ -6,19 +6,20 @@
 Related: [[file:c.org][wiki:C]]
 
 * Resources                                                            :math:
-** [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
-** [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
-** [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
-** [[https://www.amazon.com/Game-Programming-Patterns-Robert-Nystrom/dp/0990582906/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=0990582906&pd_rd_r=4ACE7CH5N5S6J9NP64EF&pd_rd_w=XD1Tt&pd_rd_wg=yc1pf&psc=1&refRID=4ACE7CH5N5S6J9NP64EF][Game programming patterns]]
-** [[https://www.amazon.com/Engine-Architecture-Second-Jason-Gregory/dp/1466560010/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1466560010&pd_rd_r=A4QT90WTQQXG68RFWVQR&pd_rd_w=svOI8&pd_rd_wg=oFRLJ&psc=1&refRID=A4QT90WTQQXG68RFWVQR][Game Engine Architecture, Second Edition]]
-** [[https://www.amazon.com/Game-Coding-Complete-Fourth-McShaffry/dp/1133776574/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1133776574&pd_rd_r=9TQGA57P3Q0F85MAZXTP&pd_rd_w=i5EIx&pd_rd_wg=8Nb8o&psc=1&refRID=9TQGA57P3Q0F85MAZXTP][Game Coding Complete]]
+- [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
+- [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
+- [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
+- [[https://www.amazon.com/Game-Programming-Patterns-Robert-Nystrom/dp/0990582906/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=0990582906&pd_rd_r=4ACE7CH5N5S6J9NP64EF&pd_rd_w=XD1Tt&pd_rd_wg=yc1pf&psc=1&refRID=4ACE7CH5N5S6J9NP64EF][Game programming patterns]]
+- [[https://www.amazon.com/Engine-Architecture-Second-Jason-Gregory/dp/1466560010/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1466560010&pd_rd_r=A4QT90WTQQXG68RFWVQR&pd_rd_w=svOI8&pd_rd_wg=oFRLJ&psc=1&refRID=A4QT90WTQQXG68RFWVQR][Game Engine Architecture, Second Edition]]
+- [[https://www.amazon.com/Game-Coding-Complete-Fourth-McShaffry/dp/1133776574/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1133776574&pd_rd_r=9TQGA57P3Q0F85MAZXTP&pd_rd_w=i5EIx&pd_rd_wg=8Nb8o&psc=1&refRID=9TQGA57P3Q0F85MAZXTP][Game Coding Complete]]
 
-* Day 1
-** Additonal resources
+* Day 000 - Intro to Windows
+** Day 1
+*** Additonal resources
 - [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]
 - [[https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362(v=vs.85).aspx][MSDN - OutputDebugString]]
 
-** Entry point
+*** Entry point
 The linker, by default, expects a certain function call, which indicates the start of the
 program. If the default function is not present in the program, the linker won be able to link
 the entry point of the program with Windows. It's not recommended to change the default entry
@@ -30,7 +31,7 @@ The header ~windows.h~ needs to be included when using windows specific keywords
 
 The requirements to properly call ~WinMain~ can be found in the official [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]] docs.
 
-#+NAME: winmain-example.cpp
+#+NAME: win32_handmade.cpp
 #+BEGIN_SRC c
   #include <windows.h>
 
@@ -41,10 +42,11 @@ The requirements to properly call ~WinMain~ can be found in the official [[https
     int       nCmdShow)
   {
     OutputDebugStringA("Some function\n");
+    return 0;
   };
   #+END_SRC
 
-** Functions
+*** Functions
 A /forward function declaration/ notifies the compiler that it's legal to call a function *without* the
 function definition. Nevertheless the build might fail, when the implementation of the function
 could not be found during the linking process.
@@ -54,11 +56,11 @@ The /function definition/ is the implementation of the declared function.
 During the *compilation* phase the compilers marks the unresolved function definitions. During the
 *linking* phase, the linker will try to find the correct function defintions.
 
-* Day 2
-** Resources
+** Day 2
+*** Resources
 - [[https://wordsandbuttons.online/you_dont_have_to_learn_assembly_to_read_disassembly.html][Reading disassembly]]
 
-** ASCII vs Unicode
+*** ASCII vs Unicode
 Microsoft had to support Unicode at some point, since ASCII can handle foreign languages. They used
 macros to either use the unicode or ascii implementation, depending on the environment of the
 program.
@@ -66,7 +68,7 @@ program.
 You can by bypass the compiler by using ~OutputDebugStringA~ instead of the more general
 ~OutputDebugString~.
 
-** Disassembly
+*** Disassembly
 /Does the compiler do what we expect it to do?/
 It's essential to rudimentary read assembly code. You learn to debug problems on a lower level and
 understand exactly what the processor is doing, when executing the code.
@@ -88,13 +90,13 @@ Putting a value inside a location (variable) does *not* require the processor to
 Adding a certain number to an existing variable requires the processor to move it closer to the
 processor's /registers/ to operate on them.
 
-** Registers
+*** Registers
 The ~EAX~ register happens to be 32-bit wide, which is far bigger than a byte (used for a ~char~). The
 lowest two bits of the ~EAX~ can be pulled out via ~al~. That value is ultimately the value, which is
 going to be sent back into the location of the variable (Test).
 
-* Day 3
-** Memory (hardware)
+** Day 3
+*** Memory (hardware)
 The processor reading/writing from memory is a non-trivial problem. Accessing memory is slow,
 because of the laws of physics. Imagine a processor with a clock speed of 3,2 GHz, the speed of
 light is \pm 300 000 m/s. The distance a photon is able to travel per second is not far!
@@ -111,7 +113,7 @@ access to memory insanely fast (if it was stored in those caches).
 /Bandwidth/ is a bit easier to improve, since it's bottlenecked by the components and their capability
 of sending as much stuff down the wires per second.
 
-** Pointers
+*** Pointers
 The ~*~ (star) in front of a variable notifies the compiler to free some memory to store the memory
 location of another variable. The size of that /address/ is the same size as an ~int~.
 The ~&~ (ampersand) in front of a variable is the /address operator/, which gives back the address of a
@@ -124,10 +126,93 @@ accessing and modifying the same piece of memory.
 The CPU has a table which secretly maps the virtual memory of a certain program to the actual place
 in physical memory.
 
-** Stack
+*** Stack
 is a piece of memory which is managed by the compiler/OS. Everytime a function gets invoked a new
 stack is created with an own little environment with variables, etc.
 
 You can actually see a new stack being created closeby a local variable of the previous stack, via
 *Debug > Memory > Memory 1*. A variable created in the new function call, should be relatively close
 in memory to the local variable of the parent function.
+
+** Day 4
+*** Endianness
+It's up to the CPU how to interpret/read values which span multiple bytes (such as ~short~, which is
+represented by two bytes). The CPU knows how to add two bytes, to get the representation of a 16
+bits, but there is no hard law on how to store it.
+- little endian :: lowest byte of a value representation first (x86, arm, x64)
+- big endian :: highest byte first (powerpc)
+
+Important to remember the legacy, since some of the software today (like for example the ~.psd~ file
+format is using /big endian/). It's not possible to load big endian data onto a little endian machine,
+unless it passes through some conversion first.
+The modern devices are using /little endian/ so it's generally not something to worry about too much.
+
+*** ~struct~'s
+declare a layout in memory, which holds a multitude of basic types as fields, which allows access to
+it's member via the name of the struct.
+
+The compiler is not constraint to lay each of the fields as compact as possible. A ~char~ might be
+respresented by 4 bytes if the processor if it's optimized to access values on 4 bytes boundaries
+(as it might be slower to access a single byte).
+
+*** Casting
+Be cautious. Casting values to a *higher* memory size results in garbage values being included.
+Casting values to a *lower* memory size will chop the value, if the value is too big to be represented
+by the low memory size.
+
+* Day 001 - Setting up the Windows Build
+** Project automation with ~.bat~ files
+It's a simplified version of more commonly known /make/ systems, such as ~gnu make~, ~ninja~ or ~cmake~. The
+more complex the build tools are, the more time gets invested in them. The /batch/ file will be
+responsible for setting the environment and compiling all the code all the time.
+According to Casey there is no need for compiling the modified files only to speed up the build
+process if you program sanely.
+
+*** Setting the ~env~
+The ~cl~ command-line tool, which controls the Microsoft C/C++ compilers and linker, comes
+pre-installed with Visual Studio 2019 (*check* the /C++ Desktop Environment/). However it's not a
+command which is exposed by default to the command prompt (sad).
+
+#+NAME: shell.bat
+#+BEGIN_SRC bat
+@echo off
+call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+#+END_SRC
+
+*** Building the project
+The ~cl~ command generates files a lot of files (especially with ~-Zi~ debug flags). It's good practice
+to build the generated files into a different folder and not check it /git/.
+
+We *create* the folder, *step into* the folder, *compile* the code (using an extra lib file) and *step out*
+to the original folder.
+
+#+NAME: build.bat
+#+BEGIN_SRC bat
+@echo off
+
+mkdir build
+pushd build
+cl -Zi ..\code\win32_handmade.cpp user32.lib
+popd
+#+END_SRC
+
+** Debugging with Visual Studio
+Loading the /debugger/ of Visual Studio 2019 is achieved via the ~devenv~ command, which should have
+been set to the path already. ~devenv build\win32_hanmade~ loads the previously compiled code.
+
+** CRT, not Windows, calls our code
+The ~WinMain~ function is *not* the first thing Windows calls when executing our piece of code. The
+Windows kernel calls into the CRT (C Runtime Library), which eventually dispatches a call to ~WinMain~
+to start executing *our* code.
+
+** Import Libraries
+Windows needs to bind to our code, find the places where we call Windows functions and patch those
+with pointers to the location in memory where those functions are running at that time.
+
+The functions coming from the /kernel/ don't require an /import library/, since Windows snuck the import
+already for us. ~WinMain~ is part of those kernel functions. All other calls, such as the UI system,
+require you to build the code with those specific ~.dll~'s.
+
+Trying to compile code without these imports results in the /linker/ complaining about code that's
+supposed to be available, but it couldn't find the information how to insert a particular call to
+Windows when patching the code.
