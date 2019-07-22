@@ -1,9 +1,6 @@
 #+TITLE: Algorithms
-#+AUTHOR: AnaRobynn
-#+FILETAGS: :algorithm:
-#+STARTUP: hideblocks, indent
-
-Related: [[file:cryptography.org][wiki:Cryptography]], [[file:c.org][wiki:C]]
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
 * Computational Complexity
 - Big O Notation $O$ :: worst-case scenario (upper bound)

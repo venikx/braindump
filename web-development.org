@@ -1,0 +1,320 @@
+#+TITLE: Web Development
+#+AUTHOR: venikx
+#+STARTUP: content, indent
+
+- [[file:javascript.org][wiki: Javascript]]
+
+* Domains
+are text-based labels for humans to remember the website rather than the IP addresses.
+The *DNS (Domain Name System)* maps the IP addresses to the domain, similar to a
+phonebook.
+
+The DNS is built upon layers of caches. Each computer has their own local cache, while
+your /LAN (Local Area Network)/ has their own cache and most of the popular domains are
+resolved when it searches into the /ISP's (Internet Service Provider)/ cache.
+
+These can caches can be poisened, when a DNS provider gets attacked and known websites
+get redirected to other IP addresses without having an impact on the domain name.
+That's why /HTTPS/ is so important, it requires a handshake.
+
+Use the ~ping~ command to check if certain servers and/or DNS servers are down or not.
+Typically most websites respond to ~ping~, but it's not a requirement.
+
+Use the ~traceroute~ command to illustrate the path and time it takes to reach a certain
+server by jumping from server to server. The information from ~traceroute~ is sent via
+/ICMP Internet Control Message Packet/.
+
+** Setup
+via gandi, namecheap, whatever...
+
+The *A record* maps a name to one or more IP addresses, when the IP are known and stable. The *CNAME
+record* maps a name to another name. It should only be used when there are no other records on that
+name. [[https://support.dnsimple.com/articles/differences-between-a-cname-alias-url/][Difference between A and CNAME records]]
+
+Add two A-record DNS's of type ~www~ and type ~@~ to point to the IP of the VPS. It might take a while,
+before the DNS records are settled.
+
+* Databases
+Relational database are faster, when you are running queries on your data. If you want to do that
+with a non-relational database you'd need to get the data, parse it, then send it. Really think
+about what kind of data you are storing, before chosing a database.
+
+- relational :: data that related to something else, which needs ~SQL~
+- non-relational :: document(key)-value store, which doesn't need ~SQL~
+
+Data-in, data-out probably favors a non-relational database. Writing and reading is super fast,
+since you can just dump the whole dataset in there.
+
+** Best-practices
+- Back up database
+- Use a strong root password
+- Don't expose the database outside the network
+- Sanitize your SQ
+* Nodejs
+A C++ application, which embeds the V8 engine. The V8 engine is the Chrome javascript interpreter.
+Node continuously checks the "event loop" on each tick, searching for new tasks. As soon soon as the
+tasks are done, node exits.
+
+Node is single-threaded, but tasks can be scheduled to be performed later, which avoids blocking IO.
+
+1. Reads the file + dependencies
+2. Executes synchronous tasks
+3. Executes asynchronous tasks as soon as they are ready by looking at the event loop
+
+** Install
+The version on Ubuntu servers might be running on older version of node that you
+might expect, be mindful of that!
+~$ sudo apt install nodejs npm~
+~$ sudo ln -s /usr/bin/nodejs /usr/bin/node~
+
+*** [[https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally][Resolving EACCES permissions errors when installing packages globally]]
+The easiest way is to install node and npm via the [[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-nodejs-and-npm][nvm (Node version manager)]], but there are othher
+options too.
+
+** Express
+- [[https://www.amazon.com/dp/1074005309/?tag=nybblr08-20][Functional Design Patterns for Express.js]]
+
+* Servers
+- Dedicated servers :: own server, where you own the hardware.
+- VPS (Virtual Private Server) :: own a little chunk of a dedicated server own by someone else (AWS,
+     Rackspace, Digital Ocean).
+
+** Login
+~$ ssh root@$SERVER_IP~
+
+Don't confirm sending the identity to a server, when you've already made sure the
+server knowns about your identity. The identity of the server might have been changed,
+which might mean your server has been compromised. Sending yes, adds key to
+~known_hosts~.
+
+Use ~htop~ to check out the process monitor and see which process might be hogging the
+CPU.
+
+** VPS
+1. Update + upgrade the server
+2. Create a new user (you shouldn't be doing things with root)
+#+BEGIN_SRC sh
+$ adduser $USERNAME
+#+END_SRC
+
+3. Add the user to the sudoers group
+Enables the given user to perform actions temporarely as *sudo (superuser do)*, when needed.
+#+BEGIN_SRC sh
+$ usermod -aG sudo $USERNAME
+#+END_SRC
+
+4. Login as ~$USERNAME~
+#+BEGIN_SRC sh
+$ ssh ana@$SERVER_IP
+#+END_SRC
+
+If the server responds with a ~permission denied (publickey)~ message, it's probably
+because the user has no public key stored on the server for you to authenticate with.
+Solution:
+#+BEGIN_SRC sh
+$ ssh-add -L | ssh root@$SERVER_IP "mkdir -p /home/$USERNAME/.ssh && cat >> ~/home/$USERNAME/.ssh/authorized_keys && chown $USERNAME:$USERNAME -R //home/$USERNAME//.ssh
+#+END_SRC
+
+5. Disable root access
+People are always trying to break into servers and the easiest way to get in is when it's possible
+to get into the server via a password. That's why disabling password login for the server is a MUST.
+
+~$ sudo vi /etc/ssh/sshd_config~, put ~PasswordAuthentication no~ and ~PermitRootLogin no~, then restart
+the daemon ~$ sudo service sshd restart~.
+
+** Setup
+- [[http://www.fail2ban.org/wiki/index.php/Main_Page][fail2ban]]
+- [[https://www.charlesproxy.com/][Charles proxy]]
+
+*** Install Nginx
+/I have this joke about UDP, but you probably wouldn't get it./
+
+*Nginx (engine x)* is a HTTP and reverse proxy server, a mail proxy server and a
+generic TCP/UDP proxy server. A /proxy server/ takes a bunch of inputs and routes it to
+the internet as single traffic. A /reverse proxy server/ accepts all requests and
+inputs into something (for example Node).
+
+~$ sudo apt install nginx~
+~$ sudo service nginx start~
+
+*** Install the dependencies for the language/framework for the server
+- LINK TO NODEJS
+
+*** Change permissions of the web directory
+~$ sudo chown -R $USER:$USER /var/www~
+
+*** Routing Nginx
+Change the routes in the Nginx config to serve the port your server is running on.
+1. ~$ sudo vi /etc/nginx/sites-available/default~
+2. Edit config
+   #+BEGIN_SRC
+     location /hello {
+       proxy_pass http://127.0.0.1:3000
+     }
+   #+END_SRC
+
+3. Verify nginx ~$ sudo nginx -t~
+4. Restart ~$ sudo service nginx restart~
+
+*** Keep the application running
+1. ~$ npm i forever~
+2. Create log directory for forever
+   #+BEGIN_SRC sh
+   $ sudo mkdir -p /var/log/forever
+   $ sudo chown -R $USER /var/log/forever
+   #+END_SRC
+
+3. Add two scripts to start and stop the server
+   #+BEGIN_SRC json
+   scripts: {
+     "start": "forever start index.js >> /var/log/forever/forever.log",
+     "stop": "forever stop index.js"
+   }
+   #+END_SRC
+
+*** Watching logs of the authentication requests
+~$ sudo tail -f /var/log/auth.log~
+
+** Security
+*** Firewalls
+monitors and controls incoming and outgoing network traffic. It acts as a barrier between two
+systems by blocking of ports.
+
+Use ~nmap~ to scan a server for available ports.
+
+*** iptables
+is a list off rules to follow for any connection coming into the server.
+#+BEGIN_SRC sh
+     # -A append rules
+     # -p protocol (tcp, icmp)
+     # --dport destinationport
+     # -j jump (DROP, REJECT, ACCEPT, LOG)
+     $ sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#+END_SRC
+
+Using ~ufw~ - uncomplicated firewall: ~$ sudo ufw allow tcp~. Or via the website GUI of
+the VPS you are using.
+
+*** fail2ban
+scans the ~auth.log~ file and based on the rules is going to ban the IP's of the people misusing the
+server.
+
+1. Install
+   ~sudo apt install fail2ban~
+2. Copy the conf to a local configuration file
+   ~sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local~
+3. Monitor the logs for banned people
+   ~sudo tail -f /var/log/fail2ban.log~
+
+*** HTTPS
+is a way to ensure the data being send it protected from a man in
+the middle attack by encrypting. Smart people have created [[https://certbot.eff.org/][certbot]]
+in order to abstract away [[https://github.com/diafygi/acme-tiny][the cubersome way]] of adding HTTPS.
+
+The new goodies in the web like bluetooth and service workers are
+behind HTTPS. The certificates are free via [[https://letsencrypt.org/][Let's Encrypt]], so there
+is no reason not to have HTTPS.
+
+1. Edit NGINX config
+   ~server_name domain-name www.domain-name~
+2. ~$ sudo ufw allow 443~
+3. ~$ sudo ufw enable~
+4. Verify
+   ~$ sudo ufw status~
+
+**** [[https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx][Configuring certbot]]
+1. Install
+   #+BEGIN_SRC sh
+   $ sudo apt-get update
+   $ sudo apt-get install software-properties-common
+   $ sudo add-apt-repository universe
+   $ sudo add-apt-repository ppa:certbot/certbot
+   $ sudo apt-get update
+   $ sudo apt-get install python-certbot-nginx
+   #+END_SRC
+
+2. Configure
+   ~sudo certbot --nginx~
+3. Updating certificates
+   ~sudo certbot --renew --dry-run~
+
+*** HTTP/2
+The primary goals for HTTP/2 are to reduce latency by enabling full request and
+response multiplexing, minimize protocol overhead via efficient compression of HTTP
+header fields, and add support for request prioritization and server push.
+
+As always easy to enable on Nginx.
+
+Add ~http2~ to ~listen~ keyword for the server. There should be some configuration
+already, due to certbot. ~listen 443 http2 ssl; # managed by Certbot~
+
+*** Automatic upgrades
+1. Install the package ~sudo apt install unattended-upgrades~.
+2. Modify /etc/apt/apt.conf.d/20auto-upgrades
+   APT::Periodic::Update-Package-Lists "1";
+   APT::Periodic::Unattended-Upgrade "1";
+3. Comment out anythins besides security upgrades in
+   /etc/apt/apt.conf.d/50unattended-upgrades
+
+*** Periodic tasks
+can be achieved via ~cron~ jobs. Check out [[https://crontab.guru/][crontab guru]].
+
+1. Open the crontab file
+   ~sudo crontab -e~
+2. Add an entry to update the certificate
+   ~00 12 * * 1 certbot renew~
+
+*** Audits
+Multiple ways to audit the security of the website via [[https://www.ssllabs.com/ssltest/analyze.html?d=mdm.famoco.com&latest][SSL Labs]], the chrome dev tools.
+
+** Performance
+*** ~gzip~
+is a widely adopted compression format. Compression findrepeated patterns and
+shortens them by some arbitrary code.
+Compression works especially well with images, not so much with JSON.
+
+Add gzip compression to the global nginx configuration.
+1. ~$ /etc/nginx/nginx.conf~
+2. gzip on;
+
+*** Caching
+Cache control is hard topic in CS, because you want the users to get the latest and
+greatest of your website, but also don't want them to reload everything over and over
+again.
+A good middle ground is to expire the cache in a couple minutes. Edit the Nginx
+configuration to add expire headers for certain requests. Add ~expires 5m~.
+
+Nginx is also capable of using a server cache. Even if the client does a hard refresh
+the request is still going to use the server cache. Very useful for big, giant
+requests. Server cache can also be seen as warm cache. The concept of "warming up the
+cache" is that it's possible that one user caches the request for another user.
+
+1. Setup the cache config
+   #+BEGIN_SRC nginx
+   proxy_cache_path /tmp/nginx levels=1:2 keys_zone=slowfile_cache:10m inactive=60m;
+   proxy_cache_key "$request_uri";
+   #+END_SRC
+
+2. Add location configuration for the server cached path
+   #+BEGIN_SRC nginx
+   location /slowfile {
+         proxy_cache_valid 1m;
+         proxy_ignore_headers Cache-Control;
+         add_header X-Proxy-Cache $upstream_cache_status;
+         proxy_cache slowfile_cache;
+         proxy_pass http://127.0.0.1:3001/slowfile;
+   }
+   #+END_SRC
+
+* Web sockets
+is a persistent, long running connection where the server and client can react to each other in
+"real-time".
+
+We have to tunnel the websocket through Nginx, so it can do cache control, set headers, etc. In
+theory you could hit your nodejs server directly, but it's not a best practice and it would be a lot
+more work.
+
+#+BEGIN_SRC nginx
+proxy_set_header Upgrade $http_upgrade
+proxy_set_header Connection "upgrade"
+#+END_SRC

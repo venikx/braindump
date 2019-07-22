@@ -1,11 +1,7 @@
-#+TITLE: Handmade hero
-#+AUTHOR: AnaRobynn
-#+FILETAGS: :c:handmade:
-#+STARTUP: hideblocks, indent
+#+TITLE: Handmade Hero
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
-Related: [[file:c.org][wiki:C]]
-
-* Resources                                                            :math:
 - [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
 - [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
 - [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]

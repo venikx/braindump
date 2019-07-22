@@ -1,14 +1,12 @@
-#+TITLE: Algorithms
-#+AUTHOR: AnaRobynn
-#+FILETAGS: :cryptography:
-#+STARTUP: hideblocks, indent
+#+TITLE: Cryptography
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
-Related: [[file:algorithms.org][wiki:Algorithms]]
-
+* Qué?
 Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key is used to
 scramble the data, but the same key is used to unscramble it.
 
-* Type of attacks
+* Types of attack
 ** Brute-force attack
 is the easiest to implement and the password is always going to be cracked if there is an infinite
 amount time and power to crack it.

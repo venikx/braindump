@@ -1,9 +1,9 @@
 #+TITLE: The C Programming Language
-#+AUTHOR: AnaRobynn
-#+FILETAGS: :c:
-#+STARTUP: hideblocks, indent
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
-Related: [[file:algorithms.org][wiki:Algorithms]], [[file:cryptography.org][wiki:Cryptography]], [[file:handmade-hero.org][wiki:Handmade Hero]]
+- [[https://github.com/fffaraz/awesome-cpp][awesome-cpp (github)]]
+- [[https://www.youtube.com/watch?v=443UNeGrFoM][How Eskil Steenberg programs C]]
 
 * Entry point ~main()~
 is a mandatory function in C programs as it defines the entry point of the program.

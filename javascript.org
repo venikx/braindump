@@ -1,892 +1,21 @@
 #+TITLE: Javascript
-#+AUTHOR: AnaRobynn
-#+FILETAGS: :javascript:
-#+STARTUP: hideblocks
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
-Related: [[file:html.org][wiki:Browser, DOM and CSS]], [[file:linux.org][wiki:Linux]]
+- [[file:web-development.org][wiki: Web Development]]
 
-* Functional Programming
-  The soul of fp is the separation of concerns and recognition of common
-  patterns. Learning fp is daunting, but don't give up.
-
-*** Resources
-    - [[https://drboolean.gitbooks.io/mostly-adequate-guide/content/][Professor Frisby's Mostly Adequate Guide to Functional Programming]]
-
-*** Symptoms of code that fp could solve
-    - Custom names
-    - Looping patterns
-    - Glue Code
-    - Side effects
-
-****
-
-* Testing
-** [[https://github.com/substack/tape][Testing with Tape]]
-
-* Nodejs
-** Background
-*** History
-   Lots of drama, people didn't like it. People didn't care for JSON, until social media
-   became big. Node and Mongo solved each other's problems. Google invited Ryan Dahl to
-   speak at their conference.
-   Node became very popular due to interesting npm packages like express.js, mongoose,
-   angularjs, ... but that's also the pitfall of Node (or actually npm). People found node
-   interesting not for the async, event driven nature, but for the massive amount of
-   packages.
-
-*** What is it?
-   A C++ application, which embeds the V8 engine. The V8 engine is the Chrome javascript
-   interpreter. Node continuously checks the "event loop" on each tick, searching for new
-   tasks. As soon soon as the tasks are done, node exits.
-
-   Node is single-threaded, but tasks can be scheduled to be performed later, which avoids
-   blocking IO.
-
-   1. Reads the file + dependencies
-   2. Executes synchronous tasks
-   3. Executes asynchronous tasks as soon as they are ready by looking at the event loop
-
-*** Conventions
-   - ENV variables
-   - test/ directory
-   - readme in root directory
-   - code comments
-     - @Param
-     - @TODO
-   - airbnb linting
-   - error handling
-     #+BEGIN_SRC javascript
-       jedi(function(err, data){
-         // check error
-         // do some stuff
-       })
-     #+END_SRC
-
-* Reactive Programming (RxJS)
-** Resources
-  - [[https://github.com/btroncone/learn-rxjs/tree/master/operators][RxJS Operators by Example]]
-  - [[http://reactivex.io/rxjs/manual/overview.html#operators][RxJS Docs]]
-  - [[http://reactivex.io/rxjs/manual/overview.html][Introduction to RxJS]]
-
-** Asynchronous Programming: The End of The Loop
-*** Reduce
-   1. Flattening arrays
-      #+BEGIN_SRC javascript
-        Array.prototype.concatAll = function() {
-            var results = []
-
-            this.forEach(function(subArray) {
-                subArray.forEach(function(item) {
-                    results.push(item)
-                });
-            });
-
-            return results
-        };
-      #+END_SRC
-
-   2. Composing functions
-      #+BEGIN_SRC javascript
-        const increment = input => input++
-        const decrement = input => input--
-
-        let initial_value = 1
-
-        const pipeline = [
-            increment,
-            increment,
-            increment,
-            decrement
-        ]
-
-        const final_value = pipeline.reduce((acc, fn) => fn(acc), initial_value)
-        const reversed = pipeline.reduceRight((acc, fn) => fn(acc), initial_value)
-      #+END_SRC
-
-*** Map
-   The trick with [[https://egghead.io/lessons/javascript-advanced-flattening][Advanced Flattening]] deeply nested structures is to keep
-   nesting expression untill the closures provide enough variables to create the
-   flattened result.
-   NOTE: Returning an array inside map creates a multi-dimensional array and it
-   should be flattened n-1 times.
-   #+BEGIN_SRC javascript
-     const exchanges = [
-         {
-             name: "NYSE",
-             stocks: [
-                 {
-                     symbol: "XFX",
-                     closes: [
-                         { date: new Date(2014,11,24), price: 240.10 },
-                         { date: new Date(2014,11,23), price: 232.08 },
-                         { date: new Date(2014,11,22), price: 241.09 }
-                     ]
-                 },
-                 {
-                     symbol: "TNZ",
-                     closes: [
-                         { date: new Date(2014,11,24), price: 521.24 },
-                         { date: new Date(2014,11,23), price: 511.00 },
-                         { date: new Date(2014,11,22), price: 519.29 }
-                     ]
-                 },
-             ]
-         },
-         {
-             name: "TSX",
-             stocks: [
-                 {
-                     symbol: "JXJ",
-                     closes: [
-                         { date: new Date(2014,11,24), price: 423.22 },
-                         { date: new Date(2014,11,23), price: 424.84 },
-                         { date: new Date(2014,11,22), price: 419.72 }
-                     ]
-                 },
-                 {
-                     symbol: "NYN",
-                     closes: [
-                         { date: new Date(2014,11,24), price: 16.82 },
-                         { date: new Date(2014,11,23), price: 16.12 },
-                         { date: new Date(2014,11,22), price: 15.77 }
-                     ]
-                 },
-             ]
-         }
-     ]
-
-     const christmasEveCloses =
-         exchanges
-         .map(exhange => exchange.stocks
-              .map(stock => stock.closes
-                   .filter(close => {
-                       return close.date.getMonth() === 12 &&
-                           close.date.getDate() === 24;
-                   }).map(close => ({
-                       symbol: stock.symbol,
-                       price: close.price
-                   }))
-                  ).concatAll()
-             ).concatAll()
-   #+END_SRC
-
-** The RxJS way of life
-  It's a sign the logic is not implemented in a RxJS way if manual
-  unsubscription is used a lot.
-
-  Completed observables, can't be restarted, re-subscription is needed ~repeat()~.
-
-  Don't create hot observables, when sharing the execution doesn't make any
-  sense. For example, using ~Math.random()~
-  #+BEGIN_SRC javascript
-    const clock$ = Rx.Observable.interval(500).share().take(6); // shares the creation of the interval
-    const randomNum$ = clock$
-      .map(i => Math.random() * 100).share(); // shares the creation for the random generated numbers
-                                              // if not, results are different, because of the non-shared execution
-  #+END_SRC
-
-** Beyond the Basics: Creating Observables from scratch
-*** Creating observables
-  Observables are a lot like functions with multiple return values. Don't
-  confuse observables with event emitters.
-
-  #+BEGIN_SRC javascript
-    // functions
-    const foo = () => 1;
-    foo.call()
-
-    // observables
-    const numberGen$ = Rx.Observable.create(observer => {
-        try {
-            observer.next(1)
-            observer.next(2)
-            observer.complete()
-        } catch (err) {
-            observer.error(new Error("Not a number"))
-        }
-    return; //dispose here
-    })
-
-    numberGen$.subscribe()
-  #+END_SRC
-
-*** Observer
-   is the consumer of the values delivered by an Observable.
-   An observer is an object with three callbacks (next, error and complete)
-   which are also the types of notifications delivered by the Observable.
-
-*** Subscription
-   is an object, which represents a disposable resource, usually the execution
-   of an observable. Usually only has ~unsubscribe()~ as a method. Calling the
-   unsubscribe method should dispose the observable and release all resources.
-
-*** Subject
-   is both observer and observable.
-   1. Subscribing to a Subject doesn't invoke a new execution, but simply
-      registers the observer is a list of observers.
-   2. Adding the Subject as an observer to an Observable has the benefit of
-      multicasting the observed values to the observers of the Subject.
-
-   A subject NEVER triggers execution when it has been completed.
-   In order to restart a multicasted observable, after an observer re-connects,
-   a new instance of the Subject has to be used before execution starts again. A
-   common pattern for this is using a /subjectFactor/
-
-   #+BEGIN_SRC javascript
-     function subjectFactory() {
-         return new Rx.BehaviorSubject(false);
-     }
-
-     const foo = Rx.Observable.interval(1000).take(5)
-           .multicast(subjectFactory)
-           .refCount()
-           .scan(currState => !currState)
-
-     foo.subscribe(x => console.log(x))
-     setTimeout(() => foo.unsubscribe(), 5000)
-     // this will re-execute the shared observable
-     setTimeout(() => foo.subscribe(), 10000)
-   #+END_SRC
-
-*** Operators
-   when called, do not change the existing Observable instance, but return a new
-   Observable, whose subscription logic is based on the first Observable.
-   => pure operation
-
-   As soon as we invoke the observable, by subscribing to it, each operator will
-   invoke it's subscription to the source of the previous observable and so on.
-
-   #+BEGIN_SRC javascript
-     const foo = Rx.Observable.of(1)
-
-     Rx.Observable.prototype.add = function (amount) {
-         const source = this
-         const result = Rx.Observable.create(function subscribe(observer) {
-             source.subscribe(
-                 x => { observer.next(x + amount) },
-                 err => { observer.error(err) },
-                 () => { observer.complete() }
-             )
-             // the subscription subscribes to the source observable, while modifying the data
-             // without mutating the source
-         })
-         return result
-     }
-     foo.add(4).subscribe(console.log) // 5
-   #+END_SRC
-
-** Multicasting Operators
-  different Subjects is very common, which is why RxJS provides us some
-  operators, which automatically disconnect the multicasted observable when no-one
-  is listening (to prevent memory leaks).
-
-  #+BEGIN_SRC javascript
-    var foo = Rx.Observable.interval(1000)
-    // .publish() = .multicast(new Rx.Subject())
-    // .publishReplay() = .multicast(new Rx.ReplaySubject())
-    // .publishLast() = .multicast(new Rx.AsyncSubject())
-        .publishBehavior(false) // = .multicast(new Rx.BehaviorSubject(false))
-        .refCount()
-    // .share() = .multicast(new Rx.Subject()).refCount()
-
-    foo
-        .scan(currState => !currState)
-        .subscribe(x => console.log(x))
-
-    setTimeout(() => foo.unsubscribe(), 5000)
-  #+END_SRC
-
-** Effectively use higher-order observables
-*** ~switchMap()~
-   is an epic tool with many built-in features:
-   - composing via closures (selector function)
-   - network cancellation (due to the fact in unsubscribes, when receiving
-     another observable
-   - promise convertion
-   #+BEGIN_SRC javascript
-     const clickObservable = Rx.Observable
-           .fromEvent(document, 'click')
-
-     function performRequest() {
-         return fetch('https://jsonplaceholder.typicode.com/users/1')
-             .then(res => res.json())
-     }
-
-     const responseObservable = clickObservable
-           .switchMap(click => performRequest(), (click, res) => res.email)
-   #+END_SRC
-
-*** ~groupBy()~
-   branches out out multiple higher-order observables by evaluating each item
-   and assigning a key to each higher-order observable.
-   Super powerful tool when dealing with a large, dynamic dataset.
-   #+BEGIN_SRC javascript
-     const busObservable = Rx.Observable.of(
-         {code: 'en-us', value: '-TEST-'},
-         {code: 'en-us', value: 'hello'},
-         {code: 'es', value: '-TEST-'},
-         {code: 'en-us', value: 'amazing'},
-         {code: 'pt-br', value: '-TEST-'},
-         {code: 'pt-br', value: 'olá'},
-         {code: 'es', value: 'hola'},
-         {code: 'es', value: 'mundo'},
-         {code: 'en-us', value: 'world'},
-         {code: 'pt-br', value: 'mundo'},
-         {code: 'es', value: 'asombroso'},
-         {code: 'pt-br', value: 'maravilhoso'}
-     ).concatMap(x => Rx.Observable.of(x).delay(500));
-
-     const all = busObservable
-           .groupBy(obj => obj.code) // creates multiple observables differentiated by the code
-           .mergeMap(codeObs => codeObs // acces to codeObs
-                     .skip(1)  // each inner observable won't emit the first value
-                     .map(obj => obj.value) // gets mapped to the value
-                    ); // flatten
-   #+END_SRC
-
-* Angular
-** Dependency Injection
-*** Why?
-   A __data service__ abstracts away the data, which implies the component
-   only cares about the data provided by the service whatever the implementation
-   is (hardcoded, during tests, network requests,...).
-
-*** How?
-   The provide is a `token` (used in constructors to ask for DI) and the
-   implementation of the class is defined with `useClass`, which is extremely valuable
-   when testing components.
-   1. Type
-   #+BEGIN_SRC javascript
-     // component declaration
-     @Component({
-         moduleId: module.id,
-         selector: 'list-component',
-         template: ` ... `,
-         providers: [
-             { provide: MyService, useClass: MyService }
-         ]
-     })
-
-     // add in constructor
-     constructor(private service: MyService){}
-   #+END_SRC
-   1. Object
-   #+BEGIN_SRC javascript
-     // component declaration
-     @Component({
-         moduleId: module.id,
-         selector: 'list-component',
-         template: ` ... `,
-         providers: [
-             { provide: 'mimimi', useClass: MyService }
-         ]
-     })
-
-     // inject in the constructor
-     constructor(@Inject('mimimi') private service){}
-   #+END_SRC
-
-*** Factory Providers?
-  Abstract away certain dependencies (some sort of IoC, inversion of control)
-
-  Example:
-  Injecting a service without being dependent on Angular's DI
-  #+BEGIN_SRC javascript
-        // logger
-        export class LogDebugger {
-            constructor(private enabled: boolean) {}
-
-            debug(message) {
-                if (this.enabled) {
-                    console.log(`DEBUG: ${message}`);
-                }
-            }
-        }
-
-        // providers
-        providers: [
-            DataService,
-            ConsoleService,
-            {
-                provide: LogDebugger,
-                useFactory: (consoleService, secondService) => {
-                    return new LogDebugger(consoleService, true);
-                },
-                // order matters here
-                deps: [ConsoleService, SecondService]
-            }
-        ]
-  #+END_SRC
-
-*** ~@Injectable()~
-   is needed, because Typescript only emits metadata when there is at least one
-   decorator on a class. Angular needs those type annotations when transpiled to
-   ES5 for Dependency Injection to work.
-
-** Components
-*** Pipes
-**** How?
-    Under the hood a poor man's pipe can be implemented with a reduce.
-    #+BEGIN_SRC javascript
-      const person  = {
-          name: 'ana robynn'
-      };
-
-      const filters = {
-          'deslugify': x => x.replace('-', ' '),
-          'uppercase': x => x.toUpperCase()
-      };
-
-      // => becomes ANA ROBYNN
-      const input    = 'name | deslugify | uppercase';
-      // [name, deslugify, uppercase]
-      const sections = input.split('|').map(x => x.trim());
-      const ref      = person[sections[0]];
-      const output   = sections
-          .slice(1)
-          .reduce((prev, next) => {
-              if (filters[next]) {
-                  return filters[next].call(null, prev);
-              }
-              return prev;
-          }, ref);
-    #+END_SRC
-
-**** Async Pipe
-    Each *async pipe* subscribes to an observable and will each have there own
-    execution flow (risk of multiple network requests).
-
-    => ReplaySubject
-    Acts as an observer for the pipe and subscribes to the one network call.
-   #+BEGIN_SRC javascript
-     @Component({
-         template: `
-     <h2>{{(contact$ | async).name}}</h2>
-     <img [src]="(contact$ | async).image">
-     `
-     })
-     export class ContactComponent {
-         contact$ = new BehaviorSubject({name: 'Loading...', image: ''});
-         constructor() {
-             const api = 'https://starwars-json-server-ewtdxbyfdz.now.sh/';
-             route.params
-                 .map((p: any) => p.id)
-                 .switchMap(id => http.get(api + 'people/' + id)
-                     .map(res => res.json())
-                     .map(contact =>
-                          Object.assign({}, contact, {image: api + contact.image}))
-                 )
-             // all incoming values are passed on to all it's subscribers
-                 .subscribe(this.contact$);
-         }
-     }
-   #+END_SRC
-
-* React
-** Advanced Patterns
-   Dispatching a change handler to the outside, when some component manages it's state
-   internally. That's possible via React's ~setState(updater, [callback])~.
-
-   #+BEGIN_SRC javascript
-   setState(currentState => ({ text: 'lol' }), () => this.props.onChange(this.state.text))
-   #+END_SRC
-
-*** Compound Components
-   *Compound components* have a similar philosophy as the ~<select>~ and ~<option>~ elements in
-   HTML. Worthless alone, powerfull together, since the children can modify the state of
-   the parent. Hiding away the abstraction.
-
-   The simplest implementation includes ~React.cloneElement()~ and ~React.Children.map()~.
-   However it's not flexible (the div breaks the cloning.
-
-   Context provides (pun) a way to provide the props to the compound components, without
-   cloning elements. A value change of the Provider triggers a render, so make sure the
-   value doesn't get recreated every time.
-
-   #+BEGIN_SRC javascript
-   const Yo = () => (
-     <Toggle onToggle={onToggle}>
-       <Toggle.On>The button is on</Toggle.On>
-       <Toggle.Off>The button is off</Toggle.Off>
-       <div>
-         <Toggle.Button />
-       </div>
-     </Toggle>
-   )
-   #+END_SRC
-
-*** FaCC (Function as Child Components)
-    By themselves not so powerfull. However, managing a component's state without
-    implementing the rendering logic is insane.
-
-    The Context API is good and simple example.
-    #+BEGIN_SRC javascript
-    <Consumer>
-      {value = /* render something */}
-    </Consumer>
-    #+END_SRC
-
-    Passing in custom event handler are tricky, because the internal state might respond
-    to the same handler. The *prop getters* is a function exposed via the children to merge
-    properties the user passes in with the internal ones.
-
-    #+BEGIN_SRC javascript
-    this.props.children({ getProps: ({ onClick, ..props}) => ({
-      'aria-expanded: true,
-      onClick: (...args) => {
-        this.someInternalFunction();
-        onClick(...args);
-      }
-    })})
-    #+END_SRC
-
-*** State management
-    The *state reducer* (not redux) allows the library user to manipulate the internal state
-    of the library component. A common case is preventing the internal state from
-    updating, due to state changes higher up in the component tree.
-
-    #+BEGIN_SRC javascript
-    // user.js
-    internalSetState(changes, callback) {
-      this.setState(state => {
-        const changesObject =
-          typeof changes === 'function' ? changes(state) : changes
-        const { type, ...reducedChanges } = // strip off type, because it's not state
-          this.props.stateReducer(state, changesObject) || {}
-        return Object.keys(reducedChanges).length
-        ? reducedChanges
-        : null // avoid unneeded rerenders
-    }, callback)
-  }
-    #+END_SRC
-
-* Full-stack
-** Domains
-   are text-based labels for humans to remember the website rather than the IP addresses.
-   The *DNS (Domain Name System)* maps the IP addresses to the domain, similar to a
-   phonebook.
-
-   The DNS is built upon layers of caches. Each computer has their own local cache, while
-   your /LAN (Local Area Network)/ has their own cache and most of the popular domains are
-   resolved when it searches into the /ISP's (Internet Service Provider)/ cache.
-
-   These can caches can be poisened, when a DNS provider gets attacked and known websites
-   get redirected to other IP addresses without having an impact on the domain name.
-   That's why /HTTPS/ is so important, it requires a handshake.
-
-   Use the ~ping~ command to check if certain servers and/or DNS servers are down or not.
-   Typically most websites respond to ~ping~, but it's not a requirement.
-
-   Use the ~traceroute~ command to illustrate the path and time it takes to reach a certain
-   server by jumping from server to server. The information from ~traceroute~ is sent via
-   /ICMP Internet Control Message Packet/.
-
-** Servers
-   - Dedicated servers :: own server, where you own the hardware.
-   - VPS (Virtual Private Server) :: own a little chunk of a dedicated server own by
-        someone else (AWS, Rackspace, Digital Ocean).
-
-*** Login
-    ~$ ssh root@$SERVER_IP~
-
-    Don't confirm sending the identity to a server, when you've already made sure the
-    server knowns about your identity. The identity of the server might have been changed,
-    which might mean your server has been compromised. Sending yes, adds key to
-    ~known_hosts~.
-
-    Use ~htop~ to check out the process monitor and see which process might be hogging the
-    CPU.
-
-*** VPS Setup
-**** Update + upgrade the server
-**** Create a new user (you shouldn't be doing things with root)
-     ~$ adduser $USERNAME~
-
-**** Add the user to the sudoers group
-     ~$ usermod -aG sudo $USERNAME~
-     Enables the given user to perform actions temporarely as *sudo (superuser do)*, when
-     needed.
-
-     ~$ su $USERNAME~ to switch user.
-
-**** Login as $USERNAME
-    ~$ ssh ana@$SERVER_IP~
-
-    If the server responds with a ~permission denied (publickey)~ message, it's probably
-    because the user has no public key stored on the server for you to authenticate with.
-    Add it via:
-    ~$ ssh-add -L | ssh root@$SERVER_IP "mkdir -p /home/$USERNAME/.ssh && cat >>
-    ~/home/$USERNAME/.ssh/authorized_keys && chown $USERNAME:$USERNAME -R //home/$USERNAME//.ssh~
-
-**** Disable root access
-     People are always trying to break into servers and the easiest way to get in is when
-     it's possible to get into the server via a password. That's why disabling password
-     login for the server is a MUST.
-     ~$ sudo vi /etc/ssh/sshd_config~, put ~PasswordAuthentication no~ and ~PermitRootLogin no~,
-     then restart the daemon ~$ sudo service sshd restart~.
-
-*** Domain setup
-    via gandi, namecheap, whatever...
-
-    The *A record* maps a name to one or more IP addresses, when the IP are known and
-    stable. The *CNAME record* maps a name to another name. It should only be used when
-    there are no other records on that name. [[https://support.dnsimple.com/articles/differences-between-a-cname-alias-url/][Difference between A and CNAME records]]
-
-    Add two A-record DNS's of type ~www~ and type ~@~ to point to the IP of the VPS. It might
-    take a while, before the DNS records are settled.
-
-*** Server setup
-**** Resources
-     - [[http://www.fail2ban.org/wiki/index.php/Main_Page][fail2ban]]
-     - [[https://www.charlesproxy.com/][Charles proxy]]
-
-**** Install Nginx
-     /I have this joke about UDP, but you probably wouldn't get it./
-
-     *Nginx (engine x)* is a HTTP and reverse proxy server, a mail proxy server and a
-     generic TCP/UDP proxy server. A /proxy server/ takes a bunch of inputs and routes it to
-     the internet as single traffic. A /reverse proxy server/ accepts all requests and
-     inputs into something (for example Node).
-
-     ~$ sudo apt install nginx~
-     ~$ sudo service nginx start~
-
-**** Install Nodejs and npm
-     The version on Ubuntu servers might be running on older version of node that you
-     might expect, be mindful of that!
-     ~$ sudo apt install nodejs npm~
-     ~$ sudo ln -s /usr/bin/nodejs /usr/bin/node~
-
-**** Change permissions of the web directory
-     ~$ sudo chown -R $USER:$USER /var/www~
-
-**** Create a basic nodejs server
-     Create an ~index.html~ and serve it [[http://expressjs.com/en/4x/api.html#res.sendFile][via express]]. Run the server ~node index.js~ and it
-     should be available on the given port on your domain.
-
-     Change the routes in the Nginx config to serve the port your server is running on.
-     1. ~$ sudo vi /etc/nginx/sites-available/default~
-     2. Edit config
-     #+BEGIN_SRC
-     location /hello {
-       proxy_pass http://127.0.0.1:3000
-     }
-     #+END_SRC
-     3. Verify nginx
-        ~$ sudo nginx -t~
-     4. ~$ sudo service nginx restart~
-
-**** [[https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally][Resolving EACCES permissions errors when installing packages globally]]
-     The easiest way is to install node and npm via the [[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-nodejs-and-npm][nvm (Node version manager)]], but
-     there are othher options too.
-
-**** Keep the application running
-     1. ~$ npm i forever~
-     2. Create log directory for forever
-        #+BEGIN_SRC sh
-        $ sudo mkdir -p /var/log/forever
-        $ sudo chown -R $USER /var/log/forever
-        #+END_SRC
-     3. Add two scripts to start and stop the server
-        #+BEGIN_SRC json
-        scripts: {
-          "start": "forever start index.js >> /var/log/forever/forever.log",
-          "stop": "forever stop index.js"
-        }
-        #+END_SRC
-
-**** Tailing the logs of the authentication requests for the sever
-     ~$ sudo tail -f /var/log/auth.log~
-
-*** Security
-**** Firewalls
-     monitors and controls incoming and outgoing network traffic. It acts as a barrier
-     between two systems by blocking of ports.
-
-     Use ~nmap~ to scan a server for available ports.
-
-**** iptables
-     is a list off rules to follow for any connection coming into the server.
-
-     #+BEGIN_SRC sh
-     # -A append rules
-     # -p protocol (tcp, icmp)
-     # --dport destinationport
-     # -j jump (DROP, REJECT, ACCEPT, LOG)
-     $ sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-     #+END_SRC
-
-     Using ~ufw~ - uncomplicated firewall: ~$ sudo ufw allow tcp~. Or via the website GUI of
-     the VPS you are using.
-
-**** fail2ban
-     scans the ~auth.log~ file and based on the rules is going to ban the IP's of the people
-     misusing the server.
-
-     1. Install
-        ~sudo apt install fail2ban~
-     2. Copy the conf to a local configuration file
-        ~sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local~
-     3. Monitor the logs for banned people
-        ~sudo tail -f /var/log/fail2ban.log~
-**** HTTPS
-     is a way to ensure the data being send it protected from a man in
-     the middle attack by encrypting. Smart people have created [[https://certbot.eff.org/][certbot]]
-     in order to abstract away [[https://github.com/diafygi/acme-tiny][the cubersome way]] of adding HTTPS.
-
-     The new goodies in the web like bluetooth and service workers are
-     behind HTTPS. The certificates are free via [[https://letsencrypt.org/][Let's Encrypt]], so there
-     is no reason not to have HTTPS.
-
-     1. Edit NGINX config
-        ~server_name domain-name www.domain-name~
-     2. ~$ sudo ufw allow 443~
-     3. ~$ sudo ufw enable~
-     4. Verify
-        ~$ sudo ufw status~
-
-     [[https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx][Configuring certbot]]
-     1. Install
-        #+BEGIN_SRC sh
-        $ sudo apt-get update
-        $ sudo apt-get install software-properties-common
-        $ sudo add-apt-repository universe
-        $ sudo add-apt-repository ppa:certbot/certbot
-        $ sudo apt-get update
-        $ sudo apt-get install python-certbot-nginx
-        #+END_SRC
-     2. Configure
-        ~sudo certbot --nginx~
-     3. Updating certificates
-        ~sudo certbot --renew --dry-run~
-
-**** Automatic upgrades
-     1. Install the package ~sudo apt install unattended-upgrades~.
-     2. Modify /etc/apt/apt.conf.d/20auto-upgrades
-        APT::Periodic::Update-Package-Lists "1";
-        APT::Periodic::Unattended-Upgrade "1";
-     3. Comment out anythins besides security upgrades in
-        /etc/apt/apt.conf.d/50unattended-upgrades
-
-**** Periodic tasks
-     can be achieved via ~cron~ jobs. Check out [[https://crontab.guru/][crontab guru]].
-
-     1. Open the crontab file
-        ~sudo crontab -e~
-     2. Add an entry to update the certificate
-        ~00 12 * * 1 certbot renew~
-
-**** Audits
-     Multiple ways to audit the security of the website via [[https://www.ssllabs.com/ssltest/analyze.html?d=mdm.famoco.com&latest][SSL Labs]],
-     the chrome dev tools,
-
-*** Performance
-**** ~gzip~
-     is a widely adopted compression format. Compression findrepeated patterns and
-     shortens them by some arbitrary code.
-     Compression works especially well with images, not so much with JSON.
-
-     Add gzip compression to the global nginx configuration.
-     1. ~$ /etc/nginx/nginx.conf~
-     2. gzip on;
-
-**** Caching
-     Cache control is hard topic in CS, because you want the users to get the latest and
-     greatest of your website, but also don't want them to reload everything over and over
-     again.
-     A good middle ground is to expire the cache in a couple minutes. Edit the Nginx
-     configuration to add expire headers for certain requests. Add ~expires 5m~.
-
-     Nginx is also capable of using a server cache. Even if the client does a hard refresh
-     the request is still going to use the server cache. Very useful for big, giant
-     requests. Server cache can also be seen as warm cache. The concept of "warming up the
-     cache" is that it's possible that one user caches the request for another user.
-
-     1. Setup the cache config
-        #+BEGIN_SRC nginx
-        proxy_cache_path /tmp/nginx levels=1:2 keys_zone=slowfile_cache:10m inactive=60m;
-        proxy_cache_key "$request_uri";
-        #+END_SRC
-     2. Add location configuration for the server cached path
-        #+BEGIN_SRC nginx
-          location /slowfile {
-                proxy_cache_valid 1m;
-                proxy_ignore_headers Cache-Control;
-                add_header X-Proxy-Cache $upstream_cache_status;
-                proxy_cache slowfile_cache;
-                proxy_pass http://127.0.0.1:3001/slowfile;
-        }
-        #+END_SRC
-
-*** Web sockets
-    is a persistent, long running connection where the server and client can react to each
-    other in "real-time".
-
-    We have to tunnel the websocket through Nginx, so it can do cache control, set
-    headers, etc. In theory you could hit your nodejs server directly, but it's not a best
-    practice and it would be a lot more work.
-
-    #+BEGIN_SRC nginx
-    proxy_set_header Upgrade $http_upgrade
-    proxy_set_header Connection "upgrade"
-    #+END_SRC
-
-*** HTTP/2
-    The primary goals for HTTP/2 are to reduce latency by enabling full request and
-    response multiplexing, minimize protocol overhead via efficient compression of HTTP
-    header fields, and add support for request prioritization and server push.
-
-    As always easy to enable on Nginx.
-
-    Add ~http2~ to ~listen~ keyword for the server. There should be some configuration
-    already, due to certbot.
-    ~listen 443 http2 ssl; # managed by Certbot~
-
-** Databases
-   - relational :: data that related to something else, which needs ~SQL~
-   - non-relational :: document(key)-value store, which doesn't need ~SQL~
-
-   Relational database are faster, when you are running queries on your data. If you want
-   to do that with a non-relational database you'd need to get the data, parse it, then
-   send it. Really think about what kind of data you are storing, before chosing a
-   database.
-
-   Data-in, data-out probably favors a non-relational database. Writing and reading is
-   super fast, since you can just dump the whole dataset in there.
-
-*** Best-practices
-    - Back up database
-    - Use a strong root password
-    - Don't expose the database outside the network
-    - Sanitize your SQL
-
-** Containers
-   is about running an application on a VPS rather than running a complete operating
-   system. Nginx, node, mysql, ... are all applications on a server.
-   The benefit for running the application in it's own container is that is shares
-   resources (only the resources it needs to prevent the server from going haywire when
-   the application starts messing up), no need to install an OS, fast deployment, ...
-
-*** Tools
-    - Docker
-    - Kubernetes
-
-*** Automatic deployments
-    - Ansible
-    - Vagrant
-    - Puppet
 * Performance
+- [[http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf][ECMAScript 2018 Language Specification]] (ignore the browser implementations parts)
+- [[https://frontendmasters.com/courses/progressive-web-apps/][Frontend Masters: Progressive Web Applications]]
+- [[https://frontendmasters.com/courses/service-workers/][Exploring Service Workers]]
+
 #+BEGIN_QUOTE
 53% of user will leave a mobile site if it takes more than 3 secs to load.
 #+END_QUOTE
 
-** Resources
-- [[http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf][ECMAScript 2018 Language Specification]] (ignore the browser implementations parts)
-- [[https://frontendmasters.com/courses/progressive-web-apps/][Frontend Masters: Progressive Web Applications]]
-
 ** Thinking about performance
-A content-centric website needs to think differently about perforance compared to an application
-you spend a lot of time in (ex: Fastmail).
+A content-centric website needs to think differently about perforance compared to an application you
+spend a lot of time in (ex: Fastmail).
 
 1. Javascript parsing/compilation
 2. Rendering the webpage
@@ -894,21 +23,20 @@ you spend a lot of time in (ex: Fastmail).
 
 Two general rules when thinking about performance:
 1. Doing less stuff takes less time
-2. If you can do it later. Do it later.
-3. If someone else can do it, let them do it.
+2. If you can do it later, do it later
+3. If someone else can do it, let them do it
 
 ** Parsing/compilation
+*** Parsing
 The majority of the time the browser is busy parsing/compiling Javascript.
 
 The code is stored in the "cloud", downloaded to the user's browser, parsed into an /AST/ (Abtract
 Syntax Tree), interpreter either spits out bytecode or sends it to optimzing compiler (turns into
 highly optimized machine code).
 
-*** Parsing
 A lazily parsed function, which is used immediately after declaration parses defeats the purpose of
-lazy parsing and has a potential performance impact.
-
-Some libraries worth looking at to reduce parsing times: ~optimize-js~, ~optimize-js-plugin~,...
+lazy parsing and has a potential performance impact. Some libraries worth looking at to reduce
+parsing times: ~optimize-js~, ~optimize-js-plugin~,...
 
 Try to avoid declaring a function inside another function.
 
@@ -930,25 +58,20 @@ The engine helps you with a couple things:
 - Polymorphic :: I've seen some, let me optimze for those cases
 - Megamorphic :: I've seen a lot of thing, can't optimze => slow
 
-*Dynmamic Lookup*
-V8 has to go through the spec to check how things are supposed to be created. So once, you've create
-a certain object with certain properties it "remembers" how to create them, when you create a new
-object following the same rules.
-V8 is able to do these checks by keeping a type system behind our backs so it can lookup again when
-it needs similar rules. Reading mememory addresses is dangerous, which is why the engine is
-conservative with the lookups.
+*Dynmamic Lookup* V8 has to go through the spec to check how things are supposed to be created. So
+once, you've create a certain object with certain properties it "remembers" how to create them, when
+you create a new object following the same rules. V8 is able to do these checks by keeping a type
+system behind our backs so it can lookup again when it needs similar rules. Reading mememory
+addresses is dangerous, which is why the engine is conservative with the lookups.
 
 Different code paths receive different kind of these "secret types".
 
-*Function inlining*
-V8 sometimes rewrites your code to optimize it. Replacing functions with constants, with literal
-values, etc
+*Function inlining* V8 sometimes rewrites your code to optimize it. Replacing functions with
+constants, with literal values, etc
 
 *** User Timing
 Figure out where the biggest amount of hurt is. React in development is already taking advantage of
 the API, but you can use it yourself as well.
-
-Example
 #+BEGIN_SRC javascript
 let iterations = 1e7
 
@@ -963,7 +86,6 @@ while (iterations--) {
 }
 performance.mark('end')
 performance.measure('My own user timing', 'start', 'end')
-
 #+END_SRC
 
 ** Rendering
@@ -1137,3 +259,145 @@ larger). It's an interesting idea, which makes you think about optimzing at buil
 - Image performance
 - Loading web fonts
 - Progressive web applications
+
+* fp
+- [[https://drboolean.gitbooks.io/mostly-adequate-guide/content/][Professor Frisby's Mostly Adequate Guide to Functional Programming]]
+
+* RxJS
+- [[https://github.com/btroncone/learn-rxjs/tree/master/operators][RxJS Operators by Example]]
+- [[http://reactivex.io/rxjs/manual/overview.html#operators][RxJS Docs]]
+- [[http://reactivex.io/rxjs/manual/overview.html][Introduction to RxJS]]
+
+** Observer
+is the consumer of the values delivered by an Observable. An observer is an object with three
+callbacks (next, error and complete) which are also the types of notifications delivered by the
+Observable.
+
+** Subscription
+is an object, which represents a disposable resource, usually the execution of an observable.
+Usually only has ~unsubscribe()~ as a method. Calling the unsubscribe method should dispose the
+observable and release all resources.
+
+** Subject
+is both observer and observable.
+
+1. Subscribing to a Subject doesn't invoke a new execution, but simply registers the observer is a
+   list of observers.
+2. Adding the Subject as an observer to an Observable has the benefit of multicasting the observed
+   values to the observers of the Subject.
+
+A subject NEVER triggers execution when it has been completed. In order to restart a multicasted
+observable, after an observer re-connects, a new instance of the Subject has to be used before
+execution starts again. A common pattern for this is using a /subjectFactor/
+#+BEGIN_SRC javascript
+function subjectFactory() {
+    return new Rx.BehaviorSubject(false);
+}
+
+const foo = Rx.Observable.interval(1000).take(5)
+      .multicast(subjectFactory)
+      .refCount()
+      .scan(currState => !currState)
+
+foo.subscribe(x => console.log(x))
+setTimeout(() => foo.unsubscribe(), 5000)
+// this will re-execute the shared observable
+setTimeout(() => foo.subscribe(), 10000)
+#+END_SRC
+
+** Multicasting Operators
+different Subjects is very common, which is why RxJS provides us some
+operators, which automatically disconnect the multicasted observable when no-one
+is listening (to prevent memory leaks).
+
+#+BEGIN_SRC javascript
+var foo = Rx.Observable.interval(1000)
+// .publish() = .multicast(new Rx.Subject())
+// .publishReplay() = .multicast(new Rx.ReplaySubject())
+// .publishLast() = .multicast(new Rx.AsyncSubject())
+    .publishBehavior(false) // = .multicast(new Rx.BehaviorSubject(false))
+    .refCount()
+// .share() = .multicast(new Rx.Subject()).refCount()
+
+foo
+    .scan(currState => !currState)
+    .subscribe(x => console.log(x))
+
+setTimeout(() => foo.unsubscribe(), 5000)
+#+END_SRC
+
+** Effectively use higher-order observables
+*** ~switchMap()~
+is an epic tool with many built-in features:
+- composing via closures (selector function)
+- network cancellation (due to the fact in unsubscribes, when receiving
+  another observable
+- promise convertion
+  #+BEGIN_SRC javascript
+     const clickObservable = Rx.Observable
+           .fromEvent(document, 'click')
+
+     function performRequest() {
+         return fetch('https://jsonplaceholder.typicode.com/users/1')
+             .then(res => res.json())
+     }
+
+     const responseObservable = clickObservable
+           .switchMap(click => performRequest(), (click, res) => res.email)
+  #+END_SRC
+
+*** ~groupBy()~
+branches out out multiple higher-order observables by evaluating each item and assigning a key to
+each higher-order observable. Super powerful tool when dealing with a large, dynamic dataset.
+
+#+BEGIN_SRC javascript
+     const busObservable = Rx.Observable.of(
+         {code: 'en-us', value: '-TEST-'},
+         {code: 'en-us', value: 'hello'},
+         {code: 'es', value: '-TEST-'},
+         {code: 'en-us', value: 'amazing'},
+         {code: 'pt-br', value: '-TEST-'},
+         {code: 'pt-br', value: 'olá'},
+         {code: 'es', value: 'hola'},
+         {code: 'es', value: 'mundo'},
+         {code: 'en-us', value: 'world'},
+         {code: 'pt-br', value: 'mundo'},
+         {code: 'es', value: 'asombroso'},
+         {code: 'pt-br', value: 'maravilhoso'}
+     ).concatMap(x => Rx.Observable.of(x).delay(500));
+
+     const all = busObservable
+           .groupBy(obj => obj.code) // creates multiple observables differentiated by the code
+           .mergeMap(codeObs => codeObs // acces to codeObs
+                     .skip(1)  // each inner observable won't emit the first value
+                     .map(obj => obj.value) // gets mapped to the value
+                    ); // flatten
+#+END_SRC
+
+* React
+** Compound Components
+*Compound components* have a similar philosophy as the ~<select>~ and ~<option>~ elements in
+HTML. Worthless alone, powerfull together, since the children can modify the state of
+the parent. Hiding away the abstraction.
+
+The simplest implementation includes ~React.cloneElement()~ and ~React.Children.map()~.
+However it's not flexible (the div breaks the cloning.
+
+Context provides (pun) a way to provide the props to the compound components, without
+cloning elements. A value change of the Provider triggers a render, so make sure the
+value doesn't get recreated every time.
+
+#+BEGIN_SRC javascript
+const Yo = () => (
+  <Toggle onToggle={onToggle}>
+    <Toggle.On>The button is on</Toggle.On>
+    <Toggle.Off>The button is off</Toggle.Off>
+    <div>
+      <Toggle.Button />
+    </div>
+  </Toggle>
+)
+#+END_SRC
+
+** Thinking in React
+- [[https://medium.com/@adamrackis/composing-reusable-components-in-react-de44d862fe5a][Composing Reusable Components in React]]
