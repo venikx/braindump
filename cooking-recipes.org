@@ -1,0 +1,42 @@
+#+TITLE: Cooking recipes
+#+AUTHOR: venikx
+#+STARTUP: content, indent
+
+* Flemish Beef Stew with fries (Stoofvlees met frieten)
+** Ingredients (4 people)
+| Quantity       | Ingredient                         |
+|----------------+------------------------------------|
+| 2              | big onions                         |
+| chunks         | butter                             |
+| 1kg            | big chunks of beef                 |
+|                | pepper                             |
+| little pinch   | salt                               |
+| 2 bottles      | brown beer (Sint Bernardus abt 12) |
+| 2 branches     | thym                               |
+| 2 leafs        | laurel                             |
+| 1 loaf         | brown bread                        |
+| 2 table spoons | mustard                            |
+| little pinch   | vinegar                            |
+| 1 kg           | fries                              |
+|                | mayo                               |
+
+** Instructions
+*** Sauce
+1. Chop and fry onions (inside stew pot)
+2. Fry meat + pepper and salt untill golden brown
+3. Add meat in the stew pot
+4. Boil the beer in the pan used for frying meat
+   Upon boiling add it to the stew pot
+5. Add laurel and thym
+6. Put a lot of mustard on the loaf of brown bread
+   Add it mustard down on top of the stew
+7. Boil for 1.5-3.0h on low heat (depends on quality of the meat)
+8. Cover the pot when the thickness is on point
+
+*** Fries
+1. Heat fries at 140 C, but don give them a yellow color
+2. Cool them down
+3. Heat again at 180 C untill golden brown
+
+* Chicken Fajitas with bell peppers
+...
