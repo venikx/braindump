@@ -1,25 +1,10 @@
 #+TITLE: Educational notes dump
-#+AUTHOR: AnaRobynn
-#+STARTUP: hideblocks
+#+AUTHOR: venikx
+#+STARTUP: content, indent
 
 * What is this madness?
-  A massive personal, educational notes dump when studying several topics,
+A massive personal, educational notes dump when studying several topics,
 using different media forms: books, blog posts, videos, code snippets, ...
-
-* Reminders while studying
-** Avoid thinking too much about results, focus on the process
-   - Use 25/5 Pomodoro Technique
-   - Capture tasks with org-capture
-
-** Procrastination, what is it?
-  - Cue (habit)
-  - Routine (zombie mode)
-  - Reward
-  - Belief
-
-** Stay healthy
-   Eat enough healthy fats (omega-3), use flash cards and try to memorize
-small tasks in a memory palace.
 
 * Index
 ** [[file:algorithms.org][wiki:Algorithms]]
@@ -30,4 +15,5 @@ small tasks in a memory palace.
 ** [[file:javascript.org][wiki:Javascript]]
 ** [[file:linux.org][wiki:Linux]]
 ** [[file:pixel-art.org][wiki:Pixel Art]]
+** [[file:python.org][wiki:Python]]
 ** [[file:software-development][wiki:Software Development]]
