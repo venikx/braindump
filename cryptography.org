@@ -2,6 +2,8 @@
 #+AUTHOR: venikx
 #+STARTUP: content, indent
 
+- [[https://github.com/trimstray/the-book-of-secret-knowledge][The book of Secret Knowledge]]
+
 * Qué?
 Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key is used to
 scramble the data, but the same key is used to unscramble it.

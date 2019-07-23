@@ -2,12 +2,22 @@
 #+AUTHOR: venikx
 #+STARTUP: content, indent
 
+* Resources
+** Books
 - [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
-- [[https://www.bol.com/nl/p/unreal-engine-4-game-development-in-24-hours-sams-teach-yourself/9200000045916596/?country=BE&Referrer=ADVNLGOO002008O-G-41387161393-S-299684799302-9200000045916596][UE4 Game Development in 24 Hours]]
 - [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
 - [[https://www.amazon.com/Game-Programming-Patterns-Robert-Nystrom/dp/0990582906/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=0990582906&pd_rd_r=4ACE7CH5N5S6J9NP64EF&pd_rd_w=XD1Tt&pd_rd_wg=yc1pf&psc=1&refRID=4ACE7CH5N5S6J9NP64EF][Game programming patterns]]
-- [[https://www.amazon.com/Engine-Architecture-Second-Jason-Gregory/dp/1466560010/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1466560010&pd_rd_r=A4QT90WTQQXG68RFWVQR&pd_rd_w=svOI8&pd_rd_wg=oFRLJ&psc=1&refRID=A4QT90WTQQXG68RFWVQR][Game Engine Architecture, Second Edition]]
+- [[https://www.amazon.com/Engine-Architecture-Third-Jason-Gregory/dp/1138035459/ref=sr_1_1?keywords=game+engine+architecture&qid=1563911648&s=books&sr=1-1][Game Engine Architecture, Third Edition]]
 - [[https://www.amazon.com/Game-Coding-Complete-Fourth-McShaffry/dp/1133776574/ref=pd_sim_14_2?_encoding=UTF8&pd_rd_i=1133776574&pd_rd_r=9TQGA57P3Q0F85MAZXTP&pd_rd_w=i5EIx&pd_rd_wg=8Nb8o&psc=1&refRID=9TQGA57P3Q0F85MAZXTP][Game Coding Complete]]
+
+** Videos
+- [[http://www.opowell.com/post/talks-that-changed-the-way-i-think-about-programming/][Talks that changed the way I think about programming]]
+- [[https://www.youtube.com/watch?v=UwBl7Rnkt78][Storytime with Jonathan Blow]]
+- [[https://www.youtube.com/watch?v=cTwh9oHcs1w][Making a game in C from scratch - Dan Zaidan]]
+- [[https://www.gamefromscratch.com/page/Complete-Blender-Game-Art-Tutorial-From-zero-experience-to-2D-or-3D-game-ready-asset.aspx][Complete Blender Game Art Tutorial]]
+
+** Inspiration
+- [[https://all-things-andy-gavin.com/2011/02/02/making-crash-bandicoot-part-1/][Making Crash Bandicoot]]
 
 * Day 000 - Intro to Windows
 ** Day 1
