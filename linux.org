@@ -4,6 +4,7 @@
 
 - [[https://www.amazon.com/Unix-Programming-Environment-Prentice-Hall-Software/dp/013937681X][The UNIX Programming Environment]]
 - [[https://www.youtube.com/watch?v=csI5Vwh7a2c][Ansible Digital Ocean Setup]]
+- [[https://github.com/edbizarro/dotfiles][Cool inpiration for dotfiles]]
 
 * History
 *UNIX* was an OS developed at [[https://www.youtube.com/watch?v=tc4ROCJYbm0][AT&T Bell Labs (video)]] in the 1960s -> 1980s. GNU/Linux,
