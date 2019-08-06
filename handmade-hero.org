@@ -88,7 +88,7 @@ understand exactly what the processor is doing, when executing the code.
 #+BEGIN_SRC asm
     ;Test = 255;
   00031718  mov         byte ptr [Test],0FFh
-  	;Test = Test + 1;
+    ;Test = Test + 1;
   0003171C  movzx       eax,byte ptr [Test]
   00031720  add         eax,1
   00031723  mov         byte ptr [Test],al
@@ -224,3 +224,36 @@ require you to build the code with those specific ~.dll~'s.
 Trying to compile code without these imports results in the /linker/ complaining about code that's
 supposed to be available, but it couldn't find the information how to insert a particular call to
 Windows when patching the code.
+
+Read the MSDN pages for the functions to know which libraries need to be included!
+
+* Day 002 - Opening a Win32 Window
+- [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window][Creating a Window]]
+- [[https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagwndclassa][WNDCLASSA]]
+- [[https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms633573(v%253Dvs.85)][WindowProc callback function]]
+- [[https://docs.microsoft.com/en-us/previous-versions/aa932511(v%253dmsdn.10)][RegisterClass]]
+- [[https://docs.microsoft.com/en-us/previous-versions/aa921213(v%253dmsdn.10)][GetMessage]]
+- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-beginpaint][BeginPaint]]
+- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-patblt][PatBlt]]
+
+** Initializing ~WNDCLASS~
+Two possibilities:
+- zero is initialization :: clear the whole struct to zero (used when performance is not a concern)
+- contructors :: initializes values in the typical C++ way
+
+* Day 003 - Allocating a Backbuffer
+- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage][PostQuitMessage]]
+- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getclientrect][GetClientRect]]
+- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection][CreateDIBSection]]
+- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-stretchdibits][StretchDIBits]]
+
+** Different use cases for ~static~
+The ~static~ keyword has different meanings depending on the context it's being used. It can either
+1. Scope a function to a file (making it invisible for other files to import it)
+2. Define it locally in a function to persist a value when the scope is recreated
+3. Define it globally for everyone to be used
+
+Therefore it's a good practice to define better keywords for these different meanings.
+1. ~#define internal static~
+2. ~#define local_persist static~
+2. ~#define global_variable static~
