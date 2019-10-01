@@ -23,21 +23,13 @@
 
 * Day 000 - Intro to Windows
 ** Day 1
-*** Additonal resources
-- [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]]
-- [[https://msdn.microsoft.com/en-us/library/windows/desktop/aa363362(v=vs.85).aspx][MSDN - OutputDebugString]]
-
 *** Entry point
-The linker, by default, expects a certain function call, which indicates the start of the
-program. If the default function is not present in the program, the linker won be able to link
-the entry point of the program with Windows. It's not recommended to change the default entry
-point in the linker configuration, but it's possible.
+Windows calls the ~WinMain~ [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][(docs)]], which is the default entry point to execute the program. The header
+/windows.h/ needs to be included when using windows specific keywords like ~HINSTANCE~ and
+~OutputDebugStringA~ [[https://docs.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa][(docs)]].
 
-The ~WinMain~ is the default function, called by Windows as entry point to execute the program.
-The header ~windows.h~ needs to be included when using windows specific keywords like ~HINSTANCE~ and
-~OutputDebugStringA~.
-
-The requirements to properly call ~WinMain~ can be found in the official [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][MSDN - WinMain]] docs.
+It's not recommend to change the default entry point, because a wrong configuration can result in
+linker errrors.
 
 #+NAME: win32_handmade.cpp
 #+BEGIN_SRC c
@@ -55,31 +47,27 @@ The requirements to properly call ~WinMain~ can be found in the official [[https
 #+END_SRC
 
 *** Functions
-A /forward function declaration/ notifies the compiler that it's legal to call a function *without* the
-function definition. Nevertheless the build might fail, when the implementation of the function
-could not be found during the linking process.
+A /forward function declaration/ notifies the compiler it's legal to call a function *without* the
+function definition. The build might fail when the implementation of the function could not be found
+during the linking process.
 
 The /function definition/ is the implementation of the declared function.
 
-During the *compilation* phase the compilers marks the unresolved function definitions. During the
-*linking* phase, the linker will try to find the correct function defintions.
+During the *compilation* phase the compilers marks the unresolved function definitions.
+During the *linking* phase, the linker will try to find the correct function defintions.
 
 ** Day 2
-*** Resources
-- [[https://wordsandbuttons.online/you_dont_have_to_learn_assembly_to_read_disassembly.html][Reading disassembly]]
-
 *** ASCII vs Unicode
-Microsoft had to support Unicode at some point, since ASCII can handle foreign languages. They used
-macros to either use the unicode or ascii implementation, depending on the environment of the
-program.
+ASCII = old.
+Unicode = new and handles foreign languages and the characters.
 
-You can by bypass the compiler by using ~OutputDebugStringA~ instead of the more general
-~OutputDebugString~.
+Microsoft created macros which ran the code in Unicode or ANSI mode depending on the compiler
+flags. Bypass these macros by directly calling the functions to avoid confusion when compiling in a
+different mode. Example: ~OutputDebugString~ => ~OutputDebugStringA~.
 
 *** Disassembly
-/Does the compiler do what we expect it to do?/
-It's essential to rudimentary read assembly code. You learn to debug problems on a lower level and
-understand exactly what the processor is doing, when executing the code.
+Absolutely essential to rudimentary [[https://wordsandbuttons.online/you_dont_have_to_learn_assembly_to_read_disassembly.html][read assemly code]]. Learn to debug problems on a lower level and
+understand exactly what the processor is doing when executing the code.
 
 1. Set a breakpoint
 2. Start in debug mode
@@ -94,53 +82,51 @@ understand exactly what the processor is doing, when executing the code.
   00031723  mov         byte ptr [Test],al
 #+END_SRC
 
-Putting a value inside a location (variable) does *not* require the processor to do any calculations.
-Adding a certain number to an existing variable requires the processor to move it closer to the
-processor's /registers/ to operate on them.
+Putting values inside locations (variables) does not require the processor to do any calculations.
+Incrementing an ~int~ to existing variables requires the processor to move it closer to the
+processor's *register* to operate on them.
 
 *** Registers
-The ~EAX~ register happens to be 32-bit wide, which is far bigger than a byte (used for a ~char~). The
-lowest two bits of the ~EAX~ can be pulled out via ~al~. That value is ultimately the value, which is
-going to be sent back into the location of the variable (Test).
+The /EAX/ register is 32-bit wide, which is more than a byte (used for a ~char~). The
+lowest two bits of the /EAX/ can be pulled out via ~al~. The results from pulling the lowest two bits is
+put back into the variable ~Test~.
 
 ** Day 3
-*** Memory (hardware)
-The processor reading/writing from memory is a non-trivial problem. Accessing memory is slow,
-because of the laws of physics. Imagine a processor with a clock speed of 3,2 GHz, the speed of
-light is \pm 300 000 m/s. The distance a photon is able to travel per second is not far!
+*** Reading/Writing from/to memory is non-trivial
+Accessing memory is slow, due to physics. Imagine a processor with a clock speed of 3,2 GHz, the
+speed of light is \pm 300 000 m/s. The distance a photon is able to travel per second is not far!
+
 \begin{equation}
 d = \dfrac{ \pm 300000 m/s}{3,2Ghz}
 d = \pm 9 cm
 \end{equation}
 
-Usually the memory is about 9-10 cm away from the CPU. That implies a photon is not able to go the
-memory and back within 1 CPU cycle. The only way to reduce the /latency/ is to shorten the distance
-between the CPU and memory. CPU's nowadays have an in-chip memory cache (very small), which makes
-access to memory insanely fast (if it was stored in those caches).
+The memory is about 9-10 cm away from the CPU, implying that the photon is not able to go to the
+memory and back within 1 CPU cycle. CPU's reduce /latency/ by providing a super small cache on the CPU
+itself (thus reducing the distance between CPU and memory).
 
-/Bandwidth/ is a bit easier to improve, since it's bottlenecked by the components and their capability
-of sending as much stuff down the wires per second.
+/Bandwidth/ is bottlenecked by the components and their capability of sending as much stuff down the
+wires per second, which is an easier problem.
 
-*** Pointers
+*** Pointers (heap)
 The ~*~ (star) in front of a variable notifies the compiler to free some memory to store the memory
-location of another variable. The size of that /address/ is the same size as an ~int~.
+location of another variable. The size of that /address/ is the same size as an ~int~ (for x64).
 The ~&~ (ampersand) in front of a variable is the /address operator/, which gives back the address of a
 variable stored in memory.
 
-The address location is the location of the variable in the virtual memory, *not* the actual physical
-memory (only for modern day systems). The /virtual memory/ is a way to stop different programs
-accessing and modifying the same piece of memory.
+The address location is the location in the virtual memory, *not* the actual physical memory (only for
+modern day systems). The /virtual memory/ prevents different programs accessing and modifying the same
+piece of memory.
 
-The CPU has a table which secretly maps the virtual memory of a certain program to the actual place
-in physical memory.
+The CPU has a table which secretly maps the virtual memory of programs to the actual place in
+physical memory.
 
 *** Stack
-is a piece of memory which is managed by the compiler/OS. Everytime a function gets invoked a new
-stack is created with an own little environment with variables, etc.
+is memory managed by the compiler/OS. Everytime a function gets invoked a new stack is created with
+it's own environment like variables, etc.
 
-You can actually see a new stack being created closeby a local variable of the previous stack, via
-*Debug > Memory > Memory 1*. A variable created in the new function call, should be relatively close
-in memory to the local variable of the parent function.
+Go to *Debug > Memory > Memory 1* and notice how a new stack changes the memory layout close to the
+memory location of the previous stack?
 
 ** Day 4
 *** Endianness
@@ -188,33 +174,24 @@ call into it's own /Virtual Memory Address/ assigned by Windows.
 * Day 001 - Setting up the Windows Build
 ** How does Windows calls our code?
 It doesn't!
-Windows kernels calls the CRT (C Runtime), which calls the ~WinMain~ function of our code.
+Windows kernels calls the CRT (C Runtime), which calls ~WinMain~ of our code.
 
 ** Windows dependencies
+The MSDN pages document which lib needs to be important for each function.
+
 Windows needs to bind to our code, find the places where we call Windows functions and patch those
 with pointers to the location in memory where those functions are running at that time.
 
-The functions coming from the /kernel/ don't require an /import library/, since Windows snuck the import
-already for us. ~WinMain~ is part of those kernel functions. All other calls, such as the UI system,
-require you to build the code with those specific ~.dll~'s.
-
-Trying to compile code without these imports results in the /linker/ complaining about code that's
-supposed to be available, but it couldn't find the information how to insert a particular call to
-Windows when patching the code.
-
-Read the MSDN pages for the functions to know which libraries need to be included!
+The functions coming from the /kernel/ don't require an /import library/ (Windows magic). ~WinMain~ is
+part of those kernel functions. Calls to the UI system, requires building the project with specific
+lib files. The /linker/ complains when these libraries are missing, since it doesn't know how to
+insert certain functions when patching the Windows code.
 
 ** Automation with ~.bat~ files
-It's a simplified version of more commonly known /make/ systems, such as ~gnu make~, ~ninja~ or ~cmake~. The
-more complex the build tools are, the more time gets invested in them. The /batch/ file will be
-responsible for setting the environment and compiling all the code all the time.
-According to Casey there is no need for compiling the modified files only to speed up the build
-process if you program sanely.
-
 *** Setting the ~env~
-The ~cl~ command-line tool, which controls the Microsoft C/C++ compilers and linker, comes
-pre-installed with Visual Studio 2019 (*check* the /C++ Desktop Environment/). However it's not a
-command which is exposed by default to the command prompt (sad).
+The ~cl~ command-line tool controls the Microsoft C/C++ compiler and linker and comes pre-installed
+with Visual Studio 2019 (*check* the /C++ Desktop Environment/). The command is *not* exposed in the
+/cmd.exe/ by default (sad).
 
 #+NAME: setenv.bat
 #+BEGIN_SRC bat
@@ -225,9 +202,12 @@ command which is exposed by default to the command prompt (sad).
 #+END_SRC
 
 *** Building
-using a single batch file (apparantly controversial), since the project will be compiled every
-single time. Alternative build tools: /make/, /ninja/, /cmake/, ... which offer more advanced features
-(such as partly compiling code to improve dev speed).
+A simplified version of more commonly known /make/ systems, such as ~gnu make~, ~ninja~ or ~cmake~. The
+mantra being =Dumb and simple=, too much time is lost in complex build sytems. The /batch/ file will be
+responsible for setting the environment and compiling all the code all the time.
+
+According to Casey there is no need for compiling the modified files only to speed up the build
+process if you program sanely.
 
 #+NAME: build.bat
 #+BEGIN_SRC bat
@@ -240,24 +220,31 @@ single time. Alternative build tools: /make/, /ninja/, /cmake/, ... which offer 
 #+END_SRC
 
 ** Debugging ~devenv~ (starts up Visual Studio)
-Don't forget to change the working directory of the ~win32_handmade~ start-up project to use the root
-of project, rather than the build folder.
+Change the working dir of the ~win32_handmade~ start-up project to use the /root/ in stead of the /build\/
+folder.
 
 * Day 002 - Opening a Win32 Window
-- [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window][Creating a Window]]
-- [[https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagwndclassa][WNDCLASSA]]
-- [[https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms633573(v%253Dvs.85)][WindowProc callback function]]
-- [[https://docs.microsoft.com/en-us/previous-versions/aa932511(v%253dmsdn.10)][RegisterClass]]
-- [[https://docs.microsoft.com/en-us/previous-versions/aa921213(v%253dmsdn.10)][GetMessage]]
-- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-beginpaint][BeginPaint]]
-- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-patblt][PatBlt]]
-
-** Initializing ~WNDCLASS~
-Two possibilities:
+** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window][Creating a Window]]
+Method of initialization:
 - zero is initialization :: clear the whole struct to zero (used when performance is not a concern)
 - contructors :: initializes values in the typical C++ way
 
-* Day 003 - Allocating a Backbuffer
+The ~hInstance~ is either passed in from ~WinMain~ or retrieved by calling ~GetModuleHandle(0)~, which
+asks the kernel for the window instance of the currently running code.
+
+** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/window-messages][Handling Window messages]]
+Notice the different between *sending* and *posting* a message. Posting puts the message in
+the queue, which is handled by the ~WindowHandle~ => ~GetMessage~ => ~TranslateMessage~ => ~DispatchMessage~
+flow. Sending skips the queue and the OS call the ~WNDPROC~ directly.
+
+** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/writing-the-window-procedure][Writing the Window procedure]]
+The ~WNDPROC~ passes incoming messages related to the program. These messages can be acted upon or
+passed back to Windows if you don't want to handle them.
+
+** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/painting-the-window][Paiting the Window]]
+In stead of ~FillRect~, use [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-patblt][PatBlt]] to draw something fullscreen.
+
+* TODO Day 003 - Allocating a Backbuffer
 - [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage][PostQuitMessage]]
 - [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getclientrect][GetClientRect]]
 - [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection][CreateDIBSection]]
