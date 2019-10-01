@@ -168,52 +168,29 @@ Be cautious. Casting values to a *higher* memory size results in garbage values 
 Casting values to a *lower* memory size will chop the value, if the value is too big to be represented
 by the low memory size.
 
+** Day 5
+*** How does code turn into an executable?
+Code goes through a /compiler/, which spits out ~obj~ files. Together with ~lib~ files (obj files compared
+together to form a group), such as system files, goes through the /linker/, which spits out a
+Windows/Intel executable.
+
+Microsoft defined the layout on disk for the executable file. The /header/ defines the properties of
+the file (such as it being an ~.exe~), the /fixup table/ keeps all the references from where our program
+calls into Windows and the /CPU specific code/ are all the instructions for the CPU.
+
+*** How does Windows roughly run an executable?
+Windows loads up the AMD/Intel specific instructions and put into the memory of the machine. The
+missing code where Windows is supposed to patch the memory location with it's own code is found in
+the fixup table. However, Windows doesn't actually reference to it's "real" memory where the Windows
+code is held in memory. The memory address is obfuscated by Windows, since your program can only
+call into it's own /Virtual Memory Address/ assigned by Windows.
+
 * Day 001 - Setting up the Windows Build
-** Project automation with ~.bat~ files
-It's a simplified version of more commonly known /make/ systems, such as ~gnu make~, ~ninja~ or ~cmake~. The
-more complex the build tools are, the more time gets invested in them. The /batch/ file will be
-responsible for setting the environment and compiling all the code all the time.
-According to Casey there is no need for compiling the modified files only to speed up the build
-process if you program sanely.
+** How does Windows calls our code?
+It doesn't!
+Windows kernels calls the CRT (C Runtime), which calls the ~WinMain~ function of our code.
 
-*** Setting the ~env~
-The ~cl~ command-line tool, which controls the Microsoft C/C++ compilers and linker, comes
-pre-installed with Visual Studio 2019 (*check* the /C++ Desktop Environment/). However it's not a
-command which is exposed by default to the command prompt (sad).
-
-#+NAME: shell.bat
-#+BEGIN_SRC bat
-  @echo off
-  call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-#+END_SRC
-
-*** Building the project
-The ~cl~ command generates files a lot of files (especially with ~-Zi~ debug flags). It's good practice
-to build the generated files into a different folder and not check it /git/.
-
-We *create* the folder, *step into* the folder, *compile* the code (using an extra lib file) and *step out*
-to the original folder.
-
-#+NAME: build.bat
-#+BEGIN_SRC bat
-  @echo off
-
-  mkdir build
-  pushd build
-  cl -Zi ..\code\win32_handmade.cpp user32.lib
-  popd
-#+END_SRC
-
-** Debugging with Visual Studio
-Loading the /debugger/ of Visual Studio 2019 is achieved via the ~devenv~ command, which should have
-been set to the path already. ~devenv build\win32_handmade.exe~ loads the previously compiled code.
-
-** CRT, not Windows, calls our code
-The ~WinMain~ function is *not* the first thing Windows calls when executing our piece of code. The
-Windows kernel calls into the CRT (C Runtime Library), which eventually dispatches a call to ~WinMain~
-to start executing *our* code.
-
-** Import Libraries
+** Windows dependencies
 Windows needs to bind to our code, find the places where we call Windows functions and patch those
 with pointers to the location in memory where those functions are running at that time.
 
@@ -226,6 +203,45 @@ supposed to be available, but it couldn't find the information how to insert a p
 Windows when patching the code.
 
 Read the MSDN pages for the functions to know which libraries need to be included!
+
+** Automation with ~.bat~ files
+It's a simplified version of more commonly known /make/ systems, such as ~gnu make~, ~ninja~ or ~cmake~. The
+more complex the build tools are, the more time gets invested in them. The /batch/ file will be
+responsible for setting the environment and compiling all the code all the time.
+According to Casey there is no need for compiling the modified files only to speed up the build
+process if you program sanely.
+
+*** Setting the ~env~
+The ~cl~ command-line tool, which controls the Microsoft C/C++ compilers and linker, comes
+pre-installed with Visual Studio 2019 (*check* the /C++ Desktop Environment/). However it's not a
+command which is exposed by default to the command prompt (sad).
+
+#+NAME: setenv.bat
+#+BEGIN_SRC bat
+  @echo off
+
+  call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  REM set path=D:\Office\Documents\dev\handmade\misc;%path%
+#+END_SRC
+
+*** Building
+using a single batch file (apparantly controversial), since the project will be compiled every
+single time. Alternative build tools: /make/, /ninja/, /cmake/, ... which offer more advanced features
+(such as partly compiling code to improve dev speed).
+
+#+NAME: build.bat
+#+BEGIN_SRC bat
+  @echo off
+
+  mkdir ..\build
+  pushd ..\build
+  cl -Zi ..\code\win32_handmade.cpp user32.lib
+  popd
+#+END_SRC
+
+** Debugging ~devenv~ (starts up Visual Studio)
+Don't forget to change the working directory of the ~win32_handmade~ start-up project to use the root
+of project, rather than the build folder.
 
 * Day 002 - Opening a Win32 Window
 - [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/creating-a-window][Creating a Window]]
