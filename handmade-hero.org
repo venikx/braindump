@@ -244,19 +244,35 @@ passed back to Windows if you don't want to handle them.
 ** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/painting-the-window][Paiting the Window]]
 In stead of ~FillRect~, use [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-patblt][PatBlt]] to draw something fullscreen.
 
-* TODO Day 003 - Allocating a Backbuffer
-- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage][PostQuitMessage]]
-- [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getclientrect][GetClientRect]]
-- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection][CreateDIBSection]]
-- [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-stretchdibits][StretchDIBits]]
+* Day 003 - Allocating a Backbuffer
+** [[https://docs.microsoft.com/en-us/windows/win32/learnwin32/closing-the-window][Closing the Window]]
+Things are better acquired and released in aggregate. Think of them as a group of resources, not as
+a single resource. Create and release in waves.
 
 ** Different use cases for ~static~
-The ~static~ keyword has different meanings depending on the context it's being used. It can either
+Keyword ~static~'s use-case is context dependent:
 1. Scope a function to a file (making it invisible for other files to import it)
 2. Define it locally in a function to persist a value when the scope is recreated
 3. Define it globally for everyone to be used
 
-Therefore it's a good practice to define better keywords for these different meanings.
+Good practice to give semantic meaning to those use-cases:
 1. ~#define internal static~
 2. ~#define local_persist static~
 2. ~#define global_variable static~
+
+** Naming conventions
+Example: ~MainWindowCallback~ should become ~Win32MainWindowCallback~.
+
+** How to draw stuff on the screen?
+Handle ~WM_SIZE~, in which you call [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getclientrect][GetClientRect]] to receive the coordinates from the area where can
+draw towards (meaning window - the windows close, minimize and maximize bar).
+
+Use [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-stretchdibits][StretchDIBits]] /(DIB = Device Independant Bitmap)/ to pass in the memory location of your own
+bitmap and ask Windows to copy/render the bitmap to the screen.
+Why? => Reduces interfacing with the Windows api's to a minimum!
+
+*** What is ~void *bitmapMemory~?
+C doesn't have function overloading. [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection][CreateDIBSection]] only understand what type to give back once it
+gets passed the arguments, so the pointer's data type is unknown.
+
+* TODO Day 004 - Animating the Backbuffer
