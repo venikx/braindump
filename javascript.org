@@ -401,3 +401,82 @@ const Yo = () => (
 
 ** Thinking in React
 - [[https://medium.com/@adamrackis/composing-reusable-components-in-react-de44d862fe5a][Composing Reusable Components in React]]
+
+* TODO AWS S3 + Cloudfront
+** AWS Best practices
+- Never use the root account, create an admin user with admin rights
+- Always use MFA, especially on the root account
+- Create alerts to prevent the billing from going over your monthly budget
+
+** S3 (Simple Storage Service)
+- Ability to read/write objects (files)
+- Create a bucket for each environment
+- Essentially key/value store
+
+*** Data Consistency
+- Adding new objects are immediately available
+- Editing and removing objects is eventually consistent => Users might get an old version
+
+*** Policies
+- Principal :: /who/ can do something?
+- Action :: /what/ can they do?
+- Resource :: to /which/ thing?
+
+
+*** Creation
+- Add an S3 bucket and skip the configuration (changed later)
+- Add a rando /index.html/ to the bucket
+- Create a hosting website out the bucket (via properties)
+- Setup bucket policies (id's were omitted in the example)
+#+BEGIN_SRC aws
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::venikx.com/*",
+      "Principal": "*"
+    }
+  ]
+}
+#+END_SRC
+- See it live
+
+=> ugly url
+=> doing this manually is tedious
+=> routing breaks the web
+
+*** AWS CLI
+- Install awscli from pip
+- Run ~aws configure~ and fill in forms
+- Use region us-east-1 when you are thinking of using CloudFront, might not work for other regions
+- Possible to have different profiles in your aws configuration file (since it's a global)
+
+- Build your files
+- Dump the build files onto S3: ~aws s3 cp public/ s3://venikx.com --recursive~
+
+*** Setup Route 53
+- Create a hosted zone: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-in-use.html
+- Setup SSL and add it to the Records
+
+*** Client side routing for unknown routes is broken
+=> Add /index.html/ to error page in the Cloud Hosting Configuration
+
+** CloudFront
+Everything in cloudfront takes a while, since it's globally distributed.
+
+- Use the name from Cloud Hosting in the s3 bucket, not the s3 bucketname itself
+- Enable gzip (compress objects automatically)
+- Add the cnames of the domains
+- Enable custom SSL (not the SSL needs to issued from us-east-1)
+- Default root object should be the index.html
+- Handle the 404 Not Found and 403, by serving the index.html and sending a 200
+
+*** Cache invalidation
+Either via a low TTL or via CI/CD trigger to invalidate the cache (1000 invalidations free per month).
+
+** Lamda@Edge
+Only possible to distrubute a published version and only edit the latest.
