@@ -11,6 +11,7 @@ using different media forms: books, blog posts, videos, code snippets, ...
 ** [[file:c.org][C]]
 ** [[file:cooking-recipes.org][Cooking Recipes]]
 ** [[file:cryptography.org][Cryptography]]
+** [[file:game-mastering.org][Game Mastering]]
 ** [[file:handmade-hero.org][Handmade Hero]]
 ** [[file:javascript.org][Javascript]]
 ** [[file:linux.org][Linux]]
