@@ -275,4 +275,31 @@ Why? => Reduces interfacing with the Windows api's to a minimum!
 C doesn't have function overloading. [[https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createdibsection][CreateDIBSection]] only understand what type to give back once it
 gets passed the arguments, so the pointer's data type is unknown.
 
-* TODO Day 004 - Animating the Backbuffer
+* Day 004 - Animating the Backbuffer
+** [[https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc][VirtualAlloc]]
+Using ~StretchDIBits~, we don't need ~CreateDIBSection~, since we can create the memory ourselves. The
+memory is allocated using the Windows allocater function in stead of ~malloc~, since you avoid going
+through some of the C runtime library.
+
+** Storing pixels in memory
+RGB in memory is represented with 4 bytes, in stead of 3. It's more efficient to retrieve the memory
+using 4 bytes, which why the colors are represented with an extra empty byte.
+
+| Memory                    | RR GG BB xx |
+| Loaded in (little endian) | xx BB GG RR |
+| Microsoft preference      | xx RR GG BB |
+| Memory                    | BB GG RR xx |
+
+So when loading in RGB colors in memory on Microsoft, BB and RR need to swapped, so they are in the
+correct order when looking on the registry.
+
+Drawing the pixels on the screen is "as easy" is directly modifying the colors for pixels in
+memory. The UpdateWindow takes care of actually putting the bitmap onto the window.
+
+** [[https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea][PeekMessage]]
+Changing from ~GetMessage~ is important, since it waits for an actual message to come by, which means
+that our program doesn't loop during those "waiting times". ~PeekMessage~ on the other hand just
+checks if something is in the queue and immediately return the event if there is something that
+needs to be handled.
+
+* TODO Day 005 - Windows Graphics Review
