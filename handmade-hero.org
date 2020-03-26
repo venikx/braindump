@@ -281,6 +281,8 @@ Using ~StretchDIBits~, we don't need ~CreateDIBSection~, since we can create the
 memory is allocated using the Windows allocater function in stead of ~malloc~, since you avoid going
 through some of the C runtime library.
 
+Free memory via [[https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualfree][VirtualFree]].
+
 ** Storing pixels in memory
 RGB in memory is represented with 4 bytes, in stead of 3. It's more efficient to retrieve the memory
 using 4 bytes, which why the colors are represented with an extra empty byte.
@@ -302,4 +304,11 @@ that our program doesn't loop during those "waiting times". ~PeekMessage~ on the
 checks if something is in the queue and immediately return the event if there is something that
 needs to be handled.
 
-* TODO Day 005 - Windows Graphics Review
+* Day 005 - Windows Graphics Review
+Mainly used to review the week + clean up code.
+- Global variables get bundled into a struct ~win32_offscreen_buffer~
+- Only create the back buffer once, by moving it out of ~WM_SIZE~
+- ~const~ is useless and doesn't exist in the compiler, because it can't know for sure if such
+  variable won't be mutated
+
+* Day 006 - Gamepad and Keyboard Input
