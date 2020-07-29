@@ -29,9 +29,3 @@ const Toggler = () => (
 )
 #+END_SRC
 
-[[file:200709-jefferson-al-jooo.org][Jefferson Al Jooo]]
-
-* bla
-BLa bla bla cite:ahrens2017how
-
-cite:ahrens2018how

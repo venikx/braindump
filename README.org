@@ -1,7 +1,0 @@
-#+TITLE: Braindump
-#+AUTHOR: venikx
-#+STARTUP: content, indent
-
-* What is this madness?
-A massive personal, educational notes dump when studying several topics,
-using different media forms: books, blog posts, videos, code snippets, ...
