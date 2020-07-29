@@ -1,0 +1,5 @@
+#+TITLE: Software Development
+
+* Recovering Developer - Sad State of Software Development
+- [[https://www.youtube.com/watch?v=pW-SOdj4Kkk][Jonathan Blow - Preventing the Collapse of Civilization]]
+- [[https://www.youtube.com/watch?v=kZRE7HIO3vk][The Thirty Million Line Problem]]

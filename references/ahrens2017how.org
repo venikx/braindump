@@ -1,0 +1,10 @@
+#+TITLE: Ahrens, S.'s "How to take smart notes : one simple technique to boost writing, learning and thinking-- for students, academics and nonfiction book writers"
+#+ROAM_KEY: cite:ahrens2017how
+#+CREATED: [2020-07-06 Mon 17:41]
+#+MODIFIED: [2020-07-06 Mon 17:41]
+
+- tags :: Some-Link
+
+Testing
+
+* Notes

@@ -1,0 +1,5 @@
+#+TITLE: Getting Things Done
+
+GTD is a [[file:20200510233851-productivity.org][productivity]] system created by David Allen, nicely summarized by [[https://hamberg.no/gtd/][GTD in 15 minutes]].
+
+Emacs' [[file:20200510234407-org_mode.org][org-mode]] supports the techniques as shown by [[http://doc.norang.ca/org-mode.html][Org Mode - Organize Your Life in Plain Text!]].

@@ -1,27 +1,20 @@
 #+TITLE: Tattoos
-#+AUTHOR: venikx
-#+STARTUP: content, indent
 
 * Artists
-** Helsinki, Finland
-*** [[http://www.prettyinink.fi/][Pretty Ink]]
+** [[file:20200512225230-finland.org][Finland]]
+*** [[http://www.prettyinink.fi/][Pretty Ink]] (gaming)
 *** [[http://ilarimusta.com/][Ilari Musta]]
 *** [[http://www.krunikanleima.fi/portfolio_page/jesse-lahtinen/?lang=en][Jesse Lahtinen]] (traditional)
-
-** Dublin, Ireland
+** [[file:20200512225906-ireland.org][Ireland]]
 *** [[https://publicinsta.com/user/matsy__][Matthew Larkin]]
-
-** Valdagno, Italy
+** [[file:20200512230002-italy.org][Italy]]
 *** [[https://publicinsta.com/user/samy_pimpyourbody_tattoo][Samantha Pozza]]
-
-
 * Inpiration
 ** Gaming
 *** [[https://publicinsta.com/hashtag/crashbandicoottattoo][Crash Bandicoot]]
 - [[https://publicinsta.com/media/Bx-ElYKi-vq][Crash Bandicoot, with Aku Aku and bombs]]
 - [[https://publicinsta.com/media/BwIU9rsFc1q][Aku Aku]]
 - [[https://publicinsta.com/media/BvNWF10FeGp][Aku-Aku, Uka-Uka mix]]
-
 *** [[https://publicinsta.com/hashtag/kingdomheartstattoo][Kingdom Hearts]]
 - [[https://publicinsta.com/media/B0OpXGbFBc6][Little Heathless]]
 - Some X-blade version, not sure which one yet

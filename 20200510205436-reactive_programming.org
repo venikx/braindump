@@ -1,0 +1,11 @@
+#+TITLE: Reactive Programming
+
+* Resources
+- [[https://gist.github.com/staltz/868e7e9bc2a7b8c1f754][The introduction to Reactive Programming you've been missing]]
+- [[https://www.learnrxjs.io/][Learn RxJS]]
+- [[https://rxjs-dev.firebaseapp.com/guide/overview][Official RxJS Docs]]
+
+* ~switchMap~
+- composition via closures
+- network cancellation built-in
+- automatica promise conversion

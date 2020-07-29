@@ -1,85 +1,10 @@
-#+TITLE: Web Development
-#+AUTHOR: venikx
-#+STARTUP: content, indent
+#+TITLE: Servers
 
-- [[file:javascript.org][wiki: Javascript]]
-
-* Domains
-are text-based labels for humans to remember the website rather than the IP addresses.
-The *DNS (Domain Name System)* maps the IP addresses to the domain, similar to a
-phonebook.
-
-The DNS is built upon layers of caches. Each computer has their own local cache, while
-your /LAN (Local Area Network)/ has their own cache and most of the popular domains are
-resolved when it searches into the /ISP's (Internet Service Provider)/ cache.
-
-These can caches can be poisened, when a DNS provider gets attacked and known websites
-get redirected to other IP addresses without having an impact on the domain name.
-That's why /HTTPS/ is so important, it requires a handshake.
-
-Use the ~ping~ command to check if certain servers and/or DNS servers are down or not.
-Typically most websites respond to ~ping~, but it's not a requirement.
-
-Use the ~traceroute~ command to illustrate the path and time it takes to reach a certain
-server by jumping from server to server. The information from ~traceroute~ is sent via
-/ICMP Internet Control Message Packet/.
-
-** Setup
-via gandi, namecheap, whatever...
-
-The *A record* maps a name to one or more IP addresses, when the IP are known and stable. The *CNAME
-record* maps a name to another name. It should only be used when there are no other records on that
-name. [[https://support.dnsimple.com/articles/differences-between-a-cname-alias-url/][Difference between A and CNAME records]]
-
-Add two A-record DNS's of type ~www~ and type ~@~ to point to the IP of the VPS. It might take a while,
-before the DNS records are settled.
-
-* Databases
-Relational database are faster, when you are running queries on your data. If you want to do that
-with a non-relational database you'd need to get the data, parse it, then send it. Really think
-about what kind of data you are storing, before chosing a database.
-
-- relational :: data that related to something else, which needs ~SQL~
-- non-relational :: document(key)-value store, which doesn't need ~SQL~
-
-Data-in, data-out probably favors a non-relational database. Writing and reading is super fast,
-since you can just dump the whole dataset in there.
-
-** Best-practices
-- Back up database
-- Use a strong root password
-- Don't expose the database outside the network
-- Sanitize your SQ
-* Nodejs
-A C++ application, which embeds the V8 engine. The V8 engine is the Chrome javascript interpreter.
-Node continuously checks the "event loop" on each tick, searching for new tasks. As soon soon as the
-tasks are done, node exits.
-
-Node is single-threaded, but tasks can be scheduled to be performed later, which avoids blocking IO.
-
-1. Reads the file + dependencies
-2. Executes synchronous tasks
-3. Executes asynchronous tasks as soon as they are ready by looking at the event loop
-
-** Install
-The version on Ubuntu servers might be running on older version of node that you
-might expect, be mindful of that!
-~$ sudo apt install nodejs npm~
-~$ sudo ln -s /usr/bin/nodejs /usr/bin/node~
-
-*** [[https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally][Resolving EACCES permissions errors when installing packages globally]]
-The easiest way is to install node and npm via the [[https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-version-manager-to-install-nodejs-and-npm][nvm (Node version manager)]], but there are othher
-options too.
-
-** Express
-- [[https://www.amazon.com/dp/1074005309/?tag=nybblr08-20][Functional Design Patterns for Express.js]]
-
-* Servers
 - Dedicated servers :: own server, where you own the hardware.
 - VPS (Virtual Private Server) :: own a little chunk of a dedicated server own by someone else (AWS,
      Rackspace, Digital Ocean).
 
-** Login
+* Login
 ~$ ssh root@$SERVER_IP~
 
 Don't confirm sending the identity to a server, when you've already made sure the
@@ -90,7 +15,7 @@ which might mean your server has been compromised. Sending yes, adds key to
 Use ~htop~ to check out the process monitor and see which process might be hogging the
 CPU.
 
-** VPS
+* VPS
 1. Update + upgrade the server
 2. Create a new user (you shouldn't be doing things with root)
 #+BEGIN_SRC sh
@@ -122,7 +47,7 @@ to get into the server via a password. That's why disabling password login for t
 ~$ sudo vi /etc/ssh/sshd_config~, put ~PasswordAuthentication no~ and ~PermitRootLogin no~, then restart
 the daemon ~$ sudo service sshd restart~.
 
-** Setup
+* Setup
 - [[http://www.fail2ban.org/wiki/index.php/Main_Page][fail2ban]]
 - [[https://www.charlesproxy.com/][Charles proxy]]
 
@@ -175,7 +100,7 @@ Change the routes in the Nginx config to serve the port your server is running o
 *** Watching logs of the authentication requests
 ~$ sudo tail -f /var/log/auth.log~
 
-** Security
+* Security
 *** Firewalls
 monitors and controls incoming and outgoing network traffic. It acts as a barrier between two
 systems by blocking of ports.
@@ -267,7 +192,7 @@ can be achieved via ~cron~ jobs. Check out [[https://crontab.guru/][crontab guru
 *** Audits
 Multiple ways to audit the security of the website via [[https://www.ssllabs.com/ssltest/analyze.html?d=mdm.famoco.com&latest][SSL Labs]], the chrome dev tools.
 
-** Performance
+* Performance
 *** ~gzip~
 is a widely adopted compression format. Compression findrepeated patterns and
 shortens them by some arbitrary code.
@@ -305,16 +230,3 @@ cache" is that it's possible that one user caches the request for another user.
          proxy_pass http://127.0.0.1:3001/slowfile;
    }
    #+END_SRC
-
-* Web sockets
-is a persistent, long running connection where the server and client can react to each other in
-"real-time".
-
-We have to tunnel the websocket through Nginx, so it can do cache control, set headers, etc. In
-theory you could hit your nodejs server directly, but it's not a best practice and it would be a lot
-more work.
-
-#+BEGIN_SRC nginx
-proxy_set_header Upgrade $http_upgrade
-proxy_set_header Connection "upgrade"
-#+END_SRC

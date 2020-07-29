@@ -1,6 +1,4 @@
-#+TITLE: The C Programming Language
-#+AUTHOR: venikx
-#+STARTUP: content, indent
+#+TITLE: C Programming Language
 
 - [[https://github.com/fffaraz/awesome-cpp][awesome-cpp (github)]]
 - [[https://www.youtube.com/watch?v=443UNeGrFoM][How Eskil Steenberg programs C]]

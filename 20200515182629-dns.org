@@ -1,0 +1,30 @@
+#+TITLE: Domains
+
+* What?
+Domains are text-based labels for humans to remember the website rather than the IP addresses.
+The *DNS (Domain Name System)* maps the IP addresses to the domain, similar to a
+phonebook.
+
+The DNS is built upon layers of caches. Each computer has their own local cache, while
+your /LAN (Local Area Network)/ has their own cache and most of the popular domains are
+resolved when it searches into the /ISP's (Internet Service Provider)/ cache.
+
+These can caches can be poisened, when a DNS provider gets attacked and known websites
+get redirected to other IP addresses without having an impact on the domain name.
+That's why /HTTPS/ is so important, it requires a handshake.
+
+Use the ~ping~ command to check if certain servers and/or DNS servers are down or not.
+Typically most websites respond to ~ping~, but it's not a requirement.
+
+Use the ~traceroute~ command to illustrate the path and time it takes to reach a certain
+server by jumping from server to server. The information from ~traceroute~ is sent via
+/ICMP Internet Control Message Packet/.
+* Get your own
+via gandi, namecheap, whatever...
+
+The *A record* maps a name to one or more IP addresses, when the IP are known and stable. The *CNAME
+record* maps a name to another name. It should only be used when there are no other records on that
+name. [[https://support.dnsimple.com/articles/differences-between-a-cname-alias-url/][Difference between A and CNAME records]]
+
+Add two A-record DNS's of type ~www~ and type ~@~ to point to the IP of the VPS. It might take a while,
+before the DNS records are settled.

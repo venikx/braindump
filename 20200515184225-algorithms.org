@@ -1,6 +1,4 @@
 #+TITLE: Algorithms
-#+AUTHOR: venikx
-#+STARTUP: content, indent
 
 * Computational Complexity
 - Big O Notation $O$ :: worst-case scenario (upper bound)

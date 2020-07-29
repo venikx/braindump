@@ -1,6 +1,4 @@
 #+TITLE: Handmade Hero
-#+AUTHOR: venikx
-#+STARTUP: content, indent
 
 * Resources
 ** Books

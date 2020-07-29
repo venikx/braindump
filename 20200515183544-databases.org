@@ -1,0 +1,17 @@
+#+TITLE: Databases
+
+Relational database are faster, when you are running queries on your data. If you want to do that
+with a non-relational database you'd need to get the data, parse it, then send it. Really think
+about what kind of data you are storing, before chosing a database.
+
+- relational :: data that related to something else, which needs ~SQL~
+- non-relational :: document(key)-value store, which doesn't need ~SQL~
+
+Data-in, data-out probably favors a non-relational database. Writing and reading is super fast,
+since you can just dump the whole dataset in there.
+
+* Best-practices
+- Back up database
+- Use a strong root password
+- Don't expose the database outside the network
+- Sanitize your SQ

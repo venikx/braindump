@@ -1,8 +1,6 @@
-#+TITLE: Cooking recipes
-#+AUTHOR: venikx
-#+STARTUP: content, indent
+#+TITLE: Cooking Recipes
 
-* Flemish Beef Stew with fries (Stoofvlees met frieten)
+* Stoofvlees (Flemish Stew)
 ** Ingredients (4 people)
 | Quantity       | Ingredient                         |
 |----------------+------------------------------------|
@@ -37,6 +35,3 @@
 1. Heat fries at 140 C, but don give them a yellow color
 2. Cool them down
 3. Heat again at 180 C untill golden brown
-
-* Chicken Fajitas with bell peppers
-...

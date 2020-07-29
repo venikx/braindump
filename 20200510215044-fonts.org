@@ -1,0 +1,7 @@
+#+TITLE: Fonts
+
+* Guidelines
+1. Don't use similar fonts
+2. Not more than three, preferably two
+3. One display, one sans-serif.
+   One serif, one sans-serif.

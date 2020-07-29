@@ -1,5 +1,4 @@
-#+TITLE: Linux
-#+AUTHOR: venikx
+#+TITLE: UNIX
 #+STARTUP: content, indent
 
 - [[https://www.amazon.com/Unix-Programming-Environment-Prentice-Hall-Software/dp/013937681X][The UNIX Programming Environment]]

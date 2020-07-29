@@ -1,0 +1,48 @@
+#+TITLE: Ahrens, S.'s "How to take smart notes : one simple technique to boost writing, learning and thinking-- for students, academics and nonfiction book writers"
+#+ROAM_KEY: cite:ahrens2018how
+#+CREATED: [2020-07-09 Thu 15:28]
+#+MODIFIED: [2020-07-09 Thu 15:28]
+
+* Annotations
+  :PROPERTIES:
+  :Custom_ID: ahrens2018how
+  :URL:
+  :AUTHOR: Ahrens, S.
+  :NOTER_DOCUMENT: ~/Documents/pdfs/sample.pdf
+  :NOTER_PAGE: 1
+  :END:
+** Jeff is een lelijke meneer
+:PROPERTIES:
+:NOTER_PAGE: (1 . 0.17573221757322174)
+:END:
+** Notes for page 1
+:PROPERTIES:
+:NOTER_PAGE: (1 . 0.21120689655172412)
+:END:
+
+
+** Lelelijke bat muts
+:PROPERTIES:
+:NOTER_PAGE: 1
+:END:
+
+** Jefffering
+:PROPERTIES:
+:NOTER_PAGE: (1 . 0.15086206896551724)
+:END:
+** Loolling away
+:PROPERTIES:
+:NOTER_PAGE: (1 . 0.15517241379310345)
+:END:
+** Skeleton
+*** Highlight on page 1
+:PROPERTIES:
+:NOTER_PAGE: (1 . 0.16961266666666666)
+:END:
+**** Contents
+t. And more text. And more text.
+And more text. And more text. And more text. And more text. And more
+text. And more text. Boring, zzzzz. And more text. And more text. And
+more text. And more text. And more
+**** Comment
+Nee uw moeder

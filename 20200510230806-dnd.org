@@ -1,8 +1,13 @@
-#+TITLE: Tips for being a Game Master
-#+AUTHOR: venikx
-#+STARTUP: content, indent
+#+TITLE: Dungeons & Dragons
 
-* Note taking
+* Tools
+- https://www.dungeonographer.com/
+
+* Dungeon Master Inspiration
+- [[https://www.youtube.com/watch?v=MFCzwiqlnCE&list=PLz2TUw__7qw7qNmQMgFckACCt4RPl8QCx][DM 101 - Sherlock Hulmes]]
+- [[https://www.youtube.com/user/mcolville/playlists][Matthew Colville]]
+
+* Taking Notes
 ** Cheatsheets
 *** NPC names
 *** NPC motivations
