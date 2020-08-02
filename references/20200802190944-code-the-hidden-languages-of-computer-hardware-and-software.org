@@ -6,5 +6,6 @@
 * Metadata
 ** Author: [[file:../20200802191035-charles-petzold.org][Charles Petzold]]
 ** Source: https://www.goodreads.com/book/show/44882.Code?ac=1&from_search=true&qid=3kG0Pa74rH&rank=1
+** Reason: It's kind of a light introduction to Computer Science, while [[file:20200802191512-computer-systems-a-programmer-s-perspective.org][Computer Systems: A Programmer's Perspective]] is a lot more technical.
 * Ideas
 * Highlights

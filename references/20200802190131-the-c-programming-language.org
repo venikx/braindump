@@ -6,5 +6,6 @@
 * Metadata
 ** Author: [[file:../20200802190756-brian-w-kernighan.org][Brian W. Kernighan]]
 ** Source: https://www.goodreads.com/book/show/515601.The_C_Programming_Language?ac=1&from_search=true&qid=5udtozFqXZ&rank=1
+** Reason: [[file:../20200803000911-handmade-network.org][Handmade Network]] considers it one of the best introductary material related to C
 * Ideas
 * Highlights

@@ -4,3 +4,4 @@
 
 * Completed [[file:../../references/20200802173245-how-to-take-smart-notes.org][How to take Smart Notes]]
 * Started reading [[file:../../references/20200802190944-code-the-hidden-languages-of-computer-hardware-and-software.org][Code: The Hidden Languages of Computer Hardware and Software]]
+* Bought [[file:../../references/20200802191512-computer-systems-a-programmer-s-perspective.org][Computer Systems: A Programmer's Perspective]]
