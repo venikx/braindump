@@ -1,0 +1,10 @@
+#+TITLE: Code: The Hidden Languages of Computer Hardware and Software
+#+ROAM_TAGS: book reading
+#+CREATED: [2020-08-02 Sun 19:09]
+#+MODIFIED: [2020-08-02 Sun 19:09]
+
+* Metadata
+** Author: [[file:../20200802191035-charles-petzold.org][Charles Petzold]]
+** Source: https://www.goodreads.com/book/show/44882.Code?ac=1&from_search=true&qid=3kG0Pa74rH&rank=1
+* Ideas
+* Highlights

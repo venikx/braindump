@@ -3,3 +3,4 @@
 #+MODIFIED: [2020-07-01 Wed 17:55]
 
 * Completed [[file:../../references/20200802173245-how-to-take-smart-notes.org][How to take Smart Notes]]
+* Started reading [[file:../../references/20200802190944-code-the-hidden-languages-of-computer-hardware-and-software.org][Code: The Hidden Languages of Computer Hardware and Software]]
