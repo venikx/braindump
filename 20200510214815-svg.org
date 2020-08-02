@@ -1,5 +1,0 @@
-#+TITLE: SVG
-
-* Resources
-- [[https://jakearchibald.github.io/svgomg/][SVGOMG]]
-- [[https://css-tricks.com/masking-vs-clipping-use/][Masking vs Clipping Usage]]

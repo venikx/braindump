@@ -1,5 +1,0 @@
-#+TITLE: CSS
-
-* Resources
-- [[https://24ways.org/2016/css-writing-modes/][Writing Modes]]
-- [[https://bennettfeely.com/clippy/][Clippy]]

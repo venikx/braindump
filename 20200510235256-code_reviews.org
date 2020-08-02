@@ -1,4 +1,0 @@
-#+TITLE: Code Reviews
-
-* Resources
-- [[https://medium.com/@sandya.sankarram/unlearning-toxic-behaviors-in-a-code-review-culture-b7c295452a3c][Unlearning toxic behaviors in a code review culture]]

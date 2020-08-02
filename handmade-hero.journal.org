@@ -1,6 +1,11 @@
 #+TITLE: Handmade Hero
+WARNING: Deprecated! Why? Ever since reading [[file:references/ahrens2017how.org][How to take smart notes]] I consider these notes as fleeting notes and should be either converted into permanent notes.
+Or should be thrown away if I can't turn them into permanent notes.
 
-* Resources
+I still want to keep these "fleeting notes" for now, as I never really had the time to properly go over these and I'm not willing to thrown them away without a proper review.
+These notes probably can be turned into journal entries or something to highlight what I learned or whatever.
+
+* References
 ** Books
 - [[https://www.amazon.com/Mathematics-Programming-Computer-Graphics-Third/dp/1435458869/ref=pd_sim_14_6?_encoding=UTF8&pd_rd_i=1435458869&pd_rd_r=03JCN0ZJNDAT89T9RDWD&pd_rd_w=3Qgen&pd_rd_wg=8Cvny&psc=1&refRID=03JCN0ZJNDAT89T9RDWD][Math for 3D Game Programming and Computer Science]]
 - [[https://www.amazon.com/Primer-5th-Stanley-B-Lippman/dp/0321714113][C++ Primer]]
