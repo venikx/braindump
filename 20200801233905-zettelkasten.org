@@ -1,0 +1,29 @@
+#+TITLE: Zettelkasten
+#+CREATED: [2020-08-01 Sat 23:39]
+#+MODIFIED: [2020-08-01 Sat 23:39]
+
+* Why use Zettelkasten?
+In [[file:references/20200802173245-how-to-take-smart-notes.org][How to take Smart Notes]] the author explains [[file:20200802034132-niklas-luhmann.org][Niklas Luhmann]]'s view on writing
+writing is that writing is a tool to help think, read and come up with
+interesting ideas. It's not the end goal, but a crucial step when creating an
+article, book, video, or whatever.
+
+The notes are written in a bottom-up approach, which results in highlighy
+specific notes, which can be used in multiple different contexts, since they can
+live in perfect isolation.
+
+* The /slip-box/ method
+- Fleeting Notes :: are ideas and thoughts which are not relevant for your
+  current activity. Similarly to GTD it's to prevent losing focus. Don't think
+  too much when writing these.
+- Literature Notes :: are your own thoughts and ideas about books, articles,
+  blog posts, videos, ... along with their bilbiographic reference.
+- Permanent Notes :: are standalone notes and make sense in different potential
+  contexts. The goal of these is develop your own ideas and later on use them
+  when you want to create new content.
+
+* Note linking
+There's no note hierarchy. The notes should be an interlinked web of thoughts.
+The linking of notes with each other is a never-ending process. Permanent notes
+which are useful in one context might be of use at a later point in life in a
+different context.

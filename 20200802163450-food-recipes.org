@@ -1,0 +1,36 @@
+#+TITLE: Food Recipes
+#+CREATED: [2020-08-02 Sun 16:34]
+#+MODIFIED: [2020-08-02 Sun 16:34]
+
+* Stoofvlees (Flemish Stew)
+:PROPERTIES:
+:servings: 4
+:END:
+** Ingredients (4 people)
+| Quantity       | Ingredient                         | Method                |
+|----------------+------------------------------------+-----------------------|
+| 2 big          | onions                             | chopped               |
+|                | butter                             |                       |
+| 1 kg           | beef                               | chopped in big chunks |
+| 2 pinches      | pepper                             |                       |
+| 1 pinch        | salt                               |                       |
+| 2 bottles      | brown beer (Sint Bernardus abt 12) |                       |
+| 2              | thym branches                      |                       |
+| 2              | laurel leafs                       |                       |
+| 1 loaf         | brown bread                        |                       |
+| 2 table spoons | mustard                            |                       |
+| 1 pinch        | vinegar                            |                       |
+| 1 kg           | fries                              |                       |
+|                | mayo                               |                       |
+
+** Instructions
+1. Fry onions (in stew pot)
+2. Fry meat until golden brown + add pepper and salt
+   Move the meat to the step pot
+3. Boil the beer in the meat pan
+   Upon boiling add it to the stew pot
+4. Add laurel and thym
+5. Put a lot of mustard on the loaf of brown bread
+   Add it mustard down on top of the stew
+6. Boil for a minimum of 1.5h on low heat
+7. Cover the pot when the sauce is thick enough to contain the water

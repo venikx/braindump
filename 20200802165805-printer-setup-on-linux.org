@@ -1,0 +1,22 @@
+#+TITLE: Printer Setup on Linux
+#+CREATED: [2020-08-02 Sun 16:58]
+#+MODIFIED: [2020-08-02 Sun 16:58]
+
+* Void Linux
+** Installation
+1. Install the CUPS daemon
+   ~xbps-install -S cups cups-filters~
+2. Install the different printer drivers
+   ~xbps-install -S gutenprint hplip foomatic-db foomatic-db-nonfree~
+3. Run the HP setup (default options are fine)
+   ~hp-setup -i~
+
+** Configuration
+Note: be sure to login to the CUPS web interface via root, not user.
+
+1. Enable the service
+   ~ln -s /etc/sv/cupsd /var/service/~
+2. Navigate to http://localhost:631 and go to Administration >
+   Printers > Add Printer.
+3. Login with username "root" and use the root password.
+4. Find new printers

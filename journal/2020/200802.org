@@ -1,0 +1,6 @@
+#+TITLE: Sunday August 2, 2020
+#+CREATED: [2020-08-02 Sun 17:54]
+#+MODIFIED: [2020-08-02 Sun 17:54]
+
+* Deleted most of my older notes
+* Added [[file:../../20200801233905-zettelkasten.org][Zettelkasten]] as the first ever permanent note

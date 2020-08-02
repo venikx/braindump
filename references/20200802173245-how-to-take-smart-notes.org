@@ -1,0 +1,32 @@
+#+TITLE: How to take Smart Notes
+#+ROAM_TAGS: book
+#+CREATED: [2020-08-02 Sun 17:32]
+#+MODIFIED: [2020-08-02 Sun 17:32]
+
+* Metadata
+** Author: Sönke Ahrens
+** Link: https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes
+* Ideas
+** The quality of written content depends on the amount of writing you have done beforehand.
+** Not needing to use willpower sets you up for success. That's why defining tasks works so well.
+** The goal is to optimize being "in the zone" by getting rid of all the distractions.
+** Don't make yourself dependent on a plan, because it prevents from having different ideas.
+** The focus should be on the content rather than the structure. These byte sized pieces should and can be used in different contexts, which is why they need to be free from too much hierarchy.
+** It's not recommended to re-organize all the notes that you currently have, but gradually transition them, when reaching out for them.
+** The slipbox method combined with the GTD principle can be a powerful tool to unlock "being in the zone".
+** Luhman's book Society of Society (1997) made an impact on different disciplines.
+** Luhman always created a "bilbiographic note" whenever he read an article, book, etc and wrote down ideas that sparked while he was reading those references. Once these reference notes were complete he would check in his slipbox for relevant notes in his own thinking and writing. If they were new ideas he would create a new entry in the slipbox writing down the idea in his own words. It's quite important that writing down any notes should be done with one's own words. You try to keep the original meaning while potentially using it in a different context compared to the original reference.
+** Notes were not linked via a topic, but rather interlinked with each other. It implies that the notes don't have an hierarchy.
+** Gathering notes in this system is done from the bottom, meaning that it's not clear in what context the note might be used, but that's ok. In a later point in life you might be able to assign a different context to the same note.
+** Luhman also used an index note, which acts as an entry point to the spiderweb of networked thoughts.
+** The main purpose of writing notes is thinking, reading and coming up with new and interesting ideas. Writing itself is a crucial step, but it's not the end goal, since it helps us to externalise ideas. We remember more of what we read when we write and think about what we read.
+** A couple steps
+*** In reference back to GTD it's recommended to write fleeting notes. Fleeting notes are any idea or thought that might pop in your mind. Most of the time, these can be discarded during the processing of the notes.
+*** In literature notes, don't try to quote too much, but rather write down with your own thoughts and keep them together with bibliography information.
+*** Permanent notes are the notes that eventually end up into your slipbox and might be references later in a different context. The goal is to create, rather than collect. Think about "collecting" these notes more as a reference material for when you finally want to create something, about a certain topic.
+*** Throw away useless fleeting notes.
+*** Eventually the permanent notes could be consolidated into a rough draft about a topic you feel like writing about, since you have been developing your own ideas in those permanent notes. Now it's only a matter of outputting the notes into creating something new.
+** In what circumstances do I want to "stumble" on the permanent even though at first, I could have completely forgotten I've written the note in the first place? That's kinda the question you should ask yourself when trying to tag a note so you can retrieve it later. It's a good thing tag notes based on the projects you are currently working on rather than basing off on the note in isolation. The goal is to be able to retrieve this in a different and/or potentially unexpected context.
+* Highlights
+** Steve Jobs - Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn’t really do it, they just saw something.
+** John Searle - If you can't say it clearly, you don't understand it yourself.
