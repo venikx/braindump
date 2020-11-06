@@ -1,11 +1,12 @@
-#+TITLE: Computer Systems: A Programmer's Perspective
-#+ROAM_TAGS: book unread
-#+CREATED: [2020-08-02 Sun 19:15]
-#+MODIFIED: [2020-08-02 Sun 19:15]
+#+title: Computer Systems: A Programmer's Perspective
+#+roam_tags: book unread
+#+roam_key: https://www.goodreads.com/book/show/829182.Computer_Systems
+#+created: [2020-08-02 Sun 19:15]
+#+modified: [2020-11-06 Fri 17:15]
 
 * Metadata
-** Author: [[file:../20200802191554-randal-e-bryant.org][Randal E. Bryant]]
-** Source: https://www.goodreads.com/book/show/829182.Computer_Systems?ac=1&from_search=true&qid=XBO6aGfxzv&rank=1
-** Reason: [[file:../20200803000911-handmade-network.org][Handmade Network]] claims it to be an introductory, but complete material on Computer Science, which is something I lack
-* Ideas
+- Author: [[file:../20200802191554-randal-e-bryant.org][Randal E. Bryant]]
+- Source: https://www.goodreads.com/book/show/829182.Computer_Systems
+- Reason: [[file:../20200803000911-handmade-network.org][Handmade Network]] claims it to be an introductory, but complete material on Computer Science, which is something I lack
+* Notes
 * Highlights

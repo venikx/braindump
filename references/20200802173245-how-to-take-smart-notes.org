@@ -1,13 +1,14 @@
-#+TITLE: How to take Smart Notes
-#+ROAM_TAGS: book
-#+CREATED: [2020-08-02 Sun 17:32]
-#+MODIFIED: [2020-08-02 Sun 17:32]
+#+title: How to take Smart Notes
+#+roam_tags: book
+#+roam_key: https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes
+#+created: [2020-08-02 Sun 17:32]
+#+modified: [2020-11-06 Fri 17:05]
 
 * Metadata
-** Author: Sönke Ahrens
-** Link: https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes
-** Reason: Recommended by a colleague when I talked about being more "active" when reading books
-* Ideas
+- Author: Sönke Ahrens
+- Link: https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes
+- Reason: Recommended by a colleague when I talked about being more "active" when reading books
+* Notes
 ** The quality of written content depends on the amount of writing you have done beforehand.
 ** Not needing to use willpower sets you up for success. That's why defining tasks works so well.
 ** The goal is to optimize being "in the zone" by getting rid of all the distractions.

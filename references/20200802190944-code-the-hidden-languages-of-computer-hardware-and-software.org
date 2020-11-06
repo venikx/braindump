@@ -1,11 +1,12 @@
-#+TITLE: Code: The Hidden Languages of Computer Hardware and Software
-#+ROAM_TAGS: book reading
-#+CREATED: [2020-08-02 Sun 19:09]
-#+MODIFIED: [2020-08-02 Sun 19:09]
+#+title: Code: The Hidden Languages of Computer Hardware and Software
+#+roam_tags: book reading
+#+roam_key: https://www.goodreads.com/book/show/44882.Code
+#+created: [2020-08-02 Sun 19:09]
+#+modified: [2020-11-06 Fri 17:15]
 
 * Metadata
-** Author: [[file:../20200802191035-charles-petzold.org][Charles Petzold]]
-** Source: https://www.goodreads.com/book/show/44882.Code?ac=1&from_search=true&qid=3kG0Pa74rH&rank=1
-** Reason: It's kind of a light introduction to Computer Science, while [[file:20200802191512-computer-systems-a-programmer-s-perspective.org][Computer Systems: A Programmer's Perspective]] is a lot more technical.
-* Ideas
+- Author: [[file:../20200802191035-charles-petzold.org][Charles Petzold]]
+- Source: https://www.goodreads.com/book/show/44882.Code
+- Reason: It's kind of a light introduction to Computer Science, while [[file:20200802191512-computer-systems-a-programmer-s-perspective.org][Computer Systems: A Programmer's Perspective]] is a lot more technical.
+* Notes
 * Highlights
