@@ -1,0 +1,191 @@
+#+title: AWS Certified Cloud Practitioner Training 2020
+#+roam_tags: video reading
+#+roam_key: https://www.youtube.com/watch?v=3hLmDS179YE
+#+created: [2020-11-05 Thu 04:21]
+#+modified: [2020-11-07 Sat 18:48]
+
+* Metadata
+- Author: [[file:../20201105025814-freecodecamp.org][FreeCodeCamp]]
+- Source: https://www.youtube.com/watch?v=3hLmDS179YE
+- Reason: Quite a a bit of companies in the Talented network require some sort of AWS experience
+* Notes
+** Cloud Concepts
+*** Advantages
+- Using cloud providers you don't need an upfront cost, but your expenses are variable since you only pay for the current needs
+- The hardware cost is shared between many customers to get really cheap pricing
+- No need to wait multiple days to add new resources
+- Focus on the customers and product, rather than spending money in maintaining servers
+- On-premise servers are local and it's rough to go global
+*** Possible options
+- SaaS is Software as a Service, which is mainly used by customers => service is just maintained
+- PaaS is Platform as a Service, which is mainly used by developers => don't worry about the provisioning of the hardware
+- IaaS is Infrastructure as a Service, which is mainly used by admins => don't worry about data centers and hardware
+** AWS Global Infrastructure
+- A region is isolated by location and has independent power and water supply. One region has at least 2 datacenters (AZ's = Availability Zones).
+- The us-east-1 is the largest and newest region, where you see all of your billing information. For europe this might be ireland
+- Edge Locations are datacenters operated by trusted AWS partners and it has a direct connection connection to the AWS network. The location server requests for CloudFront and Route 53, meaning that requests to either of these services will be routed to the nearest edge location. S3 Transfer Acceleration and API Gateway als use the AWS Edge Network.
+- GovCloud are very specific regions which deal with sensitive data and many us government institutions will require you to deploy you service in that region
+** EC2 Pricing Models
+- On-demand Instances is the default instance and is billed by the time used. Usually these type of instances are great for short-term and unpredictable workloads.
+- Reserved Instances is best for long-term commitments where the usage is predictable or require reserved capacity => possible to "sell" your contract.
+- Spot Instances are designed to have a flexible start and end times or application that can only operate at very low compute costs. AWS can terminate the spot instances at anytime to make room for an on-demand instance.
+- Dedicated Instances is the most expensive as the server isn't shared with other customers (single tenant). Enterprises and large corporations might have security concerns or obligations about the fact they share the same hardware with other companies.
+** Billing and Pricing
+*** Support
+- Basic (free) includes email support for account and billing and 7 trusted advisor checks
+- Developer (20$/month) has email support (within 24h), general guidance (24h) and sytem impaired (12h)
+- Business (100$/month) has tech support via chat (also includes third party support), production system impaired (4h), production system down (1h), All trusted advisor checks
+- Enterprise (15 000$/month) has business critical system down (15min), personal concierge and a technical account manager
+*** Resource groups and tags are used for organizing your services in a group and the tags will show up in the billing
+** Technology Overview
+*** AWS Networking
+- Region is the geographical location of the network
+- VPC logically isolated section of the AWS Cloud where you can launch resources
+- The AZ is the data center in that region (minimum 2)
+- The Route tables decide which subnet should receive the traffic
+- Subnets is a logical partition of an IP network into smaller network (private network)
+- NACLs act as a firewall at the subnet level (example: Block a specific IP address for known abuse)
+- Security Groups acts as a firewall at instance level (for example, allow EC2 instance access on port 22 for SSH) and implicitly denies all traffic
+*** Database Services
+- DynamoDB :: NoSQL *key/value* database
+- DocumentDB :: NoSQL *document* database (MongoDB compatible)
+- RDS (Relational Database Service) :: Supporting engines: MySQL, Postgres, Oracle, Aurora, Microsoft SQL Server
+- Aurora :: *Fully managed* database (3x faster postgres) => expensive
+- Aurora Serverless :: Only runs when you need (like AWS Lambda)
+- Neptune :: Managed *graph* database
+- Redshift :: *Columnar* database => good with huge amounts of data to generate reports or whatever
+- ElastiCache :: *Redis* or *Memcached* service
+*** Provisioning Services
+Allocation or creation fo resources and services to a customer
+- ElasticBeanstalk :: Deploying and scaling web applications (Heroku for AWS)
+- OpsWorks :: Configuration management service using Chef (Ruby) or Puppet. Is this similar to Ansible?
+- CloudFormation :: Infrastructure as code, JSON of YAML => quite powerfull (pretty much anything is possible)
+- AWS Quickstarts :: Pre-made CloudFormation templates provided by AWS or partners
+- AWS Marketplace :: Digital catalogue of independent software vendors (managed EC2 instances)
+*** Computing Services
+- EC2 :: Elastic Compute Cloud => highly configurable server (all services (such as databases) are running on EC2 instances)
+- ECS :: Elastic Container Service comes pre-configured with Docker (Docker as a Service)
+- Fargate :: Define your containers as a task, you only pay for the time and resourced used instead of the EC2 instance itself
+- EKS :: Kubernetes as a Service => all benefits from ECS, but allows you to run Kubernetes, cool to provisioning via terraform
+- Lambda :: Serverless functions => pay by compute time (no server management)
+- ElasticBeanstalk :: Usually not for production purposes, more about putting a development env setup in the cloud
+- AWS Batch :: plans, schedules and executes batch computing workloads using EC2 and also Spot Instances
+*** Storage Services
+- S3 :: Simple Storage Service is an *object* storage
+- S3 Glacier :: like S3 but for archiving and long-term backup
+- Storage Gateway :: hybrid cloud storage and local caching
+- EBS :: Elastic Block Storage is a virtual hard drive in the cloud to attach to one EC2 instance
+- EFS :: Elastic File Storage is a file system which you can attach to multiple EC2 instances at the same time
+- Snowball :: Physically migrate a lot of data from on-premise to AWS => 80TB
+- Snowball Edge :: Better version of snowball => 100TB
+- Snowmobile :: Shipping Container version of snowball => 100PB (kinda a datacenter on wheels)
+*** Business Centric Services
+- Amazon Connect :: Cloud based call center => recording the call and storing them in S3 to pull them through some analytics
+- Workspaces :: Virtual Remote Desktop => Windows and/or Linux Desktops (you need to bring your own lincenses tho)
+- WorkDocs :: Content creation and collaboration services (AWS version of Sharepoint)
+- Chime :: Online meetings, video conferencing and business calling which scales to your needs (Slack)
+- WorkMail :: Managed Business email (Gmail on AWS)
+- Pinpoint :: Use for sending targeted email, sms, push notifications etc
+- SES - Simple Email Service :: Sending emails from your application (fe: confirmation email upon registring) => includes HTML templates
+- QuickSight :: Business Intelligence service where you can connect multiple database sources and quickly visualize with little to no programming => sharing visuals in form of Dashboard
+*** Enterprise Integration (hybrid between on-premise and AWS Cloud)
+- Direct Connect :: A connection from your datacenter to AWS
+- VPN :: A secure (private tunnel) connection to AWS network, either site-to-site vpn or client vpn
+- Active Directory :: Manage directory aware workloads and AWS resources  (Microsoft Active Directory)
+*** Logging Services
+- CloudTrail :: Logs API calls (SDK, CLI) between AWS services (who to blame)
+- CloudWatch Logs :: Performance data about AWS service eg. CPU util, Memory, application logs, lamda logs, ...
+- CloudWatch Metrics :: Represents a time-ordered set of data points, variable to monitor
+- CloudWatch Events :: trigger an event based on a condition
+- CloudWatch Alarms :: trigger an alarm based on a condition
+- CloudWatch Dashboard :: create visualizations based on metrics
+*** Initials
+- IAM :: Identity and Access Management
+- S3 :: Simple Storage Services
+- SWF :: Simple Workflow Service
+- SNS :: Simple Notification Service
+- SQS :: Simple Queue Service
+- SES :: Simple Email Service
+- SSM :: Simple Systems Manager
+- RDS :: Relational Database Service
+- VPC :: Virtual Private Cloud
+- VPN :: Virtual Private Network
+- CFN :: CloudFormation
+- WAF :: Web Application Firewall
+- MQ :: Amazon ActiveMQ
+- ASG :: Auto Scaling Groups
+- TAM :: Technical Account Manager
+- ELB :: Elastic Load Balancer
+- ALB :: Application Load Balancer
+- NLB :: Network Load Balancer
+- EC2 :: Elastic Cloud Compute
+- ECS :: Elastic Countainer Service
+- ECR :: Elastic Container Repository
+- EBS :: Elastic Block Storage
+- EFS :: Elastic File Storage
+- EMR :: Elastic MapReduce
+- EB :: Elastic Beanstalk
+- ES :: Elasticsearch
+- EKS :: Elastic Kubernetes Service
+- MKS :: Managed Kafka Service
+- IoT :: Internet of Things
+- RI :: Reserved Instances
+** Security
+*** Responsibility Model
+- Client are responsible for data and configuration
+- AWS is responsible for hardware, operation of managed services and the global infrastructure
+*** AWS Artifact
+Self-service portal to check on-demand if and how AWS is compliance with a certain something
+*** Amazon Inspector
+Runs a security benchmarks against specifc EC2 instances. It performs both Network and Host checks
+*** AWS WAF
+Protects web applications from common web exploits. Write own rules ALLOW or DENY traffic. USe ruleset from a trusted AWS partner.
+Can be attached to CloudFront or ALB.
+Protect web applications from attacks covered in OWASP Top 10.
+*** AWS Shield
+Managed DDoS protection service to safeguard application running on AWS
+You are already using AWS Shield Standard when routing traffic through Route 53 or CloudFront at no additional charge. Protects you against Network (3), Transport (4) and Application (7) layers.
+
+Shield Advanced: 3000$/year. Protects additional and more sophisticated attacks. Available on Route 53, ELB, AWS Global Accelerator, Elastic IP
+*** Penetration Testing
+is allowed on AWS, but there are some limitations.
+Only permitted on:
+- EC2 instances, NAT Gateways and ELB
+- RDS
+- CloudFront
+- Aurora
+- API Gateways
+- AWS Lambda and edge functions
+- Lightsail Resources
+- Elastic Beanstalk Environments
+*** Amazon Guard Duty
+Intrusion Detection/Protection Service. Monitors network or systems for weird acitivity based on machine learning to analyze CloudTrail Logs, VPC Flow Logs and DNS Logs.
+*** KMS (Key Management Service)
+Create and control the encryption keys used to encrypt the data
+
+- KMS is multi-tenant (hardware security module) => key is stored on fleeting memory
+- Many services are integrated to use KMS to encrypt the data
+- KMS uses Envelope Encryption :: Encrypting both your data and the data key with a master key
+*** Amazon Macie
+Continuously monitors S3 data access acitivity for anomalies and generate detailed alarts for unauthorized access or data leaks
+** Variation Study
+*** AWS Elemtanl MediaConvert
+- Transcodes videos to streaming formats
+- Overlays Images
+- Insert Videos clips
+- Captions Data
+*** SNS (Simple Notification Service) vs SQS (Simple Queue Service)
+- SNS :: Pass Along Messages (ex: PubSub) => HTTP, Email, SMS, ... and generally used for sending plain text emails, webhooks, triggering lambda functions
+- SQS :: Guaranteed Delivery => retains message up to 14 days, delayed tasks, queueing up emails, ...
+*** Inspector vs Trusted Advisor
+- Inspector :: Audits a single EC2 instance
+- TA :: Doesn't autogenerate a report, gives a holistic view of recommendations across multiple services (ex: you should enable MFA on root account)
+*** ALB vs NLB vs CLB
+- ALB :: Layer 7 requests, HTTP and HTTPS traffic, can attach WAF, routing rules more usable
+- NLB :: Layer 4 IP protocol data => TCP and TLS Traffic where extreme performance is required. Capable of handing millions of requests per second while mainting ultra-low latencies
+- CLB :: Layer 4 and 7, deprecated
+*** SNS vs SES
+- SES :: Similar to SendGrid => actual HTML emails and monitor email reputation
+- SNS :: Trigger email notifications. Send notifications to subscribers of topics via multiple protocals
+
+* Highlights
