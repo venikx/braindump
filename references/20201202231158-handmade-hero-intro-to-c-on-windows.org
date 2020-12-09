@@ -1,0 +1,155 @@
+#+title: Handmade Hero - Intro to C on Windows
+#+roam_tags: video
+#+roam_key: cite:muratori_intro_to_c_2014
+#+roam_key: https://hero.handmade.network/episode/intro-to-c
+#+created: [2020-12-02 Wed 23:11]
+#+modified: [2020-12-02 Wed 23:11]
+
+* Metadata
+- Author: [[file:../20201202231800-casey-muratori.org][Casey Muratori]]
+- Reason: I'm interested in understanding how game engines and games work from scratch and I have zero
+  experience with C, so this was the bare minimum of C I would need to follow along with the regular
+  videos.
+* Notes
+** Entry Point
+The entry point is where the initial instructions of a program are executed and where you have access
+to the initial context such as arguments, window instance, ...
+Traditionally Windows calls the C Runtime Library (which comes shipped with all the C compilers) and
+eventually the CRT calls the ~WinMain~ [[https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx][(docs)]], which is the default entry point to execute the
+GUI application. Console applications have ~main~ as their entry point. Currently it's nothing more
+than a convention since you can create both type of applications with either entrypoint in Windows.
+
+The header /windows.h/ needs to be included when using windows specific keywords like ~HINSTANCE~
+and ~OutputDebugStringA~ [[https://docs.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa][(docs)]].
+Microsoft created macros which ran the code in Unicode or ANSI mode depending on the compiler
+flags. Bypass these macros by directly calling the functions to avoid confusion when compiling in a
+different mode. Example: ~OutputDebugString~ => ~OutputDebugStringA~.
+
+#+NAME: win32_handmade.cpp
+#+BEGIN_SRC c
+#include <windows.h>
+
+int CALLBACK WinMain(
+  HINSTANCE hInstance,
+  HINSTANCE hPrevInstance,
+  LPSTR     lpCmdLine,
+  int       nCmdShow)
+{
+  OutputDebugStringA("Some function\n");
+  return 0;
+};
+#+END_SRC
+
+** How does code turn into an executable?
+Code goes through a /compiler/, which spits out ~obj~ files. Together with ~lib~ files (obj files compared
+together to form a group), such as system files, goes through the /linker/, which spits out a
+Windows/Intel executable.
+
+Microsoft defined the layout on disk for the executable file. The /header/ defines the properties of
+the file (such as it being an ~.exe~), the /fixup table/ keeps all the references from where our program
+calls into Windows and the /CPU specific code/ are all the instructions for the CPU.
+
+** How does Windows roughly run an executable?
+Windows loads up the AMD/Intel specific instructions and put into the memory of the machine. The
+missing code where Windows is supposed to patch the memory location with it's own code is found in
+the fixup table. However, Windows doesn't actually reference to it's "real" memory where the Windows
+code is held in memory. The memory address is obfuscated by Windows, since your program can only
+call into it's own /Virtual Memory Address/ assigned by Windows.
+
+** Functions
+A /forward function declaration/ notifies the compiler it's legal to call a function *without* the
+function definition. The build might fail when the implementation of the function could not be found
+during the linking process.
+The /function definition/ is the implementation of the declared function.
+
+During the *compilation* phase the compilers marks the unresolved function definitions.
+During the *linking* phase, the linker will try to find the correct function defintions.
+
+** Disassembly
+Absolutely essential to rudimentary [[https://wordsandbuttons.online/you_dont_have_to_learn_assembly_to_read_disassembly.html][read assemly code]] or [[https://www.youtube.com/watch?v=yOyaJXpAYZQ][Comparing C to machine language - YouTube]].
+Learn to debug problems on a lower level and understand exactly what the processor is doing when executing
+the code.
+
+1. Set a breakpoint
+2. Start in debug mode
+3. Right-click > Go To Disassembly
+
+#+BEGIN_SRC asm
+  ;Test = 255;
+00031718  mov         byte ptr [Test],0FFh
+  ;Test = Test + 1;
+0003171C  movzx       eax,byte ptr [Test]
+00031720  add         eax,1
+00031723  mov         byte ptr [Test],al
+#+END_SRC
+
+Putting values inside locations (variables) does not require the processor to do any calculations.
+Incrementing an ~int~ to existing variables requires the processor to move it closer to the
+processor's *register* to operate on them.
+
+The /EAX/ register is 32-bit wide, which is more than a byte (used for a ~char~). The
+lowest two bits of the /EAX/ can be pulled out via ~al~. The results from pulling the lowest two bits is
+put back into the variable ~Test~.
+
+** Reading/Writing from/to memory is non-trivial
+Accessing memory is slow, due to physics. Imagine a processor with a clock speed of 3,2 GHz, the
+speed of light is \pm 300 000 m/s. The distance a photon is able to travel per second is not far!
+
+\begin{equation}
+d = \dfrac{ \pm 300000 m/s}{3,2Ghz}
+d = \pm 9 cm
+\end{equation}
+
+The memory is about 9-10 cm away from the CPU, implying that the photon is not able to go to the
+memory and back within 1 CPU cycle. CPU's reduce /latency/ by providing a super small cache on the CPU
+itself (thus reducing the distance between CPU and memory).
+
+/Bandwidth/ is bottlenecked by the components and their capability of sending as much stuff down the
+wires per second, which is an easier problem to solve.
+
+** Pointers (heap)
+The ~*~ (star) in front of a variable notifies the compiler to free some memory to store the memory
+location of another variable. The size of that /address/ is the same size as an ~int~ (for x64).
+The ~&~ (ampersand) in front of a variable is the /address operator/, which gives back the address of a
+variable stored in memory.
+
+The address location is the location in the virtual memory, *not* the actual physical memory (only for
+modern day systems). The /virtual memory/ prevents different programs accessing and modifying the same
+piece of memory.
+
+The CPU has a table which secretly maps the virtual memory of programs to the actual place in
+physical memory.
+
+** Stack
+is memory managed by the compiler/OS. Everytime a function gets invoked a new stack is created with
+it's own environment like variables, etc.
+
+Go to *Debug > Memory > Memory 1* and notice how a new stack changes the memory layout close to the
+memory location of the previous stack?
+
+** Endianness
+It's up to the CPU how to interpret/read values which span multiple bytes (such as ~short~, which is
+represented by two bytes). The CPU knows how to add two bytes, to get the representation of a 16
+bits, but there is no hard law on how to store it.
+- little endian :: lowest byte of a value representation first (x86, arm, x64)
+- big endian :: highest byte first (powerpc)
+
+Important to remember the legacy, since some of the software today (like for example the ~.psd~ file
+format is using /big endian/). It's not possible to load big endian data onto a little endian machine,
+unless it passes through some conversion first.
+The modern devices are using /little endian/ so it's generally not something to worry about too much.
+
+** ~struct~'s
+declare a layout in memory, which holds a multitude of basic types as fields, which allows access to
+it's member via the name of the struct.
+
+The compiler is not constraint to lay each of the fields as compact as possible. A ~char~ might be
+respresented by 4 bytes if the processor if it's optimized to access values on 4 bytes boundaries
+(as it might be slower to access a single byte).
+
+** Casting
+Be cautious. Casting values to a *higher* memory size results in garbage values being included.
+Casting values to a *lower* memory size will chop the value, if the value is too big to be represented
+by the low memory size.
+
+* Highlights
