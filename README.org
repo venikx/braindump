@@ -1,0 +1,25 @@
+#+TITLE: Educational notes dump
+#+AUTHOR: AnaRobynn
+#+STARTUP: hideblocks
+
+* What is this madness?
+  A massive personal, educational notes dump when studying several topics,
+using different media forms: books, blog posts, videos, code snippets, ...
+
+* Reminders while studying
+** Avoid thinking too much about results, focus on the process
+   - Use 25/5 Pomodoro Technique
+   - Capture tasks with org-capture
+
+** Procrastination, what is it?
+  - Cue (habit)
+  - Routine (zombie mode)
+  - Reward
+  - Belief
+
+** Stay healthy
+   Eat enough healthy fats (omega-3), use flash cards and try to memorize
+small tasks in a memory palace.
+
+* TODO Folder Structure
+  To be defined.

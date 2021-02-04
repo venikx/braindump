@@ -1,0 +1,215 @@
+#+TITLE: An introduction to Unix
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :unix:cli:bash:
+#+STARTUP: hideblocks
+
+* Learning the shell
+** Terminal Emulator
+   Interaction with shell is achieved via a terminal emulator on a graphical interface. The BASH,
+   Bourne Again SHell is an enhanced replacement for sh.
+
+   A typical commands looks like: ~command -options arguments~
+   
+** Navigation
+*** The file system tree
+    Unix always has a single file system tree, even with multiple storage devices. The storage devices
+    can be *mounted* on various point of the tree. 
+    
+*** Navigation commmands
+    | Command      | Result                              |
+    |---------------+--------------------------------------|
+    | ls [...dir]   | prints content of listed directories |
+    | pwd           | print working dir                    |
+    | cd            | change to home dir                   |
+    | cd -          | change to previous dir               |
+    | cd ~user_name | change to home dir of user_name      |
+
+** Exploring the system
+*** A deeper look into ls
+**** Common ls options
+     | Option | Long version | Description                                  |
+     |--------+--------------+----------------------------------------------|
+     | -F     | --classify   | Adds indicator for directories (appends "/") |
+     | -r     | --reverse    | Display results in *reverse* order           |
+     | -s     |              | Sort by *size*                               |
+     | -t     |              | Sort by *time*                               |
+
+**** Closer look to ls -l
+     | Field      | Meaning                                                                     |
+     |------------+-----------------------------------------------------------------------------|
+     | -rw-r--r-- | Acces right to files. The first character indicates the file type. A dash   |
+     |            | means it's a regular file, while a ~d~ stand for directory. The next three  |
+     |            | are the acces rights for the file's onwer. The middle three are for members |
+     |            | of the file owner's group and the last three for the rest.                  |
+     | 1          | Number ooof hard link                                                       |
+     | anarobynn  | File owner's username                                                       |
+     | anarobynn  | File owner's groupname                                                      |
+     | 4096       | Size in bytes                                                               |
+     | 2017-11-01 | Date of last modification                                                   |
+
+*** Determine the file's type
+    Unix embraces everything is a file philosophy. The filename of a file is no indication of what the 
+    file's type is. In order to check the file's type, the command ~file [filename]~ is used.
+    
+*** Reading & Editing plain text files
+    Quickly editing files fits perfectly for vi or nowadays *vim*. The recommended text viewer is
+    *less*, because /less is more/ and it has vim-style navigation.
+  #+BEGIN_SRC shell
+$ less .bashrc
+$ less -F dynamic_file
+$ vi .bashrc
+  #+END_SRC
+  
+*** A guided tour
+    Extra read: [[http://www.pathname.com/fhs/pub/fhs-2.3.pdf][Linux Filesystem Hierarcchy Standard]] 
+    | Directory   | Comments                                                             |
+    |-------------+----------------------------------------------------------------------|
+    | /bin        | Binairies (programs) that must be present to boot and run the system |
+    | /boot       | Contains the linux kernel, initial RAM disk image and the bootloader |
+    | /dev        | The maintained list of devices nodes the kernel understands          |
+    | /etc        | System-wude config files, shell scripts, ...                         |
+    | /lost+found | Usually empty, unless a file system corruption event happened        |
+    | /media      | The mounting point for automatically mounted media                   |
+    | /mnt        | The mounting point for manually mounted media                        |
+    | /root       | Home directory of the root acccount                                  |
+    | /var        | Directory for dynamic data; user email, database files, ...          |
+
+** Manipulating Files and Directories
+   Graphical file managers might be easier for simple tasks, but the command line has power and flexibility. 
+   Plain text is still super powerful! 
+*** Wildcards
+    Using wildcards, also called *globbing* allows us to select filenames based on pattern of characters. 
+    | Wildcard  | Meaning                                 |
+    |-----------+-----------------------------------------|
+    | \*        | Any characters                          |
+    | ?         | Any single character                    |
+    | [group]   | Any character in group                  |
+    | \!        | Not                                     |
+    | [:class:] | Matches any character part of the class |
+
+    A couple examples:
+    | Pattern       | Matches                                                               |
+    |---------------+-----------------------------------------------------------------------|
+    | b*.txt        | All files beginning with b, followed by anything and ending with .txt |
+    | Data???       | Any file beginning with "Data", followed by exact three characters    |
+    | [![:digit:]]* | Any file not beginning with a numeral                                 |
+
+*** cp - Copy Files and Directories
+    - Copying a file/directory into another file/directory: ~cp item1 item2~
+    - Copying files/directories into a directory: ~cp item... directory~
+
+    As always there a couple commonly used options availble:
+    | Option | Meaning                                                                     |
+    |--------+-----------------------------------------------------------------------------|
+    | -a     | Copy the items with their *attributes* (includes ownership and permissions) |
+    | -i     | Prompt user before overwriting files                                        |
+    | -r     | *Recursively* coopy directory and their content                             |
+    | -u     | Copies files that don't exist or are *updated* (newer)                      |
+    | -v     | Display information message (*verbose*)                                     |
+
+*** mv - Move and Rename Files 
+    Similar to ~cp~, except the original file or directory stops existing.
+    
+*** rm - Remove Files and Directories
+    Similar options as ~cp~ and ~mv~. Remove has an extra option ~-f~, which ignores nonexistent files and doesn't
+    prompt for deletion.
+    *USEFUL TIP*: Verify hazardous commands, like ~rm~, with ~ls~, before running them.
+    
+*** ln - Create Links
+**** Hard Links
+     Every file the system is a hard link, which gives a name to a certain data part on the disk (*inode*). 
+     - Creating a hard link of a file will create an additional directory entry for a file.  
+     - Deleting a hard link removes the link, but the file continues to exist!
+
+     Run ~man stat~ to check out what other properties, aside from name and inode, define a file. 
+
+     Hard links have two important limitations:
+     1. A hard link can't ref a file outside it's own file system (not same disk partition) 
+     2. No reference to a directory
+
+#+BEGIN_SRC shell
+# Create a hard link
+$ ln file link
+# Display inodes (if inode number match => hard link
+$ ls -li  
+#+END_SRC
+
+**** Symbolic Links
+    Symbolic links creates a special file type, which contains a text pointer to the reference file. Removing
+    the original file will result in broken links (usually displayed in red). 
+    
+    Relative symlinking is prefered as it allows a tree containing symlinks to be renamed or moved as a whole without
+    breaking the links. The file the symlink points to is relative to the symlink's location.
+
+#+BEGIN_SRC shell
+$ ln -s file link
+#+END_SRC
+
+** Introducing commands
+   A command can be a multitude of things:
+   1. *Executable programs*, such as /compiled binaries/ written in C and C++ 
+      or /scripting language/ (Python, Perl,...)
+   2. *Alias* is command built from other commands
+   3. *Shell functions*
+*** Creating own commands with alias
+    It's preferable to no alias an existing command. If such non-existing command is found it's perfectly fine
+    to alias is via ~alias name='command1; command2; ...'~. 
+    Aliasing commands in the CL vanishes when the shell session ends. (sad face)
+    
+*** which - displays the executable's location
+*** help - gets help from shell built-ins
+ #+BEGIN_SRC shell
+$ help cd
+# cd: cd [-L|[-P [-e]]] [dir]
+# Note: Square brackets indicate optional items. Vertical bars indicate mutually exclusive items
+#+END_SRC
+*** man - display a programs manual page
+    The manual is seperated into 8 sections:
+    1. User commands
+    2. Programming interfaces for kernel system calls
+    3. Programming interfaces to the C library
+    4. Special files such as device nodes and drivers
+    5. File formats
+    6. Games and amusements such as screen savers
+    7. Miscellaneous
+    8. System administration commands
+    
+ #+BEGIN_SRC shell
+$ man 1 cd
+# Displays the manual page of the cd command when searching in section 1
+#+END_SRC
+
+   The manual is intended as a reference documentation and not as a tutorial. The structure makes no senser for a
+   new user. It's very accurate and complete while being concise. It's a challenge to understand and read it.
+   
+** Redirection
+*** Redirecting standard input/output
+    Remember this UNIX theme "Everything is a file"?
+    Programs such as ~ls~ send the results to a special file called /standard output (stdout)/. The status messages 
+    are written to /standard error (stderr)/. By default both of those files are linked to the screen and not saved
+    into a disk file.
+    
+#+BEGIN_SRC shell
+  # Redirect the stdout to a .txt (will override, use >> if appending behaviour is required
+  $ ls -l /usr/bin > ls-output.txt
+
+  # Redirecting stderr (0: input, 1: output, 2: error and & for output & error)
+  $ ls -l /bin/usr 2> ls-error.txt
+#+END_SRC
+
+**** Disposing unwanted output
+     Redirecting output to ~/dev/null~ will dispose the output. That special file is a system device called a
+     /bit bucket/, which accepts input and does nothing.
+    =I'm sending your comments to /dev/null! :)= 
+
+    
+
+
+* The bash life-cycle
+1. Login to Linux (+ verify identity)
+2. Bash executes initial commands for profile
+3. Bash enters a loop
+The loop breaks by typing ~exit~, ~logout~ or hitting ~C-d~.
+  - Read line
+  - Parse the line, expand braces
+  - Execute the command

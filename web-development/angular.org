@@ -1,0 +1,142 @@
+#+TITLE: Angular X
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :javascript:angular:ngx:
+#+STARTUP: hideblocks
+
+* Dependency Injection
+** Why? 
+   A __data service__ abstracts away the data, which implies the component 
+   only cares about the data provided by the service whatever the implementation 
+   is (hardcoded, during tests, network requests,...).  
+
+** How?
+   The provide is a `token` (used in constructors to ask for DI) and the 
+   implementation of the class is defined with `useClass`, which is extremely valuable
+   when testing components.
+   1. Type
+   #+BEGIN_SRC javascript
+     // component declaration
+     @Component({
+         moduleId: module.id,
+         selector: 'list-component',
+         template: ` ... `,
+         providers: [
+             { provide: MyService, useClass: MyService }
+         ]
+     })
+
+     // add in constructor
+     constructor(private service: MyService){}
+   #+END_SRC
+   1. Object
+   #+BEGIN_SRC javascript
+     // component declaration
+     @Component({
+         moduleId: module.id,
+         selector: 'list-component',
+         template: ` ... `,
+         providers: [
+             { provide: 'mimimi', useClass: MyService }
+         ]
+     })
+
+     // inject in the constructor 
+     constructor(@Inject('mimimi') private service){}
+   #+END_SRC
+   
+** Factory Providers?
+  Abstract away certain dependencies (some sort of IoC, inversion of control) 
+  
+  Example:
+  Injecting a service without being dependent on Angular's DI
+  #+BEGIN_SRC javascript
+        // logger
+        export class LogDebugger {
+            constructor(private enabled: boolean) {}
+
+            debug(message) {
+                if (this.enabled) {
+                    console.log(`DEBUG: ${message}`);
+                }
+            }
+        }
+
+        // providers
+        providers: [
+            DataService,
+            ConsoleService,
+            {
+                provide: LogDebugger,
+                useFactory: (consoleService, secondService) => {
+                    return new LogDebugger(consoleService, true);
+                },
+                // order matters here
+                deps: [ConsoleService, SecondService]
+            }
+        ] 
+  #+END_SRC
+  
+** ~@Injectable()~
+   is needed, because Typescript only emits metadata when there is at least one
+   decorator on a class. Angular needs those type annotations when transpiled to 
+   ES5 for Dependency Injection to work. 
+   
+* Components
+** Pipes
+*** How?
+    Under the hood a poor man's pipe can be implemented with a reduce.
+    #+BEGIN_SRC javascript
+      const person  = {
+          name: 'ana robynn'
+      };
+
+      const filters = {
+          'deslugify': x => x.replace('-', ' '),
+          'uppercase': x => x.toUpperCase()
+      };
+
+      // => becomes ANA ROBYNN
+      const input    = 'name | deslugify | uppercase'; 
+      // [name, deslugify, uppercase]
+      const sections = input.split('|').map(x => x.trim()); 
+      const ref      = person[sections[0]];
+      const output   = sections
+          .slice(1)
+          .reduce((prev, next) => {
+              if (filters[next]) {
+                  return filters[next].call(null, prev);
+              }
+              return prev;
+          }, ref);
+    #+END_SRC
+    
+*** Async Pipe
+    Each *async pipe* subscribes to an observable and will each have there own
+    execution flow (risk of multiple network requests).
+
+    => ReplaySubject
+    Acts as an observer for the pipe and subscribes to the one network call.
+   #+BEGIN_SRC javascript
+     @Component({
+         template: `
+     <h2>{{(contact$ | async).name}}</h2>
+     <img [src]="(contact$ | async).image">
+     `
+     })
+     export class ContactComponent {
+         contact$ = new BehaviorSubject({name: 'Loading...', image: ''});
+         constructor() {
+             const api = 'https://starwars-json-server-ewtdxbyfdz.now.sh/';
+             route.params
+                 .map((p: any) => p.id)
+                 .switchMap(id => http.get(api + 'people/' + id)
+                     .map(res => res.json())
+                     .map(contact => 
+                          Object.assign({}, contact, {image: api + contact.image}))
+                 )
+             // all incoming values are passed on to all it's subscribers
+                 .subscribe(this.contact$); 
+         }
+     }  
+   #+END_SRC
+

@@ -1,0 +1,201 @@
+#+TITLE: Introduction to Computer Science using C
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :intro:cs50:c:
+#+STARTUP: hideblocks
+
+* Lecture 1                                           :compiling:luhn:credit:
+** Additional resources
+*** [[file:~/git/organise-me/notes/unix/intro.org][The Linux Command Notes]]
+
+** Notes
+*** Compiling
+   The code is *compiled* by running the bash command `make` which goes through a couple
+   steps:
+   1. *Pre-processing*: Copy-paste the included code from libraries.
+   2. *Compiling*: Transforms source code to assembly code.
+   3. *Assembling*: Assembles the code into machine code.
+   4. *Linking*: Links the different assembled code from you and the included libraries into
+      a program.
+
+*** Command line
+   A couple useful *unix commands*:
+   - `pwd` :: present working directory
+   - `cp -r` :: recursively copy a directory
+   - `rm -rf` :: forced, recursively delete a directory
+
+*** Data types
+   The C-language has a couple of built-in *data types*. An /integer/ (32 bits) can be either
+   negative/positive or only positive when using an `unsigned int` vs an `int`. There is
+   also float and double to represent decimal numbers. /Characters/ (8 bits) can only be
+   represented with single quotes.
+
+** Exercises
+   The *Luhn’s algorithm* can determine if a credit card is valid with the following terms:
+   1. multiply every other digit by 2, starting with the 2nd-to-last digit, then add take
+      the sum of the digits
+   2. add the sum to the sum of the other digits
+   3. if last digit of the total sum is 0, the card is valid
+
+* Lecture 2                                            :strings:crack:caesar:
+** Additional resources
+*** [[https://reference.cs50.net/][CS50 Documentation]]
+*** [[https://en.wikipedia.org/wiki/Dictionary_attack][Dictionary Attack]]                                     :dictionary_attack:
+*** [[https://en.wikipedia.org/wiki/Data_Encryption_Standard][DES - Data Encryption Standard]]                                      :DES:
+
+** Notes
+*** Strings, Arrays
+   A *string in C* is an /array of characters/, terminated by the /null* character/ ~\0~ (0000
+   0000). Therefore strings can be looped over to return each individual character
+   representation in the memory of the computer. An *array* is a contiguous chunk of memory
+   elements of the same type.
+
+*** Entry point ~main()~
+   is a mandatory function in C programs as it defines the entry point of the program.
+
+   #+BEGIN_SRC C
+     // program runs without responding to command line arguments
+     int main(void){}
+
+     // argc :: arguments count, argv[] :: argument vector Trying to access arguments outside
+     // the memory boundary (argc) results in a 'segmentation fault'
+     int main(int argc, string argv[]){}
+   #+END_SRC
+
+*** Cryptography
+   Encrypted data, ciphertext, is a scrambled version of plaintext, original data. A key
+   is used to scramble the data, but the same key is used to unscramble it.
+
+** Exercices
+*** Caesar Cipher
+    is one of the simplest most widely known encryption techniques. Each
+    letter in the plaintext is replaced by a letter with a fixed number of positions down
+    the alphabat.
+
+    \begin{equation}
+      c_i = (p_i + \mathbb{N}) \mod 26
+    \end{equation}
+
+    In order to complete the exercise we should think about two concepts:
+    1. lower case chars have an offset of 97 as their ASCII-value, while capital case chars
+      have an offset of 65
+    2. conversion of the individual characters: ASCII => alphabetical => ASCII
+
+*** TODO Crack (try dictionary-attack)
+    ~crypt~ is a C DES-based (symmetric-key algorithm) function which can encrypt a certain password, by giving
+    it a password and some salt. That means the function returns the same hashed value for
+    a certain password. The salt we need to apply are the first two characters of the
+    hashed password.
+
+    A *brute-force* attack is the easiest to implement and the password is always going to
+    be cracked if there is an infinite amount time and power to crack it.
+
+    A *dictionary-attack* is an attack which tries all passwords from certain list, which is
+    fast when the password is a commonly used one, but if the password isn't in the list
+    it won't be able to crack it.
+
+* Lecture 3                                    :big_O:algorithms:sort:search:
+** Additional resources
+*** [[https://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html][Visualization of sorting algorithms]]                              :visual:
+*** [[https://www.gnu.org/software/gdb/][GDB - GNU Debugger]]                                                :debug:
+
+** Notes
+*** Computational Complexity
+    - Big O Notation $O$ :: worst-case scenario (upper bound)
+    - Big \Omega (Omega) Notation  :: best-case scenario (lower bound)
+    - Big \Theta (Theta) Notation :: worst and best case are the same complexity
+
+**** Constant time $O(1)$
+     The number of operations is always constant. An example of such computational
+     complexity is a simple function, which adds two numbers. Grab a, grab b, add them
+     together and output the result = 4 steps = constant.
+
+     #+BEGIN_SRC C
+       int add_two_nums (int a, int b) {return a + b};
+     #+END_SRC
+
+**** Logarithmic time $O(\log{\,n})$
+**** Lineair time $O(n)$
+     Always takes n operations in the worst case scenario. The following example runs at
+     $O(m)$, because depending on the size of m, worst-case it will run m times.
+
+     #+BEGIN_SRC C
+       for (int i = 0; i < m; i++) { /* body runs in O(1) /* }
+     #+END_SRC
+
+**** Linearithmic time $O(n \log{\,n})$
+**** Quadratic time $O(n²)$
+     could be an example of a nested for-loop, since we have an outer loop which could run
+     m times and have an inner loop which could run m times. The computational complexity
+     is $O(m^2)$.
+
+     #+BEGIN_SRC C
+       for (int i = 0; i < m; i++) {
+         for (int j = 0; j < m; j++) {/* body runs in O(1) /* }
+       }
+     #+END_SRC
+
+*** Basic Algorithms
+    - *Linear search*: sequentially checks each element of a list untill the target value is
+      found. Commonly used for unsorted arrays, very poor performance on big lists. For
+      $n$ elements in a list, it might take $n$ comparisons.
+      \begin{equation}O(n)\end{equation}
+      \begin{equation}\Omega(1)\end{equation}
+
+    - *Binary search*: also known as /logarithmic search/, compares a target value to the
+      middle element of a /sorted array/ and eliminates the other half when it's unequal.
+      Due to the logarithmic nature, it keeps performing well on big arrays.
+      \begin{equation}O(\log{\,n})\end{equation}
+      \begin{equation}\Omega(1)\end{equation}
+
+    - *Insertion sort*: is typically done in-place, by iterating up the array and leaving a
+      sorted list behind. At each array-position, it checks the value against the largest
+      value of the sorted array. If larger, it leaves the element in place. If smaller, it
+      finds the correct index to /insert/ the value.
+      \begin{equation}O(n^2)\end{equation}
+      \begin{equation}\Omega(n)\end{equation}
+
+    - *Bubble sort*: also known as /sinking sort/, compares each pair of *adjacent pairs* and
+      swaps them if they are in the wrong order.
+      \begin{equation}O(n^2)\end{equation}
+      \begin{equation}\Omega(n)\end{equation}
+
+    - *Selection sort*: is simple, but not very performant. Find the *smallest element* in the
+      array and swap that element with first unsorted element in the array.
+      \begin{equation}\Theta(n^2)\end{equation}
+
+*** Recursion                        :factorial:fibonacci:collatz_conjecture:
+    In order to dive into an efficient and general-purpose sorting algorithm, we have to
+    understand the concept of a *recursive function*. A recursive function invokes itself as
+    part of it's execution, also known as the /recursive case/ of a function. A proper
+    recursive function also has a /base case/, which when triggered terminates the recursive
+    process.
+
+    #+NAME: factorial.c
+    #+BEGIN_SRC C
+    int fact (int n) {
+      if (n == 1) return 1;
+      else return n * fact(n-1);
+    }
+    #+END_SRC
+
+    Effectively a recursive function can have multiple base cases, such as fibonacci, but
+    also have multiple recursion cases, such as the Collatz conjecture.
+
+    The *Collatz conjecture* speculates that it's always possible to end up with 1 if the
+    following rules are applied to a positve number $\mathbb{N}$.
+    - if $n = 1$ stop
+    - if n is even, repeat process with $n/2$
+    - if n is uneven, repeat process with $3n + 1$
+
+*** Merge sort                                                    :recursion:
+    The idea of the algorithm is to sort smaller arrays and then combine (merge) in sorted
+    order. It leverages recursion. For $n$ elements of a list $T(n)$ we double the amount
+    of list, but halve the amount of elements: $T(n) = 2T(n/2) + n$ and results in a
+    complexity of:
+    \begin{equation}\Theta(n\,\log{\,n})\end{equation}
+
+    1. sort left half
+    2. sort right half
+    3. merge the two halves
+
+** Exercices

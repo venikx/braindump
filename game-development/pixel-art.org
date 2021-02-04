@@ -1,0 +1,87 @@
+#+TITLE: Pixel Art
+#+AUTHOR: AnaRobynn
+#+FILETAGS: :intro:pixel_art:game:
+#+STARTUP: hideblocks
+
+* Introduction
+** What is it?
+   An image is considered Pixel Art when it's created entirely by hand and the creater had
+   full control of the color and position of each pixel in the image. Usually a high
+   amount of colours means that dirty tools (smudge, blur, transparancy) were used. It's a
+   good practice to try create Pixel Art while resricting yourself to a small colour
+   palette.
+
+** Where do I start?
+*** Quick tips
+   - *start small*: small canvas, small objects, not too hard
+   - *limit colour palette*: no need to have a palette off 40 colours if you can't make a
+     good sprite with 4 colours (use the [[designpieces.com/palette/game-boy-original-color-palette-hex-and-rgb/][14-color palette of GameBoy]])
+   - *filetypes*: prefer .png, avoid .jpg and be cautious with .gif
+
+*** Software
+    The barrier of entry for Pixel Art is low, due to the fact that it can be achieved by
+    almost all image editing applications, which can do palette management, preview
+    repeating tiles, transparancy, layers, ...
+
+    *GIMP* is free, cross-platform and can do much more than Pixel Art.
+
+    *Pro Motion NG* is the industry standard for creating Pixel Art, but it's expensive (40
+    EUR + possible payment for future upgrades) and currently Windows is the only supported
+    platform.
+
+    *Pyxel Edit* is the one I bought recently, because it's tailored towards Pixel Art, but
+    it's cross-platform and only costs about 7 EUR.
+
+*** Start!
+    There are two methods to start drawing Pixel Art.
+    - Outline first: Create the outline, then slowly refine and add colour
+    - Sketch major blocks: Create the general gist of blocks and colour, refine until it
+      has pixel-level polish
+
+    Both of the methods work equally well and each have there purposes, so play around
+    with both of them.
+
+** Lines and curves
+   *Lines* are composed of pixels and could be represented by a ratio y:x, as it's the ratio
+   of change in y to the change in x. A perfect diagonal is presentented by 1:1, while
+   other common lines are represented by 0:1, 1:2, 2:1 and 1:0.
+   In the example of 2:1, it means that for each pixel moved on the x-axis, we draw 2
+   pixel on the y-axis.
+
+   There is only one rules to remember to create curves. The length of the segments should
+   vary in progressive manner, which avoids sharp angels. An example sequence: 5 4 3 2 2 1
+   1 1 2 3 3 3 2 1 1 2 2 1 2 1 2 1 1.
+   A common practice for drawing curves is to draw it out with a free hand and polish the
+   curve after it has been drawn.
+
+   Practice these techniques hard, because it's the base of Pixel Art!
+
+** A bit of colour theory
+   - Hue :: can be seen a the pure pigment - one without tint or shade, which is described
+            by the dominant wavelength
+   - Value :: refers to the amount of lightness or darkness of a colour (white vs black)
+   - Saturation (also chroma) :: defines the brilliance and intensity of a colour (grey vs
+        coloured)
+
+** Characters
+*** 8x8
+    Always zoom out when creating pixel art, because it's important to see if it still
+    looks good when zoomed out. Every detail matters!
+
+** Tiling
+*** Basics
+    Look at the advanced colour section of a color, which can give some examples for
+    shadow/light effects of the main colour you are working with. Always try to think how
+    the light effects, the shadows in your tile.
+
+    A neat way to get rid of thick lines when duplicating smaller bits of a tile is to
+    split it in 4 pieces and flick the corners around (top-right <=> bottom-left) and
+    (top-left <=> bottom-right).
+
+** Dithering
+   is an old technique invented when machines were too primitive to display a lot of
+   colours. The human eye is imperfect and tends to to mix and blend the color of a pixel
+   with the surrounding pixels.
+
+   Patterns:
+   - Checkerboard: 50/50 colour
