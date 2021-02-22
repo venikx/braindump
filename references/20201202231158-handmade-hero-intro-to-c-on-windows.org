@@ -3,10 +3,10 @@
 #+roam_key: cite:muratori_intro_to_c_2014
 #+roam_key: https://hero.handmade.network/episode/intro-to-c
 #+created: [2020-12-02 Wed 23:11]
-#+modified: [2020-12-02 Wed 23:11]
+#+modified: [2021-02-22 Mon 02:46]
 
 * Metadata
-- Author: [[file:../20201202231800-casey-muratori.org][Casey Muratori]]
+- Author: [[roam:Casey Muratori]]
 - Reason: I'm interested in understanding how game engines and games work from scratch and I have zero
   experience with C, so this was the bare minimum of C I would need to follow along with the regular
   videos.

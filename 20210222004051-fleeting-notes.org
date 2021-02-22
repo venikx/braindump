@@ -1,0 +1,11 @@
+#+title: Fleeting Notes
+#+created: [2021-02-22 Mon 00:40]
+#+modified: [2021-02-22 Mon 02:35]
+
+Fleeting notes are random captures of thought throughout the day to prevent loss
+of focus. Capturing these notes must be short, quick and dirty.
+
+-----
+Related:
+- [[file:20210222005758-literature-notes.org][Literature Notes]]
+- [[file:20210222011227-permanent-notes.org][Permanent Notes]]

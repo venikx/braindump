@@ -1,7 +1,0 @@
-#+TITLE: Sunday August 2, 2020
-#+CREATED: [2020-08-02 Sun 17:54]
-#+MODIFIED: [2020-08-02 Sun 17:54]
-
-* Deleted most of my older notes
-* Added [[file:../../20200801233905-zettelkasten.org][Zettelkasten]] as the first ever permanent note
-* Started reading Chapter 1 of [[file:../../references/20200802190131-the-c-programming-language.org][The C Programming Language]]

@@ -1,3 +1,0 @@
-#+TITLE: FreeCodeCamp
-#+CREATED: [2020-11-05 Thu 02:58]
-#+MODIFIED: [2020-11-05 Thu 02:58]

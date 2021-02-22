@@ -1,7 +1,0 @@
-#+TITLE: Thursday August 6, 2020
-#+CREATED: [2020-08-06 Thu 02:29]
-#+MODIFIED: [2020-08-06 Thu 02:29]
-
-* Notified my closest team mates and colleagues I will be a leaving Epic Games
-* Talked with Taylor about the working, life, the balance, the future of the projects
-* Continued with Chapter 1 of [[file:../../references/20200802190131-the-c-programming-language.org][The C Programming Language]]

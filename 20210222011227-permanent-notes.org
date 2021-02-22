@@ -1,0 +1,16 @@
+#+title: Permanent Notes
+#+created: [2021-02-22 Mon 01:12]
+#+modified: [2021-02-22 Mon 01:59]
+
+Permanent notes are atomic notes (single idea), which can and should be used to
+in different molecules (contexts). They start from [[file:20210222004051-fleeting-notes.org][Fleeting Notes]], [[file:20210222005758-literature-notes.org][Literature
+Notes]] or pre-existing knowledge.
+
+Ask yourself a couple questions before creating permanent notes:
+- How does the new information reflect itself on the existing information?
+- What kind of potential new molecule can I create from an existing atom using
+  the new information?
+- How do I want to stumble across this note in the future?
+
+The notes should be written as if they are written for someone else, because
+future self is bound to be someone else.

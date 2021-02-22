@@ -4,10 +4,10 @@
 #+roam_key: https://handmadehero.org
 #+roam_key: https://hero.handmade.network/episode/code
 #+created: [2020-12-06 Sun 02:11]
-#+modified: [2020-12-06 Sun 02:11]
+#+modified: [2021-02-22 Mon 02:46]
 
 * Metadata
-- Author: [[file:../20201202231800-casey-muratori.org][Casey Muratori]]
+- Author: [[roam:Casey Muratori]]
 - Reason: I'm interested in understanding how game engines and games work from scratch.
 * Notes
 ** Day 001 - Setting up the Windows Build

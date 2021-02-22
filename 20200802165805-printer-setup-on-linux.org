@@ -1,6 +1,6 @@
-#+TITLE: Printer Setup on Linux
-#+CREATED: [2020-08-02 Sun 16:58]
-#+MODIFIED: [2020-08-02 Sun 16:58]
+#+title: Printer Setup on Linux
+#+created: [2020-08-02 Sun 16:58]
+#+modified: [2021-02-21 Sun 22:35]
 
 * Void Linux
 ** Installation

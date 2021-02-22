@@ -2,11 +2,10 @@
 #+roam_tags: video unread
 #+roam_key: https://www.youtube.com/watch?v=RrKRN9zRBWs
 #+created: [2020-11-05 Thu 02:56]
-#+modified: [2020-11-06 Fri 17:15]
+#+modified: [2021-02-22 Mon 02:45]
 
 * Metadata
-- Author: [[file:../20201105025814-freecodecamp.org][FreeCodeCamp]]
-- Source: https://www.youtube.com/watch?v=RrKRN9zRBWs
+- Author: [[roam:FreeCodeCamp]]
 - Reason: Quite a a bit of companies in the Talented network require some sort of AWS experience
 * Notes
 ** Exam Guide Breakdown (DVA-CO1)

@@ -1,8 +1,11 @@
-#+TITLE: Index
-#+AUTHOR: venikx
-#+CREATED: [2020-07-09 Thu 14:52]
-#+MODIFIED: [2020-07-09 Thu 14:53]
+#+title: Index
+#+author: venikx
+#+created: [2020-07-09 Thu 14:52]
+#+modified: [2021-02-22 Mon 02:49]
 
 * What is this madness?
 A massive personal, educational notes dump when studying several topics,
 using different media forms: books, blog posts, videos, code snippets, ...
+
+* Content
+- [[file:20200801233905-zettelkasten.org][Zettelkasten]]

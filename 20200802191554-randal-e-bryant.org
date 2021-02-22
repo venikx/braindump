@@ -1,3 +1,0 @@
-#+TITLE: Randal E. Bryant
-#+CREATED: [2020-08-02 Sun 19:15]
-#+MODIFIED: [2020-08-02 Sun 19:15]

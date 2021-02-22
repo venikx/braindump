@@ -1,0 +1,28 @@
+#+title: Workflow for taking literature notes
+#+created: [2021-02-21 Sun 22:45]
+#+modified: [2021-02-22 Mon 00:16]
+
+* Sifting through the random crap first
+1. Gather + tag in raindrop.io (bookmarks on steroids)
+2. Skim through the potential resource
+   a. Throw away when it's useless
+   b. Move to /TODO/ folder if it stays relevant
+3. Move to /IN PROGRESS/ and create an empty literature note
+* Physical Books
+1. Look up ISBN and to generate [[https://zbib.org/][bibliography information]]
+2. Read and take notes inside the book (if you own it)
+3. Is the book complex/long (a) or not (b)
+   a. Transcribe into org-roam per chapter
+   b. Transcribe into org-roam after completely finishing the book
+* Digital Books
+1. Look up ISBN and to generate [[https://zbib.org/][bibliography information]]
+2. Read the book and take notes in org-roam immediately
+3. Is the book complex/long (a) or not (b)
+   a. Try digesting the literature per chapter to form ideas
+   b. Digest the whole literature notes at once
+* Videos
+1. Set the speed to 2x if possible and pause the video when taking notes
+2. If unfinished mark the current timestamp to continue later on
+* Articles
+1. Read the article and take notes in org-roam immediately
+2. Resist the urge to copy-pasta because articles are an easy trap

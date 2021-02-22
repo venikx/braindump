@@ -1,3 +1,0 @@
-#+TITLE: Brian W. Kernighan
-#+CREATED: [2020-08-02 Sun 19:07]
-#+MODIFIED: [2020-08-02 Sun 19:07]

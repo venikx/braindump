@@ -2,12 +2,11 @@
 #+roam_tags: book reading
 #+roam_key: https://www.goodreads.com/book/show/515601.The_C_Programming_Language
 #+created: [2020-08-02 Sun 19:01]
-#+modified: [2020-11-06 Fri 17:15]
+#+modified: [2021-02-22 Mon 02:42]
 
 * Metadata
-- Author: [[file:../20200802190756-brian-w-kernighan.org][Brian W. Kernighan]]
-- Source: https://www.goodreads.com/book/show/515601.The_C_Programming_Language
-- Reason: [[file:../20200803000911-handmade-network.org][Handmade Network]] considers it one of the best introductary material related to C
+- Author: [[roam:Brian W. Kernighan]]
+- Reason: [[roam:Handmade Network]] considers it one of the best introductary material related to C
 * Notes
 ** Introduction
 *** Function declarations are allowed to be nested inside other functions, however function definitions are not allowed to be nested (unless via some C99 extensions).

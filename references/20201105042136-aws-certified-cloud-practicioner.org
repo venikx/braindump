@@ -2,11 +2,10 @@
 #+roam_tags: video reading
 #+roam_key: https://www.youtube.com/watch?v=3hLmDS179YE
 #+created: [2020-11-05 Thu 04:21]
-#+modified: [2020-11-07 Sat 18:48]
+#+modified: [2021-02-22 Mon 02:45]
 
 * Metadata
-- Author: [[file:../20201105025814-freecodecamp.org][FreeCodeCamp]]
-- Source: https://www.youtube.com/watch?v=3hLmDS179YE
+- Author: [[roam:FreeCodeCamp]]
 - Reason: Quite a a bit of companies in the Talented network require some sort of AWS experience
 * Notes
 ** Cloud Concepts

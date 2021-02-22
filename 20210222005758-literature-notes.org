@@ -1,0 +1,17 @@
+#+title: Literature Notes
+#+created: [2021-02-22 Mon 00:57]
+#+modified: [2021-02-22 Mon 02:35]
+
+Literature notes are notes from a wide variety of resources (books, videos,
+articles, ...) which I want to remember and/or use to potentially write about in
+the future. They are written in the context of the source.
+
+- Use your own words (for code snippets try to explain what the code does), because future self reads these notes in 10 years they need to make sense on their own
+- Be extremely selective, since these notes need to fuel the permanent note
+- Keep the notes short, so you have space to think what information might be
+  relevant to become a permanent note or link to already existing notes
+
+-----
+Related:
+- [[file:20210222004051-fleeting-notes.org][Fleeting Notes]]
+- [[file:20210222011227-permanent-notes.org][Permanent Notes]]
