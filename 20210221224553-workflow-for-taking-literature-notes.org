@@ -1,28 +1,54 @@
 #+title: Workflow for taking literature notes
 #+created: [2021-02-21 Sun 22:45]
-#+modified: [2021-02-22 Mon 00:16]
+#+modified: [2021-02-23 Tue 19:22]
 
-* Sifting through the random crap first
-1. Gather + tag in raindrop.io (bookmarks on steroids)
-2. Skim through the potential resource
-   a. Throw away when it's useless
-   b. Move to /TODO/ folder if it stays relevant
-3. Move to /IN PROGRESS/ and create an empty literature note
-* Physical Books
-1. Look up ISBN and to generate [[https://zbib.org/][bibliography information]]
-2. Read and take notes inside the book (if you own it)
-3. Is the book complex/long (a) or not (b)
-   a. Transcribe into org-roam per chapter
-   b. Transcribe into org-roam after completely finishing the book
-* Digital Books
-1. Look up ISBN and to generate [[https://zbib.org/][bibliography information]]
-2. Read the book and take notes in org-roam immediately
-3. Is the book complex/long (a) or not (b)
-   a. Try digesting the literature per chapter to form ideas
-   b. Digest the whole literature notes at once
-* Videos
-1. Set the speed to 2x if possible and pause the video when taking notes
-2. If unfinished mark the current timestamp to continue later on
-* Articles
-1. Read the article and take notes in org-roam immediately
-2. Resist the urge to copy-pasta because articles are an easy trap
+#+begin_src plantuml :file .images/personal-workflow-literature-notes.png :exports results
+@startuml
+:Find interesting literature;
+:Skim & tag the resource in **raindrop.io**;
+
+if (Is it still relevant after 1 week?) then (no)
+  #pink:Thrash it real gud!;
+  kill
+else (yes)
+  :Mark as TODO;
+  :Mark as IN_PROGRESS;
+  split
+    :Books;
+    :Look up ISBN and to generate bilbio information
+    https://zbib.org/;
+    if (Is the book complex/long?) then (yes)
+      :Take notes per chapter;
+    else (no)
+      :Take notes per book;
+    endif
+    if (Physical?) then (yes)
+      :Transcribe notes to org-roam;
+    endif
+  split again
+    :Articles;
+    :Resist the urge to copy-pasta;
+    :Read article, link to titles and take notes;
+  split again
+    :Videos;
+    if (Is the video complex/long?) then (yes)
+      :Timestamp, pause and take notes per major
+      talking points or topics;
+    else (no)
+      :Take notes for the complete video after
+      watching it through;
+    endif
+  end split
+  :Refactor literate notes (possibly delete some);
+  kill
+endif
+@enduml
+#+end_src
+
+#+caption: Flowchart for taking notes from different sources
+#+RESULTS:
+[[file:.images/personal-workflow-literature-notes.png]]
+
+External Links:
+- [[https://zbib.org/][zoterobib]]
+
