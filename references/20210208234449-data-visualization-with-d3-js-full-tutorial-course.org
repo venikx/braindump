@@ -1,0 +1,17 @@
+#+title: Data Visualization with D3.js - Full Tutorial Course
+#+roam_tags: video _1
+#+roam_key: https://www.youtube.com/watch?v=_8V5o2UHG0E
+#+created: [2021-02-08 Mon 23:44]
+#+modified: [2021-02-23 Tue 20:37]
+
+* Metadata
+- Author: [[roam:FreeCodeCamp]]
+- Reason: Quickly understanding D3.js on a deeper level in order to properly
+  guide and help my client
+* Notes
+** Extra sources:
+- https://www.amazon.com/Visualization-Analysis-Design-AK-Peters/dp/1466508914
+
+** Why visualize data?
+*** Visualizations are used to augment humans' decision making capabilities, rather than replace human
+* Highlights
