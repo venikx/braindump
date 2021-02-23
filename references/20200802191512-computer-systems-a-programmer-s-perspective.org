@@ -1,8 +1,9 @@
 #+title: Computer Systems: A Programmer's Perspective
-#+roam_tags: book unread
+#+roam_tags: book _0
+#+roam_key: cite:bryant_computer_2003
 #+roam_key: https://www.goodreads.com/book/show/829182.Computer_Systems
 #+created: [2020-08-02 Sun 19:15]
-#+modified: [2021-02-22 Mon 02:44]
+#+modified: [2021-02-23 Tue 20:19]
 
 * Metadata
 - Author: [[roam:Randal E. Bryant]]

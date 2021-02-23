@@ -1,8 +1,9 @@
 #+title: Code: The Hidden Languages of Computer Hardware and Software
-#+roam_tags: book reading
+#+roam_tags: book _0
+#+roam_key: cite:petzold_code_2000
 #+roam_key: https://www.goodreads.com/book/show/44882.Code
 #+created: [2020-08-02 Sun 19:09]
-#+modified: [2021-02-22 Mon 02:43]
+#+modified: [2021-02-23 Tue 20:19]
 
 * Metadata
 - Author: [[roam:Charles Petzold]]

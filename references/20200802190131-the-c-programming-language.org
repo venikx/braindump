@@ -1,8 +1,9 @@
 #+title: The C Programming Language
-#+roam_tags: book reading
+#+roam_tags: book _1
+#+roam_key: cite:kernighan_c_1988
 #+roam_key: https://www.goodreads.com/book/show/515601.The_C_Programming_Language
 #+created: [2020-08-02 Sun 19:01]
-#+modified: [2021-02-22 Mon 02:42]
+#+modified: [2021-02-23 Tue 20:15]
 
 * Metadata
 - Author: [[roam:Brian W. Kernighan]]

@@ -1,10 +1,10 @@
 #+title: Handmade Hero
-#+roam_tags: video reading
+#+roam_tags: video _1
 #+roam_key: cite:muratori_handmadehero_2014
 #+roam_key: https://handmadehero.org
 #+roam_key: https://hero.handmade.network/episode/code
 #+created: [2020-12-06 Sun 02:11]
-#+modified: [2021-02-22 Mon 02:46]
+#+modified: [2021-02-23 Tue 20:34]
 
 * Metadata
 - Author: [[roam:Casey Muratori]]

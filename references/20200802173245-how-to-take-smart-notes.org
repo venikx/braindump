@@ -1,8 +1,9 @@
 #+title: How to take Smart Notes
 #+roam_tags: book
+#+roam_key: cite:ahrens_how_2017
 #+roam_key: https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes
 #+created: [2020-08-02 Sun 17:32]
-#+modified: [2021-02-22 Mon 01:48]
+#+modified: [2021-02-23 Tue 20:11]
 
 * Metadata
 - Author: [[roam:Sönke Ahrens]]

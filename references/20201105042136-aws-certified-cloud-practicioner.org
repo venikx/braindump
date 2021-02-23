@@ -1,8 +1,9 @@
 #+title: AWS Certified Cloud Practitioner Training 2020
-#+roam_tags: video reading
+#+roam_tags: video _1
+#+roam_key: cite:freecodecamp_aws_cp_2020
 #+roam_key: https://www.youtube.com/watch?v=3hLmDS179YE
 #+created: [2020-11-05 Thu 04:21]
-#+modified: [2021-02-22 Mon 02:45]
+#+modified: [2021-02-23 Tue 20:20]
 
 * Metadata
 - Author: [[roam:FreeCodeCamp]]
