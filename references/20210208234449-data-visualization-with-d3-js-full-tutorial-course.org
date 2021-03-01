@@ -2,16 +2,97 @@
 #+roam_tags: video _1
 #+roam_key: https://www.youtube.com/watch?v=_8V5o2UHG0E
 #+created: [2021-02-08 Mon 23:44]
-#+modified: [2021-02-23 Tue 20:37]
+#+modified: [2021-03-01 Mon 02:11]
 
 * Metadata
 - Author: [[roam:FreeCodeCamp]]
 - Reason: Quickly understanding D3.js on a deeper level in order to properly
   guide and help my client
 * Notes
-** Extra sources:
-- https://www.amazon.com/Visualization-Analysis-Design-AK-Peters/dp/1466508914
+** 00:01:41
+Data Visualization consists of three pillars: analysis, design and construction.
+A lot of the analysis and design elements are inspired by [[https://www.amazon.com/Visualization-Analysis-Design-AK-Peters/dp/1466508914][Visualization Analysis
+& Design - Tamara Munzner]], while the construction is done with Javascript, HTML,
+CSS, SVG and D3.js.
+** 00:03:46
+Data visualizations are meant the augment human capabilities, rather than
+replace it, by representing datasets to solve well-specified problems.
+** 00:15:26
+There's tree main dataset types: tables, networks and spatial.
 
-** Why visualize data?
-*** Visualizations are used to augment humans' decision making capabilities, rather than replace human
+The /tables/ consist of tabular data, which represent a single row or event, and
+/multidimensional table/ or /data cubes/ which is aggregated data. /Networks/
+are datasets which can be linked to each other through nodes. /Trees/ are a
+hierarchical subset of networks. /Spatial/ datasets map to a certain location on
+the Earth. /Geometry (spatial)/ are specific points on the map, while /fields
+(continuous)/ represent geographic identifiers (like countries).
+** 00:18:26
+Tabular data has three attribute (column) types which can help you create a visual
+design: categorical and ordered, which contains ordinal and quantative.
+
+Olympic medals (bronze < silver < gold) is /ordinal/, because they have a
+natural order, while population is /quantitative/ due to it being a specific
+number.
+
+The cause of death is /categorical/ due the events being distinctly different
+things without any ordering.
+** 00:28:40
+Questions to ask when creating a data visualization:
+- What is the problem you are trying to solve?
+- What decision are you trying to make?
+- What story do you want to tell?
+- What tasks should the viewer be able to perform?
+** 02:29:13
+The ~<path />~ element inside ~<svg />~ is not the same as a line element, since
+it has a default fill colours and is meanth to draw complicated shapes using
+commands.
+** 02:51:06
+In case you've hardcoded some attributes on the top level svg element, you could
+extract those attributes with ~+d3.select('svg').attr('height')~. The + sign
+makes sure the height is returned as a float.
+** 03:22:10
+The D3 library is able to create join between the data and the current elements
+in the DOM. Add extra SVG elements to the DOM is done via the *Enter* selection,
+while removing elements is done with the *Exit* selection. The *Update*
+selection is responsible for updating the values of existing SVG elements in the
+DOM.
+** 03:25:17
+A /linear scale/ translates values from a *domain* (data space) to a *range*
+(screen space). Linear scales are useful for quantitative attributes.
+A /band scale/ is useful for ordinal attributes.
+** 03:31:13
+Bandwith is the computed value of a single bar.
+** 03:34:03
+The D3 Margin Convention is the spacing between the edge of the SVG box and the
+main visualization in order to create breathing room for the axises. In practice
+that would mean the main visualization lives in a separate group which is
+translated away from the edges of the SVG.
+** 03:39:13
+Passing a selection into a function is so common that D3 provides a ~.call~
+method where you can pass in a function that will invoke the selection.
+
+#+begin_src js
+// verbose
+const yAxis = d3.axisLeft(yScale)
+yAxis(g.append('g'))
+
+// shorthand
+g.append('g')
+ .call(d3.axisLeft(yScale))
+#+end_src
+** 04:03:15
+Always, always remember the fact you can base your measurements and distances
+based of the respective containers. For example when you want the x-axis ticks
+to take up the whole space of the char, then you can define the length of the
+ticks as the inner height of the visualization.
+** 04:34:37
+To visualize ordinal or categorical attributes on a scatter plot ~scalePoint~ is
+used in stead of ~scaleBand~.
+** 04:48:29
+Use as many classes that are needed to style the graph rather than using
+/inline/ styling.
+** 04:53:59
+The area under the line of the values need to have a baseline in order for the
+area to be meaningful. Using an area chart to visualize the day-to-day temperature is
+meaningless. The importance of the baseline is also important for /bar charts/.
 * Highlights
