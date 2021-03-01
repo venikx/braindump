@@ -95,4 +95,32 @@ Use as many classes that are needed to style the graph rather than using
 The area under the line of the values need to have a baseline in order for the
 area to be meaningful. Using an area chart to visualize the day-to-day temperature is
 meaningless. The importance of the baseline is also important for /bar charts/.
+** 05:34:58
+The *data join* itself is the /update selection/. In order to reduce potential
+duplication between the /enter and update selection/ D3 provides a ~merge()~
+method. All methods invoked after the merge will result in changes on both the
+/enter/ and the /update/ selection.
+** 05:45:37
+Transitions are already a nice way to start animating the visualizations when
+the data changes over time. However, without object constancy the visualizations
+might be sending the wrong information while they are transitioning towards
+their updated states. By default the object constancy is based on the index of
+the array, but as we know from the React world (keys in lists) these aren't
+stable. The glitch is especially noticeable when deleting an element in the
+middle of the dataset.
+
+The ~.data()~ accepts a function as the second argument which should return the
+key of the element in order to create a more stable one compared to using the
+index of the array.
+** 07:00:50
+There's a lot more projections (in case there's a need for a country specific
+projection) in a seperate ~d3-geo-projection~ package.
+** 08:33:33
+Any attribute which is not obvious from the context should have labels or
+legends. The legends themselves can also be generated via d3 and made
+interactive to add some "quick wins" in terms of data visualization
+interactivity. For example, a legend on a world map with the density of the
+coronavirus cases could focus in on a certain density by hovering over the
+legend.
+
 * Highlights
