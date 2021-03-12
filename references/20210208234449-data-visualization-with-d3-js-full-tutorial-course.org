@@ -1,8 +1,8 @@
 #+title: Data Visualization with D3.js - Full Tutorial Course
-#+roam_tags: video _1
-#+roam_key: https://www.youtube.com/watch?v=_8V5o2UHG0E
+#+roam_tags: video
+#+roam_key: freecodecamp_dataviz_d3_2020
 #+created: [2021-02-08 Mon 23:44]
-#+modified: [2021-03-01 Mon 02:11]
+#+modified: [2021-03-12 Fri 23:27]
 
 * Metadata
 - Author: [[roam:FreeCodeCamp]]
@@ -122,5 +122,10 @@ interactive to add some "quick wins" in terms of data visualization
 interactivity. For example, a legend on a world map with the density of the
 coronavirus cases could focus in on a certain density by hovering over the
 legend.
-
+** 10:03:00
+Use https://colorbrewer2.org which are good color schemes for data
+visualizations.
+** 10:06:02
+Read https://nbisweden.github.io/Rcourse/files/rules_for_using_color.pdf to
+understand the practical rules for colors in charts.
 * Highlights
